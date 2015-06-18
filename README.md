@@ -1,5 +1,7 @@
 # ads-bpa
 [![Build Status](https://travis-ci.org/540co/ads-bpa.svg?branch=master)](https://travis-ci.org/540co/ads-bpa)
+[![Code Climate](https://codeclimate.com/github/540co/ads-bpa/badges/gpa.svg)](https://codeclimate.com/github/540co/ads-bpa)
+[![Test Coverage](https://codeclimate.com/github/540co/ads-bpa/badges/coverage.svg)](https://codeclimate.com/github/540co/ads-bpa/coverage)
 
 Kickoff of agile delivery services development challenge
 
