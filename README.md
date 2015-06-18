@@ -1,5 +1,6 @@
 # ads-bpa
 [![Build Status](https://travis-ci.org/540co/ads-bpa.svg?branch=master)](https://travis-ci.org/540co/ads-bpa)
+
 Kickoff of agile delivery services development challenge
 
 #Demo
