@@ -1,0 +1,5 @@
+**/node_modules
+**/.editorconfig
+**/.yo-rc.json
+**/.tmp
+**/bower_components
