@@ -1,9 +1,15 @@
 sudo: false
 language: node_js
 node_js:
-  - 'iojs'
   - '0.12'
   - '0.10'
 before_script:
   - 'npm install -g bower grunt-cli'
+  - 'cd client'
+  - 'npm install'
   - 'bower install'
+  - 'cd ../server'
+  - 'npm install'
+script:
+  - cd client && npm test
+  - cd ../server && npm test
