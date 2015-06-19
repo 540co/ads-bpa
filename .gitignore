@@ -3,3 +3,4 @@
 **/.yo-rc.json
 **/.tmp
 **/bower_components
+**/*.log
