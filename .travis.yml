@@ -1,22 +1,29 @@
 sudo: false
 language: node_js
 node_js:
-  - '0.12'
+- '0.12'
+branches:
+  only:
+    - master
+    - develop
 cache:
   directories:
-    - node_modules
-    - client/node_modules
-    - client/bower_components
-    - server/node_modules
+  - node_modules
+  - client/node_modules
+  - client/bower_components
+  - server/node_modules
 before_script:
-  - 'npm install -g bower grunt-cli mocha'
-  - 'cd client'
-  - 'npm install'
-  - 'bower install'
-  - 'cd ../server'
-  - 'npm install'
+- npm install -g bower grunt-cli mocha
+- cd client
+- npm install
+- bower install
+- cd ../server
+- npm install
 script:
-  - cd ../client
-  - npm test
-  - cd ../server
-  - npm test
+- cd ../client
+- npm test
+- cd ../server
+- npm test
+notifications:
+  slack:
+    secure: D1GQKIasEMUds0m8aesbELb6fxOGPlG05+4GknDXD93TF5GMPu2jKJF83ahlQvyCKq+9wHzus8XwBPG/vARFyaZUOHnvjcA19ZD0O7VWQkmwzhT25awT5IenQohhhjdZOlTpcQgeL+kne4xcAoGkDBVi7EDZvXlJU13gyAcXRIbLlXn47C/vec6aGQbJQtq4bkaw+9yLlxaqtLT1O8wzaVf0NEkE2JTAA6AIB1cVxpOMuhmzkuq3909KOUyylIGE5rl35nuALC462JVW81J6NQKk8bDn/DMN8bsk5KGV7/ZaZjGWq0TZ2cK9eGgZGQt5jcM1guF66Y1pifZ8O6WIQPrQZpEb19pC9qSmXAnyFnQ/hbPnOVxGSIfCudehM9AreiAIR8Ze8ojr3sOrrYa1O57AXKAVz3IGKF8qv+qNgGsrrQP/dtGUAdqbKSzbO2CGi7lZqhQfjI+TgBix9LoJ/PQDW0GV+9cVSi0kdYvRZaJx9pByC+xYIsM5GRKRHFGYC9G0s7TRlHiYoufPqXbmn1xuealXNNtAZ5lRbZV/DJWe1M67MS63XXxxU0W55uh0N06vOLYmbtQbcbcfn7FbuEwgeaV0ShIu0MBMFb5e4LaEROI9pSc22UTFIs6Sra6h9unsyhjje/yqonyjp62e6vptj1KPEV2BdAt7YJAEIQU=
