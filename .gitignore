@@ -4,3 +4,4 @@
 **/.tmp
 **/bower_components
 **/*.log
+**/dist

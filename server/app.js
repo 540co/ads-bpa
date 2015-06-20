@@ -25,7 +25,7 @@ app.use(cookieParser());
 
 app.use('/api', index);
 app.use('/api/reactions', reactions);
-app.use('/', express.static(__dirname + '/../client/app'));
+app.use('/', express.static(__dirname + '/../client/dist'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
