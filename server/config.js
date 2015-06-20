@@ -1,5 +1,5 @@
 var config = {}
 
-config.mongo = "mongodb://localhost:27017/";
+config.mongo = "mongodb://mongo:27017/";
 
 module.exports = config;

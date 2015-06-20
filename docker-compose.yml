@@ -1,0 +1,6 @@
+web:
+  image: 540co/dre:latest
+  links:
+    - mongo
+mongo:
+  image: mongo:3.0.4
