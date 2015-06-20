@@ -6,13 +6,29 @@
 FROM node:0.12.4
 MAINTAINER 540 Co LLC <info@540.co>
 
+# Environment Variables
+ENV SRC_PATH /src/dre
+ENV CLIENT_PATH $SRC_PATH/client
+ENV SERVER_PATH $SRC_PATH/server
+
 # App
-ADD . /src/dre
+ADD . $SRC_PATH
 
-# Install app dependencies
-RUN cd /src/dre; npm install -g bower grunt-cli mocha
-RUN cd /src/dre/client; npm install; bower install --allow-root
-RUN cd /src/dre/server; npm install
+# Install dependencies
+WORKDIR $SRC_PATH
+RUN npm install -g bower grunt-cli mocha
 
+# Install client dependencies
+WORKDIR $CLIENT_PATH
+RUN npm install; bower install --allow-root
+
+# Install server dependencies
+WORKDIR $SERVER_PATH
+RUN npm install
+
+# Expose port 3000 to host
 EXPOSE 3000
-CMD npm start
+
+# Start server
+WORKDIR $SERVER_PATH
+CMD ["npm", "start"]
