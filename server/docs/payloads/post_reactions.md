@@ -34,7 +34,7 @@ Below is a response to a `POST` to the `/reactions` API if non of the below erro
   },
   "data": {
     "reaction": "<reaction>",
-    "translation":[
+    "translations": [
       {
         "definition": "<text>",
         "atribution_text": "<attribution_text>", 
@@ -44,6 +44,7 @@ Below is a response to a `POST` to the `/reactions` API if non of the below erro
           "down": 4
          }
       }
+      ...
     ]
   }
 }
