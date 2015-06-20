@@ -3,10 +3,9 @@ require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
 
-global.should = require('should');
+var should = require('should');
 var superagent = require('superagent');
 var status = require('http-status');
-
 
 // This details the Configuration Test Spec
 describe('config', function(){
@@ -28,7 +27,11 @@ describe('Representations', function() {
   // This details the Definitions Representation
   describe('Definition', function() {
     beforeEach(function(done) {
-        definition = mockDefinition("ASDF", "ASDF", "ASDF", "ASDF");
+        definition = mockDefinition(
+          "Test Definition for Death",
+          "Merriam-Webster Medical Dictionary",
+          "2015-06-20 11:14:55",
+          "dre_app");
         done();
     });
 
@@ -37,12 +40,27 @@ describe('Representations', function() {
       definition.should.have.property("definition");
       definition.should.have.property("source");
       definition.isValid().should.eql(true);
+
       definition.definition = null;
+      definition.isValid().should.eql(false);
+
+      definition.definition = "Validness";
+      definition.source = new Array();
+      definition.isValid().should.eql(false);
+
+      definition.source = "The Source";
+      definition.votes = 123;
+      definition.isValid().should.eql(false);
+
+      definition.votes = new Votes();
+      definition.isValid().should.eql(true);
+
+      definition.extraAttribute = "ASDF";
       definition.isValid().should.eql(false);
     });
 
     it('should check if a supplied definition is a match', function() {
-      definition.matches(definition.defintion).should.eql(true);
+      definition.matches(definition.definition).should.eql(true);
     });
 
     it('should vote up for an identified definition in the list', function() {
@@ -75,15 +93,26 @@ describe('Representations', function() {
       reaction.should.have.property("reaction");
       reaction.should.have.property("definitions");
       reaction.isValid().should.eql(true);
+
       reaction.reaction = null;
       reaction.isValid().should.eql(false);
+
+      reaction.reaction = "Validness";
+      reaction.definitions = 123;
+      reaction.isValid().should.eql(false);
+
+      reaction.definitions = new Array();
+      reaction.isValid().should.eql(true);
+
+      reaction.extraAttribute = "ASDF";
+      reaction.isValid().should.eql(false);
+
     });
 
     it('should add a definition to the list', function() {
       var length = reaction.definitions.length;
       var definition = "This is another test Definition";
-
-      reaction.definitions.add(mockDefinition(
+      reaction.addDefinition(mockDefinition(
         definition,
         "Custom",
         "2015-06-20 14:56:12",
@@ -91,12 +120,12 @@ describe('Representations', function() {
       ));
 
       reaction.definitions.length.should.eql(length+1);
-      reaction.definitions.exists(definition).should.eql(true);
+      reaction.definitionExists(definition).should.eql(true);
     });
 
     it('should remove a definition from the list', function() {
       var definition = "This is another test Definition";
-      reaction.definitions.add(mockDefinition(
+      reaction.addDefinition(mockDefinition(
         definition,
         "Custom",
         "2015-06-20 14:56:12",
@@ -104,15 +133,26 @@ describe('Representations', function() {
       ));
 
       var length = reaction.definitions.length;
-      reaction.definitions.remove(definition);
+      reaction.removeDefinition(definition);
 
       reaction.definitions.length.should.eql(length-1);
-      reaction.definitions.exists(definition).should.eql(false);
+      reaction.definitionExists(definition).should.eql(false);
     });
 
     it('should return the most popular definition in the list', function() {
       var highestFlag = true;
-      var popularDefinition = reaction.definitions.popular();
+
+      reaction.definitions = new Array();
+      var definition1 = mockDefinition("A", "A", "A", "A");
+      var definition2 = mockDefinition("B", "B", "B", "B");
+      var votes1 = mockVotes(1,1);
+      var votes2 = mockVotes(2,2);
+      definition1.votes = votes1;
+      definition2.votes = votes2;
+      reaction.addDefinition(definition1);
+      reaction.addDefinition(definition2);
+
+      var popularDefinition = reaction.popularDefinition();
 
       var length = reaction.definitions.length;
       for(var i=0; i<length; i++) {
@@ -122,18 +162,18 @@ describe('Representations', function() {
       }
 
       highestFlag.should.eql(true);
+      popularDefinition.definition.should.eql("B");
     });
 
     it('should check the existance of a supplied definition in the list', function() {
       var definition = "This is another test Definition";
-      reaction.definitions.add(mockDefinition(
+      reaction.addDefinition(mockDefinition(
         definition,
         "Custom",
         "2015-06-20 14:56:12",
         "dre-harvester"
       ));
-
-      reaction.definitions.exists(definition).should.eql(true);
+      reaction.definitionExists(definition).should.eql(true);
     });
 
   });
@@ -151,8 +191,22 @@ describe('Representations', function() {
 
     it('should verify the structure of an instance', function() {
       votes.should.be.an.instanceOf(Object);
-      reaction.should.have.property("ups");
-      reaction.should.have.property("downs");
+      votes.should.have.property("ups");
+      votes.should.have.property("downs");
+      votes.isValid().should.eql(true);
+
+      votes.ups = null;
+      votes.isValid().should.eql(false);
+
+      votes.ups = 2;
+      votes.downs = new Array();
+      votes.isValid().should.eql(false);
+
+      votes.downs = 4;
+      votes.isValid().should.eql(true);
+
+      votes.extraAttribute = 123;
+      votes.isValid().should.eql(false);
     });
 
     it('should allow an up vote to increase up vote total by 1', function() {
