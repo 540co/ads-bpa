@@ -3,10 +3,9 @@ require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
 
-var should = require('should');
+global.should = require('should');
 var superagent = require('superagent');
 var status = require('http-status');
-
 
 
 // This details the Configuration Test Spec
@@ -24,19 +23,19 @@ describe('config', function(){
 
 // This details the Representation Test Spec
 describe('Representations', function() {
-  var reaction;
+  var definition;
 
   // This details the Definitions Representation
   describe('Definition', function() {
     beforeEach(function(done) {
-        var definition = new Definition();
+        definition = mockDefinition("ASDF", "ASDF", "ASDF", "ASDF");
         done();
     });
 
     it('should verify the structure of an instance', function() {
-      definition.should.be.an.instanceOf(Object).and.have.property(
-        'definition',
-        'source');
+      definition.should.be.an.instanceOf(Object);
+      definition.should.have.property("definition");
+      definition.should.have.property("source");
       definition.isValid().should.eql(true);
       definition.definition = null;
       definition.isValid().should.eql(false);
@@ -53,10 +52,9 @@ describe('Representations', function() {
     });
 
     it('should vote down for an identified definition in the list', function() {
-      definition.votes.up();
       var count = definition.votes.downs;
       definition.votes.down();
-      definition.votes.downs.should.eql(count-1);
+      definition.votes.downs.should.eql(count+1);
     });
 
   });
@@ -65,15 +63,17 @@ describe('Representations', function() {
 
   // This details the Reaction Representation
   describe('Reaction', function() {
+    var reaction;
+
     beforeEach(function(done) {
-        reaction = new Reaction();
+        reaction = mockReaction();
         done();
     });
 
     it('should verify the structure of an instance', function() {
-      reaction.should.be.an.instanceOf(Object).and.have.property(
-        'reaction',
-        'definitions');
+      reaction.should.be.an.instanceOf(Object);
+      reaction.should.have.property("reaction");
+      reaction.should.have.property("definitions");
       reaction.isValid().should.eql(true);
       reaction.reaction = null;
       reaction.isValid().should.eql(false);
@@ -90,8 +90,8 @@ describe('Representations', function() {
         "dre-harvester"
       ));
 
-      length.should.eql(reaction.definitions.length-1);
-      reaction.definitions.exists(defintion).should.eql(true);
+      reaction.definitions.length.should.eql(length+1);
+      reaction.definitions.exists(definition).should.eql(true);
     });
 
     it('should remove a definition from the list', function() {
@@ -106,8 +106,8 @@ describe('Representations', function() {
       var length = reaction.definitions.length;
       reaction.definitions.remove(definition);
 
-      length.should.eql(reaction.definitions.length+1);
-      reaction.definitions.exists(defintion).should.eql(false);
+      reaction.definitions.length.should.eql(length-1);
+      reaction.definitions.exists(definition).should.eql(false);
     });
 
     it('should return the most popular definition in the list', function() {
@@ -116,7 +116,7 @@ describe('Representations', function() {
 
       var length = reaction.definitions.length;
       for(var i=0; i<length; i++) {
-        if(popularDefinition.votes.up < reaction.definitions[0].votes.up) {
+        if(popularDefinition.votes.ups < reaction.definitions[0].votes.ups) {
           highestFlag = false;
         }
       }
@@ -143,18 +143,16 @@ describe('Representations', function() {
 
   // This details the Votes Representation
   describe('Votes', function() {
+    var votes;
     beforeEach(function(done) {
-      var votes = new Votes();
+      votes = mockVotes(3,4);
       done();
     });
 
     it('should verify the structure of an instance', function() {
-      votes.should.be.an.instanceOf(Object).and.have.property(
-        'ups',
-        'downs');
-      votes.isValid().should.eql(true);
-      votes.downs = null;
-      votes.isValid().should.eql(false);
+      votes.should.be.an.instanceOf(Object);
+      reaction.should.have.property("ups");
+      reaction.should.have.property("downs");
     });
 
     it('should allow an up vote to increase up vote total by 1', function() {
@@ -176,3 +174,64 @@ describe('Representations', function() {
 describe('resources', function() {
     // API resources
 });
+
+
+
+
+
+
+
+/****
+ * HELPER FUNCTIONS
+ *
+ * Need to be moved into helper-main and resolve scoping issue
+ ******/
+
+
+
+function mockDefinition(def, source, created_at, created_by) {
+  var definition = new Definition();
+
+  definition.definition = def;
+  definition.source = source;
+  definition.created_at = created_at;
+  definition.created_by = created_by;
+  definition.votes = mockVotes(
+    Math.floor(Math.random()*10),
+    Math.floor(Math.random()*10));
+
+  return definition;
+}
+
+
+// This function creates a mocked reactions instance for testing purposes
+function mockReaction() {
+  var reaction = new Reaction();
+
+  reaction.reaction = "Death";
+  reaction.definitions = new Array();
+  reaction.definitions.pop(mockDefinition(
+                    "Test Definition for Death",
+                    "Merriam-Webster Medical Dictionary",
+                    "2015-06-20 11:14:55",
+                    "dre_app"));
+
+  return reaction;
+}
+
+
+// This function creates a mocked votes instance for testing purposes with
+// supplied numbers of yeses and noes to instantiate with
+function mockVotes(yesVotes, noVotes) {
+  var votes = new Votes();
+
+  for(var i=0; i<yesVotes; i++) {
+    votes.up();
+  }
+
+  for(i=0; i<noVotes; i++) {
+    //votes.down();
+  }
+
+  return votes;
+}
