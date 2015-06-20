@@ -40,7 +40,7 @@ function mockVotes(yesVotes, noVotes) {
   }
 
   for(i=0; i<noVotes; i++) {
-    //votes.down();
+    votes.down();
   }
 
   return votes;
