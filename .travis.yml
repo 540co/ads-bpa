@@ -2,13 +2,17 @@ sudo: false
 language: node_js
 node_js:
   - '0.12'
-  - '0.10'
+cache:
+  directories:
+    - node_modules
+    - client/node_modules
+    - client/bower_components
+    - server/node_modules
 before_script:
   - 'npm install -g bower grunt-cli mocha'
   - 'cd client'
   - 'npm install'
   - 'bower install'
-  - 'grunt build'
   - 'cd ../server'
   - 'npm install'
 script:
