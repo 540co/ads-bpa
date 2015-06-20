@@ -34,18 +34,21 @@ Below is a response to a `POST` to the `/reactions` API if non of the below erro
   },
   "data": {
     "reaction": "<reaction>",
-    "translations": [
+    "definitions": [
       {
         "definition": "<text>",
-        "atribution_text": "<attribution_text>", 
         "source": "<source>",
+        "created_at": "yyyy-mm-dd hh:mm:ss",
+        "created_by": "dre-app",
         "votes": {
           "up": 1,
           "down": 4
          }
       }
       ...
-    ]
+    ],
+    "created_at": "yyyy-mm-dd hh:mm:ss",
+    "created_by": "dre-harvester"
   }
 }
 ```

@@ -1,0 +1,3 @@
+Votes = function() {
+
+}

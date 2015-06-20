@@ -5,6 +5,7 @@ node_js:
   - '0.10'
 before_script:
   - 'npm install -g bower grunt-cli mocha'
+  - 'npm install -g should --save-dev'
   - 'cd client'
   - 'npm install'
   - 'bower install'
