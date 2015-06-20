@@ -1,7 +1,5 @@
 web:
-  build: .
-  ports:
-    - "3000:3000"
+  image: 540co/dre:latest
   links:
     - mongo
 mongo:
