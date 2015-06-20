@@ -1,0 +1,8 @@
+web:
+  build: .
+  ports:
+    - "3000:3000"
+  links:
+    - mongo
+mongo:
+  image: mongo:3.0.4
