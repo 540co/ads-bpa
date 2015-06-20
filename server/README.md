@@ -45,3 +45,16 @@ Server
 ```
 http://localhost:3000/server
 ```
+
+## Stubbed Endpoints
+
+List of reactions we have definitions
+```
+./server/reaction
+```
+
+Get definition
+
+```
+./server/reaction/:field
+```
