@@ -1,5 +1,7 @@
 web:
   image: 540co/dre:latest
+  ports:
+    - "3000:3000"
   links:
     - mongo
 mongo:

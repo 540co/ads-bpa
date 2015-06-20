@@ -20,7 +20,7 @@ RUN npm install -g bower grunt-cli mocha
 
 # Install client dependencies
 WORKDIR $CLIENT_PATH
-RUN npm install; bower install --allow-root
+RUN npm install; bower install --allow-root; grunt build
 
 # Install server dependencies
 WORKDIR $SERVER_PATH
