@@ -1,5 +1,5 @@
-/*
-function mockDefinition(def, source, created_at, created_by) {
+//FThis function creates a mocked definition instance for testing purposes
+var mockDefinition = function(def, source, created_at, created_by) {
   var definition = new Definition();
 
   definition.definition = def;
@@ -11,11 +11,11 @@ function mockDefinition(def, source, created_at, created_by) {
     Math.floor(Math.random()*10));
 
   return definition;
-}
+};
 
 
 // This function creates a mocked reactions instance for testing purposes
-function mockReaction() {
+var mockReaction = function() {
   var reaction = new Reaction();
 
   reaction.reaction = "Death";
@@ -27,12 +27,11 @@ function mockReaction() {
                     "dre_app"));
 
   return reaction;
-}
-
+};
 
 // This function creates a mocked votes instance for testing purposes with
 // supplied numbers of yeses and noes to instantiate with
-function mockVotes(yesVotes, noVotes) {
+var mockVotes = function(yesVotes, noVotes) {
   var votes = new Votes();
 
   for(var i=0; i<yesVotes; i++) {
@@ -44,5 +43,9 @@ function mockVotes(yesVotes, noVotes) {
   }
 
   return votes;
-}
-*/
+};
+
+//Exports to make functions available in main.js
+exports.mockDefinition = mockDefinition;
+exports.mockReaction = mockReaction;
+exports.mockVotes = mockVotes;

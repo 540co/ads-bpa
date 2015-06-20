@@ -1,4 +1,4 @@
-require('./helper-main.js');
+var helper = require('./helper-main.js');
 require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
@@ -27,7 +27,7 @@ describe('Representations', function() {
   // This details the Definitions Representation
   describe('Definition', function() {
     beforeEach(function(done) {
-        definition = mockDefinition(
+        definition = helper.mockDefinition(
           "Test Definition for Death",
           "Merriam-Webster Medical Dictionary",
           "2015-06-20 11:14:55",
@@ -84,7 +84,7 @@ describe('Representations', function() {
     var reaction;
 
     beforeEach(function(done) {
-        reaction = mockReaction();
+        reaction = helper.mockReaction();
         done();
     });
 
@@ -112,7 +112,8 @@ describe('Representations', function() {
     it('should add a definition to the list', function() {
       var length = reaction.definitions.length;
       var definition = "This is another test Definition";
-      reaction.addDefinition(mockDefinition(
+
+      reaction.addDefinition(helper.mockDefinition(
         definition,
         "Custom",
         "2015-06-20 14:56:12",
@@ -125,7 +126,7 @@ describe('Representations', function() {
 
     it('should remove a definition from the list', function() {
       var definition = "This is another test Definition";
-      reaction.addDefinition(mockDefinition(
+      reaction.addDefinition(helper.mockDefinition(
         definition,
         "Custom",
         "2015-06-20 14:56:12",
@@ -143,10 +144,10 @@ describe('Representations', function() {
       var highestFlag = true;
 
       reaction.definitions = new Array();
-      var definition1 = mockDefinition("A", "A", "A", "A");
-      var definition2 = mockDefinition("B", "B", "B", "B");
-      var votes1 = mockVotes(1,1);
-      var votes2 = mockVotes(2,2);
+      var definition1 = helper.mockDefinition("A", "A", "A", "A");
+      var definition2 = helper.mockDefinition("B", "B", "B", "B");
+      var votes1 = helper.mockVotes(1,1);
+      var votes2 = helper.mockVotes(2,2);
       definition1.votes = votes1;
       definition2.votes = votes2;
       reaction.addDefinition(definition1);
@@ -167,7 +168,7 @@ describe('Representations', function() {
 
     it('should check the existance of a supplied definition in the list', function() {
       var definition = "This is another test Definition";
-      reaction.addDefinition(mockDefinition(
+      reaction.addDefinition(helper.mockDefinition(
         definition,
         "Custom",
         "2015-06-20 14:56:12",
@@ -185,7 +186,7 @@ describe('Representations', function() {
   describe('Votes', function() {
     var votes;
     beforeEach(function(done) {
-      votes = mockVotes(3,4);
+      votes = helper.mockVotes(3,4);
       done();
     });
 
@@ -228,64 +229,3 @@ describe('Representations', function() {
 describe('resources', function() {
     // API resources
 });
-
-
-
-
-
-
-
-/****
- * HELPER FUNCTIONS
- *
- * Need to be moved into helper-main and resolve scoping issue
- ******/
-
-
-
-function mockDefinition(def, source, created_at, created_by) {
-  var definition = new Definition();
-
-  definition.definition = def;
-  definition.source = source;
-  definition.created_at = created_at;
-  definition.created_by = created_by;
-  definition.votes = mockVotes(
-    Math.floor(Math.random()*10),
-    Math.floor(Math.random()*10));
-
-  return definition;
-}
-
-
-// This function creates a mocked reactions instance for testing purposes
-function mockReaction() {
-  var reaction = new Reaction();
-
-  reaction.reaction = "Death";
-  reaction.definitions = new Array();
-  reaction.definitions.pop(mockDefinition(
-                    "Test Definition for Death",
-                    "Merriam-Webster Medical Dictionary",
-                    "2015-06-20 11:14:55",
-                    "dre_app"));
-
-  return reaction;
-}
-
-
-// This function creates a mocked votes instance for testing purposes with
-// supplied numbers of yeses and noes to instantiate with
-function mockVotes(yesVotes, noVotes) {
-  var votes = new Votes();
-
-  for(var i=0; i<yesVotes; i++) {
-    votes.up();
-  }
-
-  for(i=0; i<noVotes; i++) {
-    votes.down();
-  }
-
-  return votes;
-}
