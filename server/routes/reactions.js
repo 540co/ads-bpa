@@ -277,8 +277,11 @@ router.get('/:id', function(req, res, next) {
     }
     findReaction(req.params.id, db, function(result) {
       if(result === null) {
-        res.status(404);
-        res.json();
+        var err = new Error();
+        err.status = 404;
+        err.error = "Reaction Not Found";
+        err.message = "The reaction that you were looking for could not be found.";
+        next(err);
       } else {
         res.json(result);
       }
