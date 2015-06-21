@@ -119,7 +119,7 @@ body{
 .flip .card .front {
   position: absolute;
   z-index: 1;
-   
+
     cursor: pointer;
 }
 .flip .card .back {

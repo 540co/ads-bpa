@@ -127,7 +127,18 @@ angular
             }
         };
 
+        var label = {
+          getLabelInfoByBrand: function(drugKeyword) {
+            var url='&search=openfda.brand_name:'+ encodeURIComponent(drugKeyword);
+
+            return $http(requestParams({
+              url: catalogEndpoint('drugLabel', url),
+            }));
+          }
+        };
+
         return {
-            adverseEvents: adverseEvents
+            adverseEvents: adverseEvents,
+            label: label
         };
   }]);
