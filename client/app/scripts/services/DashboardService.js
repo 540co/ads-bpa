@@ -19,11 +19,11 @@ angular
       function getBrands(drugKeyword) {
         return openFDA.adverseEvents.topBrandNames(drugKeyword).then(function(data) {
 
-          _.forEach(data.data.results, function(record) {
-            openFDA.label.getLabelInfoByBrand(record.term).then(function (data) {
-              record.label = data.data.results;
-            });
-          });
+          // _.forEach(data.data.results, function(record) {
+          //   openFDA.label.getLabelInfoByBrand(record.term).then(function (data) {
+          //     record.label = data.data.results;
+          //   });
+          // });
 
           return data.data.results;
         });

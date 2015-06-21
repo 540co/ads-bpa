@@ -106,13 +106,15 @@
             <div class="col-md-5">
                 <div class="panel panel-default">
                     <div class="panel-heading">Gender Count</div>
-                    <div class="panel-body text-center">
-                        <div class="row big-font" ng-repeat="gender in allGenderCount">
-                            <div class="col-md-4" ng-class="{ 'pink': gender.term == 'Female' , 'blue': gender.term == 'Male' }">
+                    <div class="panel-body">
+                        <div class="row gender-font" ng-repeat="gender in allGenderCount" ng-class="{ 'pink': gender.term == 'Female' , 'blue': gender.term == 'Male' }">
+                            <div class="col-md-2 text-center">
                               <i class="fa fa-female" ng-hide="gender.term != 'Female'"></i>
                               <i class="fa fa-question-circle" ng-hide="gender.term != 'Unknown'"></i>
                                 <i class="fa fa-male" ng-hide="gender.term != 'Male'"></i>
-                                  {{ gender.count | number }}
+                            </div>
+                            <div class="col-md-10 text-center">
+                              {{ gender.count | number }}
                             </div>
                         </div>
                     </div>

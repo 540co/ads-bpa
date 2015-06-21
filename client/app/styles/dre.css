@@ -67,8 +67,9 @@ body{
     height: 350px;
 }
 
-.big-font {
-    font-size: 3.5em;
+.gender-font {
+    font-size: 2em;
+    font-weight: 600;
 }
 
 .vs {
