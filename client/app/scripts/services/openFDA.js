@@ -69,25 +69,7 @@ angular
 
                 return $http(requestParams({
                         url: catalogEndpoint('drugAdverseEvent', url),
-                    }))
-                    .then(function (res) {
-                        //TODO: convert 1  = Serious Event, 2 = Not Serious
-                        //TODO: move to Service
-                        _.forEach(res.data.results, function (record) {
-                            switch (record.term) {
-                            case 1:
-                                record.term = "Serious";
-                                break;
-                            case 2:
-                                record.term = "Non-Serious";
-                                break;
-                            default:
-                                record.term = "Unknown";
-                                break;
-                            }
-                        });
-                        return res;
-                    });
+                    }));
             },
             genderCount: function (drugKeyword) {
                 var url = '&count=patient.patientsex&limit=25';
@@ -96,25 +78,7 @@ angular
 
                 return $http(requestParams({
                         url: catalogEndpoint('drugAdverseEvent', url),
-                    }))
-                    .then(function (res) {
-                        //TODO: convert 1  = Serious Event, 2 = Not Serious
-                        //TODO: move to Service
-                        _.forEach(res.data.results, function (record) {
-                            switch (record.term) {
-                            case 1:
-                                record.term = "Male";
-                                break;
-                            case 2:
-                                record.term = "Female";
-                                break;
-                            default:
-                                record.term = "Unknown";
-                                break;
-                            }
-                        });
-                        return res;
-                    });
+                    }));
             },
             topCountries: function (drugKeyword) {
                 var url = '&count=occurcountry.exact&limit=25';
