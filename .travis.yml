@@ -33,4 +33,4 @@ env:
   global:
     secure: POD8Q1ube9xZyoXSY+ICDw5fnoGgNAztzrNurg8qkC0Xzqy7C/u1LDy6bowoAQRi45oUgtd2qkbRZs5Bhjb51CaSPRWZAR9wmnuQhGZF93kIQlCYJfRFedT4S4WuDsUY8GYg4TCeFxg182NAHtkkXC3lXPh3+I9yIZQvzIOzNXv5dbNV3ttY0mjrBA5bgSje+qhd+fgEMSKF+SQKBTs20F3eyJ6kPmQ81tPTxHj6jgTnyimKDFKHFcZ4Bc3PlPg7E3ml8lVwB8ygLHzojz/h9fMAIowf0QamW04QvF+YiqX0GWTWjQ9Pm5Cdf9xwF7RssL28cRclODHYknQMDTpuCirSZ8zE3h2guKeHuWKOFtdI4S0eGK07iRnz01IgU+dra55tEhbH4BrlyB2XcDLGiNllgH4UZxktP54AxgDNxzj14hziS7Y7l54i0BTgyWQ0I/8qMGX/vg3sZxaobkm14YR2mtXviOGOkmfl2z1yLs+qckuttk8GEimSeahGpYXkjY0zqlk1LS1Mc7HRQqEPEy69yjwl1rEUUP826epd+a1Snxxe33/PJ/PGhtkc9e1JL3dec5eC11+qi7KrXQWY5hGo7ajje7WQQO9TipqoyFEOzQuhyzyX856/nDwbj5YJdKfRCXNdRGoZTKCi1l1GbvpHXud1GFKTf6ucsfNDNUc=
 after_success:
-  "curl -X POST https://dre.540.co/docker/deploy.php?api_key=$DRE_DEPLOY_KEY&branch=$TRAVIS_BRANCH&pull_request=$TRAVIS_PULL_REQUEST"
+  - curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST" https://dre.540.co/docker/deploy.php

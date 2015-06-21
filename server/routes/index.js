@@ -7,10 +7,6 @@ router.get('/', function(req, res, next) {
   res.json({todo: 'apis.json file'});
 });
 
-// TO DO: swagger file
-router.get('/swagger', function(req, res, next) {
-  res.json({todo: 'swagger file'});
-});
 
 // Test Mongo Connection
 router.get('/mongodb', function(req, res, next) {
