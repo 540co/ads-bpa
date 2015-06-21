@@ -4,21 +4,7 @@ require('../models/definition.js');
 require('../models/votes.js');
 
 var should = require('should');
-var superagent = require('superagent');
 var status = require('http-status');
-
-// This details the Configuration Test Spec
-describe('config', function(){
-  var config = require('../config')
-  describe('MongoDB', function(){
-
-    it('should not have a hostname that is null', function(){
-      (config.mongo === null).should.not.be.true;
-    });
-
-  });
-
-});
 
 // This details the Representation Test Spec
 describe('Representations', function() {
@@ -222,10 +208,4 @@ describe('Representations', function() {
       votes.downs.should.eql(count+1);
     });
   });
-});
-
-
-// This details the Resources Test Spec
-describe('resources', function() {
-    // API resources
 });
