@@ -16,7 +16,22 @@ describe('Controller: MainCtrl', function () {
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
+  describe('Method: initDashboard', function() {
+
+    beforeEach(function() {
+      scope.initDashboard();
+    });
+
+    it('should have function named $scope.initDashboard()', function () {
+      expect(angular.isFunction(scope.initDashboard)).toBe(true);
+    });
+
   });
+
+  describe('Method: getResults', function() {
+  it('should have function named $scope.getResults(keyword)', function () {
+    expect(angular.isFunction(scope.getResults)).toBe(true);
+  });
+});
+
 });
