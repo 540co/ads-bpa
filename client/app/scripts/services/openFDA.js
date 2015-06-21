@@ -88,6 +88,13 @@ angular
                     return $http(requestParams({
                         url: catalogEndpoint('drugAdverseEvent', url),
                     }));
+            },
+            eventCountByDate: function (drugKeyword) {
+              var url = '&search=receivedate:[20040101+TO+20150101]&count=receivedate';
+              
+                  return $http(requestParams({
+                      url: catalogEndpoint('drugAdverseEvent', url),
+                  }));
             }
         };
 

@@ -39,6 +39,10 @@ angular.module('dreApp')
         $scope.allCountries = countries;
       });
 
+      DashboardService.getEvents().then(function (events) {
+        $scope.allEvents = events;
+      });
+
       // openFDA.adverseEvents.topManufacturers().then(function (data) {
       //     $scope.allManufacturers = data.data.results;
       // });

@@ -41,22 +41,25 @@
                         <div class="face back">
                             <div class="mc mc-default mc-text-back">
                                 <div class="term-container">{{ symptom.term }}</div>
-                                <div class="def-container flex-center">a lung disease that is otherwise known as silicosis</div>
+                                <div class="def-container flex-center">{{ symptom.definition }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- add space to bottom -->
+                <br>
             </div>
         </div>
-        <br />
-<br />
         <!-- Start analytics row 1 -->
         <div class="row ">
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">Panel heading</div>
                     <div class="panel-body">
-                        <div class="demo-placeholder" id="placeholder"></div>
+                      <ul ng-repeat="event in allEvents | limitTo:25">
+                        <li>{{ event.time }} - {{ event.count }}</li>
+                      </ul>
+                        <!-- <div class="demo-placeholder" id="placeholder"></div> -->
                     </div>
                 </div>
             </div>
@@ -64,7 +67,10 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Top Manufacturers</div>
                     <div class="panel-body">
-                        <div class="demo-placeholder" id="placeholder2"></div>
+                      <ul ng-repeat="manufacturer in allManufacturers">
+                        <li>{{ manufacturer.term }} - {{ manufacturer.count }}</li>
+                      </ul>
+                        <!-- <div class="demo-placeholder" id="placeholder2"></div> -->
                     </div>
                 </div>
             </div>

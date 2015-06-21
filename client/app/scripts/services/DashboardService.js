@@ -76,12 +76,19 @@ angular
         });
       }
 
+      function getEvents(drugKeyword) {
+        return openFDA.adverseEvents.eventCountByDate().then(function(data) {
+          return data.data.results;
+        });
+      }
+
       return {
         getSymptoms: getSymptoms,
         getManufacturers: getManufacturers,
         getBrands: getBrands,
         getSeverity: getSeverity,
         getGenders: getGenders,
-        getCountries: getCountries
+        getCountries: getCountries,
+        getEvents: getEvents
       };
 }]);
