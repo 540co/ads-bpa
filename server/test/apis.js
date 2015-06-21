@@ -9,6 +9,15 @@ describe('API Resources', function() {
       it('should create a new reaction', function() {
       });
 
+      it('should find a medical definition for a valid new reaction', function() {
+      });
+
+      it('should find an English definition if a medical definition was not found', function() {
+      });
+
+      it('should not find an English definition if a medical definition was found', function() {
+      });
+
       it('should not create a duplicate reaction', function() {
       });
 

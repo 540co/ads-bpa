@@ -1,8 +1,8 @@
-var helper = require('./helper-main.js');
 require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
 
+var helper = require('./helper-representations.js');
 var should = require('should');
 var status = require('http-status');
 
