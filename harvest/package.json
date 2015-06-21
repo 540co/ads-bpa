@@ -1,0 +1,11 @@
+{
+  "name": "dre-dictionary-warmer",
+  "version": "1.0.0",
+  "description": "command line script to help pre-populate dre's reaction definitions ",
+  "dependencies": {
+    "async": "^1.2.1",
+    "lodash": "^3.9.3",
+    "math": "0.0.3",
+    "request": "^2.58.0"
+  }
+}
