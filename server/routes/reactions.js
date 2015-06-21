@@ -1,6 +1,19 @@
 var config = require('../config');
+
 var express = require('express');
+var _ = require('lodash');
+var request = require('request');
+var fs = require('fs');
+var xml2js = require('xml2json');
+
 var router = express.Router();
+
+var MongoClient = require('mongodb').MongoClient
+var mongo_url = config.mongo + config.db;
+
+require('../models/reactions.js');
+require('../models/definition.js');
+require('../models/votes.js');
 
 // TO DO: GET list of reactions
 router.get('/', function(req, res, next) {
@@ -12,6 +25,9 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   // Validate that incoming request is ok... and not a duplicate
   //res.json({todo: 'post reaction definition'});
+
+  var reaction = new Reaction();
+
   if(Object.keys(req.body).length != 1 ||
      req.body.reaction == null ||
      typeof req.body.reaction != "string") {
@@ -23,26 +39,95 @@ router.post('/', function(req, res, next) {
                   " 'reaction' attribute wasn't properly formatted.";
     next(err);
   }
-  // Check to see if the Record already exists in Mongo...
-  //JOB
-  else if(false) {
-    var err = new Error();
-    err.status = 400;
-    err.error = "Duplicate Reaction";
-    err.message = "The reaction that you are trying to create already exists" +
-                  " and cannot be created again.";
-    next(err);
+
+  // Tries to find reaction in collection (returns the record if found)
+  var findReaction = function(db, callback) {
+    var collection = db.collection('reactions');
+    collection.findOne({'reaction': req.body.reaction}, function(err, reaction) {
+      callback(reaction);
+    });
   }
 
-  //JOB pseudo code
-  //===================
-  // -- Go and get the medical dictionary terms
-  // -- Create and use the DEFINITION model to store it
-  // -- USE THE REACTIONS model to stage everything together
-  // -- Save the REACTIONS model as a document in the dre reactions collection
-  res.status(200);
-  res.json();
-  // ^^^ JOB >> Set the response to be the REACTIONS model that was just saved
+  // Inserts reaction into Mongo
+  var insertReaction = function(db, callback) {
+    var collection = db.collection('reactions');
+      collection.insert([
+        reaction
+      ], function(err, result) {
+        callback(result);
+      });
+
+  }
+
+  var getDefinitionFromWordnik = function (callback) {
+    var url = "http://api.wordnik.com:80/v4/word.json/" + encodeURIComponent(reaction.reaction.toLowerCase()) + "/definitions?limit=200&includeRelated=true&useCanonical=false&includeTags=false&api_key=" + config.wordnikapi_key ;
+
+    request(url, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var deflist = JSON.parse(body);
+        if (deflist[0]) {
+          _.forEach(deflist, function(v,k) {
+
+            var definition = new Definition;
+
+            if (v.partOfSpeech == "noun") {
+              var dt = new Date();
+
+              definition.definition = v.text;
+              definition.source = 'wordnik.com';
+              definition.created_at = dt.getTime();
+              definition.created_by = "";
+
+              reaction.addDefinition(definition);
+            }
+
+          });
+
+        }
+       callback();
+
+      } else {
+        callback();
+      }
+    })
+
+  }
+
+  // - Establish connection to mongo
+  // - Check to see if reaction exists
+  // - If it does not exist, find definitions and insert
+
+  MongoClient.connect(mongo_url, function(err, db) {
+    findReaction(db, function(result) {
+
+      if(result) {
+        var err = new Error();
+        err.status = 400;
+        err.error = "Duplicate Reaction";
+        err.message = "The reaction that you are trying to create already exists" +
+                      " and cannot be created again.";
+
+        next(err);
+      } else {
+
+        var dt = new Date();
+
+        reaction.reaction = req.body.reaction;
+        reaction.definitions = [];
+        reaction.created_at = dt.getTime();
+        reaction.created_by = "";
+
+        getDefinitionFromWordnik(function (result) {
+          insertReaction(db, function(result) {
+              res.json(reaction);
+          });
+        });
+
+      }
+   });
+
+ });
+
 });
 
 // TO DO: Get reaction defintion
