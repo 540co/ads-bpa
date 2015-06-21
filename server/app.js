@@ -42,7 +42,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.json({error: err.error, message: err.message, dump: err.dump});
+    res.json({error: err.error, message: err.message, request_body: req.body});
   });
 }
 

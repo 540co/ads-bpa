@@ -2,7 +2,7 @@ Definition = function() {
 
   var definition;
   var source;
-  var votes;
+  var votes = new Votes();
   var created_at;
   var created_by;
 

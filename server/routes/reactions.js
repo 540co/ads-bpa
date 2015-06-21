@@ -8,6 +8,43 @@ router.get('/', function(req, res, next) {
   res.json(example);
 });
 
+// TO DO: Post new or update reaction definition
+router.post('/', function(req, res, next) {
+  // Validate that incoming request is ok... and not a duplicate
+  //res.json({todo: 'post reaction definition'});
+  if(Object.keys(req.body).length != 1 ||
+     req.body.reaction == null ||
+     typeof req.body.reaction != "string") {
+    var err = new Error();
+    err.status = 400;
+    err.error = "Invalid Request Body";
+    err.message = "Either the incorrect number of attributes were provided or" +
+                  " the 'reaction' attribute could not be found, or the" +
+                  " 'reaction' attribute wasn't properly formatted.";
+    next(err);
+  }
+  // Check to see if the Record already exists in Mongo...
+  //JOB
+  else if(false) {
+    var err = new Error();
+    err.status = 400;
+    err.error = "Duplicate Reaction";
+    err.message = "The reaction that you are trying to create already exists" +
+                  " and cannot be created again.";
+    next(err);
+  }
+
+  //JOB pseudo code
+  //===================
+  // -- Go and get the medical dictionary terms
+  // -- Create and use the DEFINITION model to store it
+  // -- USE THE REACTIONS model to stage everything together
+  // -- Save the REACTIONS model as a document in the dre reactions collection
+  res.status(200);
+  res.json();
+  // ^^^ JOB >> Set the response to be the REACTIONS model that was just saved
+});
+
 // TO DO: Get reaction defintion
 router.get('/:id', function(req, res, next) {
   var id = req.params.id;
@@ -15,13 +52,15 @@ router.get('/:id', function(req, res, next) {
   res.json(example);
 });
 
-// TO DO: Post new or update reaction definition
-router.post('/:id', function(req, res, next) {
-  res.json({todo: 'post reaction definition ' +  req.params.id});
+// TO DO: Put reaction defintion
+router.put('/:id', function(req, res, next) {
+  var id = req.params.id;
+  var example = JSON.parse('{"reaction":"' + id + '","terms":[{"term":"urosepsis","text":"sepsis caused by bacteria from the urinary tract invading the bloodstream","attributionText":"from Wiktionary, Creative Commons Attribution/Share-Alike License","source":"wordnik"},{"term":"urosepsis","text":"sepsis caused by bacteria from the urinary tract invading the bloodstream","attributionText":"from Wiktionary, Creative Commons Attribution/Share-Alike License","source":"wordnik"}]}');
+  res.json(example);
 });
 
 // TO DO: Delete reaction definition
-router.delete('/', function(req, res, next) {
+router.delete('/:id', function(req, res, next) {
   res.json({todo: 'delete reaction definition ' +  req.params.id});
 });
 
