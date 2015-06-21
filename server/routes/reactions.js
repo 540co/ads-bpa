@@ -267,6 +267,14 @@ router.get('/:id', function(req, res, next) {
       });
     };
 
+    if(req.params.id == null || typeof req.params.id == "object") {
+      var err = new Error();
+      err.status = 500;
+      err.error = "Unknown Server Error";
+      err.message = "Please retry your request again or contact us if the"
+                    + " problem persists";
+      next(err);
+    }
     findReaction(req.params.id, db, function(result) {
       if(result === null) {
         res.status(404);
