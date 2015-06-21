@@ -18,7 +18,15 @@ This is a stand alone node [node.js](https://nodejs.org/) CLI (command line inte
 - Takes the list of unique reactions and sends a POST request to the DRE `/reaction` API resource with each reaction term
 
 
-## Usage
+## Setup / Usage
+
+### Script setup
+- Clone the repo
+- Change into the `./harvest` folder
+- Run `npm install` to load the various node packages
+- Run the following command:
+
+### Running the script
 
 ```
 
