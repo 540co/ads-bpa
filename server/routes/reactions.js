@@ -204,54 +204,67 @@ router.post('/', function(req, res, next) {
   // - If it does not exist, find definitions and insert
 
   MongoClient.connect(mongo_url, function(err, db) {
-    findReaction(db, function(result) {
 
-      if(result) {
-        var err = new Error();
-        err.status = 400;
-        err.error = "Duplicate Reaction";
-        err.message = "The reaction that you are trying to create already exists" +
-                      " and cannot be created again.";
+    if (err) {
+      var err = new Error();
+      err.status = 500;
+      err.error = "Internal Error";
+      next(err);
+    }
 
-        next(err);
-      } else {
-
-        var dt = new Date();
-
-        reaction.reaction = req.body.reaction;
-        reaction.definitions = [];
-        reaction.created_at = dt.getTime();
-        reaction.created_by = "";
+    if (!err) {
 
 
-        async.series([
-            function(callback){
-              getTermDefinitionFromMerriamWebsterMedical(function (result) {
-                console.log(reaction);
-                callback(null);
-              });
-            },
-            function(callback){
-              getDefinitionFromWordnik(function (result) {
-                console.log(reaction);
-                callback(null);
-              });
-            }
-        ],
+      findReaction(db, function(result) {
 
-        // insert into mongo
-        function(err, results){
+        if(result) {
+          var err = new Error();
+          err.status = 400;
+          err.error = "Duplicate Reaction";
+          err.message = "The reaction that you are trying to create already exists" +
+                        " and cannot be created again.";
 
-          insertReaction(db, function(result) {
-              res.json(reaction);
+          next(err);
+        } else {
+
+          var dt = new Date();
+
+          reaction.reaction = req.body.reaction;
+          reaction.definitions = [];
+          reaction.created_at = dt.getTime();
+          reaction.created_by = "";
+
+
+          async.series([
+              function(callback){
+                getTermDefinitionFromMerriamWebsterMedical(function (result) {
+                  console.log(reaction);
+                  callback(null);
+                });
+              },
+              function(callback){
+                getDefinitionFromWordnik(function (result) {
+                  console.log(reaction);
+                  callback(null);
+                });
+              }
+          ],
+
+          // insert into mongo
+          function(err, results){
+
+            insertReaction(db, function(result) {
+                res.json(reaction);
+            });
+
           });
-          
-        });
 
 
-      }
-   });
+        }
+     });
 
+    }
+    db.close();
  });
 
 });
