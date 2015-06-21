@@ -5,3 +5,4 @@
 **/bower_components
 **/*.log
 **/dist
+server/config.js

@@ -15,7 +15,6 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-//app.set('env', 'production'); // Uncomment on production
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -26,7 +25,10 @@ app.use(cookieParser());
 
 app.use('/api', index);
 app.use('/api/reactions', reactions);
+
 app.use('/', express.static(__dirname + '/../client/dist'));
+app.use('/apidocs', express.static(__dirname + '/swagger'));
+app.use('/swagger', express.static(__dirname + '/public/swagger.json'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
