@@ -1,10 +1,8 @@
 var config = {}
 
-config.mongo = "mongodb://mongo:27017/";  // production
-//config.mongo = "mongodb://localhost:27017/"; // development
+config.mongo = "mongodb://mongo:27017/";
 config.db = "dre";
-
-config.dictionaryapi_key = '';
-config.wordnikapi_key = '';
+config.dictionaryapi_key = 'process.env.API_KEY_DICTIONARY';
+config.wordnikapi_key = 'process.env.API_KEY_WORDNIK';
 
 module.exports = config;
