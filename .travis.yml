@@ -19,6 +19,7 @@ before_script:
 - npm install
 - bower install
 - cd ../server
+- mv config-sample.js config.js
 - npm install
 script:
 - cd ../client
