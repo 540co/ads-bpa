@@ -4,7 +4,9 @@ var express = require('express');
 var _ = require('lodash');
 var request = require('request');
 var fs = require('fs');
-var xml2js = require('xml2json');
+var xml2js = require('xml2js');
+
+var async = require('async')
 
 var router = express.Router();
 
@@ -59,6 +61,109 @@ router.post('/', function(req, res, next) {
 
   }
 
+  // Retrieves definition available from Merriam Webster Medical Dictionary API
+  var getTermDefinitionFromMerriamWebsterMedical = function (callback) {
+
+
+    var url = "http://www.dictionaryapi.com/api/v1/references/medical/xml/" + encodeURIComponent(reaction.reaction.toLowerCase()) + "?key=" + config.dictionaryapi_key;
+
+
+    request(url, function (error, response, body) {
+
+
+      if (!error && response.statusCode == 200) {
+
+        var parser = new xml2js.Parser({ignoreAttrs: false});
+
+        parser.parseString(body, function (err, result) {
+
+          if (result) {
+
+          _.forEach(result.entry_list.entry, function(v,k) {
+
+
+            if (v.hw[0] == reaction.reaction.toLowerCase()) {
+
+                if (v.def) {
+
+                  if (Array.isArray(v.def[0].sensb[0].sens)) {
+
+                      _.forEach(v.def[0].sensb, function (v,k) {
+
+                        if (v.sens[0].dt[0]['_']) {
+
+                          if (typeof v.sens[0].dt[0]['_'] == "string") {
+
+                            console.log('adding');
+
+                            var definition = new Definition;
+                            var dt = new Date();
+
+                            definition.definition = v.sens[0].dt[0]['_'];
+                            definition.source = 'dictionaryapi.com';
+                            definition.created_at = dt.getTime();
+                            definition.created_by = "";
+                            definition.votes = new Votes();
+
+                            reaction.addDefinition(definition);
+
+                          }
+
+                        } else {
+                          var def = {};
+                          if (typeof v.sens[0].dt[0] == "string") {
+                              console.log('adding');
+                            var definition = new Definition;
+                            var dt = new Date();
+
+                            definition.definition = v.sens[0].dt[0];
+                            definition.source = 'dictionaryapi.com';
+                            definition.created_at = dt.getTime();
+                            definition.created_by = "";
+                            definition.votes = new Votes();
+                            reaction.addDefinition(definition);
+
+                          }
+
+                        }
+
+                      });
+
+                    } else {
+
+                      if (typeof v.def[0].sensb[0].sens[0].dt == "string") {
+                          console.log('adding');
+                        var definition = new Definition;
+                        var dt = new Date();
+
+                        definition.definition = v.def[0].sensb[0].sens[0].dt;
+                        definition.source = 'dictionaryapi.com';
+                        definition.created_at = dt.getTime();
+                        definition.created_by = "";
+                        definition.votes = new Votes();
+                        reaction.addDefinition(definition);
+
+                      }
+
+                      }
+
+                    }
+
+                }
+            });
+            }
+
+          });
+
+          callback(null);
+
+      } else {
+        callback(null);
+      }
+    })
+  }
+
+  // Retrieves definition available from Wordnik API
   var getDefinitionFromWordnik = function (callback) {
     var url = "http://api.wordnik.com:80/v4/word.json/" + encodeURIComponent(reaction.reaction.toLowerCase()) + "/definitions?limit=200&includeRelated=true&useCanonical=false&includeTags=false&api_key=" + config.wordnikapi_key ;
 
@@ -77,6 +182,7 @@ router.post('/', function(req, res, next) {
               definition.source = 'wordnik.com';
               definition.created_at = dt.getTime();
               definition.created_by = "";
+              definition.votes = new Votes();
 
               reaction.addDefinition(definition);
             }
@@ -117,11 +223,31 @@ router.post('/', function(req, res, next) {
         reaction.created_at = dt.getTime();
         reaction.created_by = "";
 
-        getDefinitionFromWordnik(function (result) {
+
+        async.series([
+            function(callback){
+              getTermDefinitionFromMerriamWebsterMedical(function (result) {
+                console.log(reaction);
+                callback(null);
+              });
+            },
+            function(callback){
+              getDefinitionFromWordnik(function (result) {
+                console.log(reaction);
+                callback(null);
+              });
+            }
+        ],
+
+        // insert into mongo
+        function(err, results){
+
           insertReaction(db, function(result) {
               res.json(reaction);
           });
+          
         });
+
 
       }
    });
