@@ -13,17 +13,19 @@
         <!-- Start search -->
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
+              <div class="input-group">
+                <input type="text" class="form-control" ng-model="keyword" placeholder="Search">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="getResults(keyword)">Search</button>
+              </span>
+            </div>
             </div>
         </div>
         <!-- End search -->
-
-
         <div class="row title-space">
             <div class="col-md-6">
-                <h2>Symptoms </h2>
+                <h2 ng-show="!showFilter">Symptoms</h2>
+                <h2 ng-show="showFilter">Symptoms for {{ searchTerm }}</h2>
             </div>
             <div class="col-md-6 text-right">
                 <h2>Translate <input type="checkbox" name="my-checkbox" unchecked></h2>
@@ -54,10 +56,10 @@
         <div class="row ">
             <div class="col-md-8">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Panel heading</div>
+                    <div class="panel-heading">Latest Reported Adverse Events</div>
                     <div class="panel-body">
-                      <canvas id="line" class="chart chart-line" data="data"
-                        labels="labels">
+                      <canvas id="line" class="chart chart-line" data="eventCounts"
+                        labels="eventDates">
                       </canvas>
                     </div>
                 </div>
@@ -86,7 +88,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="brand in allBrands">
+                                <tr ng-repeat="brand in allBrands | limitTo:10">
                                     <td>{{ brand.term }}</td>
                                     <td>{{ brand.count | number }}</td>
                                 </tr>

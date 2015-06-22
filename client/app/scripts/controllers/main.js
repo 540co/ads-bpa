@@ -9,23 +9,24 @@
  */
 angular.module('dreApp')
   .controller('MainCtrl', ['$scope', 'DashboardService', function ($scope, DashboardService) {
-    $scope.$on('create', function (event, chart) {
-      console.log(chart);
-    });
-
-  //   $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-  // $scope.data = [
-  //   [65, 59, 80, 81, 56, 55, 40]
-  // ];
-
+    $scope.searchTerm;
     $scope.initDashboard = function() {
+      setDashboard();
+      $scope.showFilter = false;
+    };
 
+    $scope.getResults = function(keyword) {
+      $scope.showFilter = true;
+      $scope.searchTerm = keyword;
+      setDashboard(keyword);
+    };
 
-      DashboardService.getSymptoms().then(function (symptoms) {
+    function setDashboard(keyword) {
+      DashboardService.getSymptoms(keyword).then(function (symptoms) {
         $scope.allSymptoms = symptoms;
       });
 
-      DashboardService.getManufacturers().then(function (manufacturers){
+      DashboardService.getManufacturers(keyword).then(function (manufacturers){
         $scope.allManufacturers = manufacturers;
         var manufacturerNames = [], manufacturerCounts = [];
         _.forEach($scope.allManufacturers, function (manufacturer) {
@@ -34,47 +35,6 @@ angular.module('dreApp')
         });
         $scope.manufacturerCounts = manufacturerCounts;
         $scope.manufacturerNames = manufacturerNames;
-      });
-
-      DashboardService.getBrands().then(function (brands){
-        $scope.allBrands = brands;
-      });
-
-      DashboardService.getSeverity().then(function (severity){
-        $scope.allSeverityCount = severity;
-      });
-
-      DashboardService.getGenders().then(function (genders) {
-        $scope.allGenderCount = genders;
-      });
-
-      DashboardService.getCountries().then(function (countries) {
-        $scope.allCountries = countries;
-      });
-
-      DashboardService.getEvents().then(function (events) {
-        $scope.allEvents = events;
-        var eventDate = [], eventCounts = [];
-        _.forEach($scope.allEvents, function (event) {
-          eventDate.push(parseDate(event.time));
-          eventCounts.push(event.count);
-        });
-        eventCounts = _.drop(eventCounts, eventCounts.length - 25);
-        eventDate = _.drop(eventDate, eventDate.length - 25);
-        $scope.data = [eventCounts];
-        $scope.labels = eventDate;
-      });
-
-    };
-
-    $scope.getResults = function(keyword) {
-
-      DashboardService.getSymptoms(keyword).then(function (symptoms) {
-        $scope.allSymptoms = symptoms;
-      });
-
-      DashboardService.getManufacturers(keyword).then(function (manufacturers){
-        $scope.allManufacturers = manufacturers;
       });
 
       DashboardService.getBrands(keyword).then(function (brands){
@@ -95,9 +55,17 @@ angular.module('dreApp')
 
       DashboardService.getEvents(keyword).then(function (events) {
         $scope.allEvents = events;
+        var eventDates = [], eventCounts = [];
+        _.forEach($scope.allEvents, function (event) {
+          eventDates.push(parseDate(event.time));
+          eventCounts.push(event.count);
+        });
+        eventCounts = _.drop(eventCounts, eventCounts.length - 25);
+        eventDates = _.drop(eventDates, eventDates.length - 25);
+        $scope.eventCounts = [eventCounts];
+        $scope.eventDates = eventDates;
       });
-
-    };
+    }
 
     function parseDate(str) {
     var y = str.substr(0,4),

@@ -77,7 +77,7 @@ angular
       }
 
       function getEvents(drugKeyword) {
-        return openFDA.adverseEvents.eventCountByDate().then(function(data) {
+        return openFDA.adverseEvents.eventCountByDate(drugKeyword).then(function(data) {
           return data.data.results;
         });
       }

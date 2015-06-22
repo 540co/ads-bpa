@@ -91,6 +91,8 @@ angular
             },
             eventCountByDate: function (drugKeyword) {
               var url = '&search=receivedate:[2010101+TO+20150101]&count=receivedate';
+              if (drugKeyword)
+                  url = '&search=(receivedate:[2010101+TO+20150101]+AND+(patient.drug.openfda.brand_name:' + encodeURIComponent(drugKeyword) + '+patient.drug.openfda.substance_name:' + encodeURIComponent(drugKeyword) + '))&count=receivedate';
 
                   return $http(requestParams({
                       url: catalogEndpoint('drugAdverseEvent', url),
