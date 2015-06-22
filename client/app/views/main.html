@@ -22,7 +22,8 @@
             </div>
         </div>
         <!-- End search -->
-        <div class="row title-space">
+
+        <div class="row">
             <div class="col-md-6">
                 <h2 ng-show="!showFilter">Symptoms</h2>
                 <h2 ng-show="showFilter">Symptoms for {{ searchTerm }}</h2>
@@ -101,24 +102,24 @@
         <!-- End analytics row 2-->
         <!-- Start analytics row 3-->
         <div class="row ">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">Gender Count</div>
-                    <div class="panel-body">
-                        <div class="row gender-font" ng-repeat="gender in allGenderCount" ng-class="{ 'pink': gender.term == 'Female' , 'blue': gender.term == 'Male' }">
-                            <div class="col-md-2 text-center">
-                              <i class="fa fa-female" ng-hide="gender.term != 'Female'"></i>
-                              <i class="fa fa-question-circle" ng-hide="gender.term != 'Unknown'"></i>
+                    <div class="panel-body text-center">
+                        <div class="row" ng-repeat="gender in allGenderCount" >
+                           
+                            <div class="col-md-12 gender-font" ng-class="{ 'female-color': gender.term == 'Female' , 'male-color': gender.term == 'Male' }">
+                                <i class="fa fa-female" ng-hide="gender.term != 'Female'"></i>
+                                <i class="fa fa-question-circle" ng-hide="gender.term != 'Unknown'"></i>
                                 <i class="fa fa-male" ng-hide="gender.term != 'Male'"></i>
-                            </div>
-                            <div class="col-md-10 text-center">
                               {{ gender.count | number }}
                             </div>
+                            <p class="gender-term">{{gender.term}} reported side effects</p> 
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">Top 10 Origin Countries</div>
                     <ul class="list-group">
@@ -129,13 +130,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">Severity Count</div>
-                    <div class="panel-body">
+                    <div class="panel-body text-center">
                       <div ng-repeat="severity in allSeverityCount">
-                        <p class="ptext-big text-center green">{{ severity.count | number }}</p>
-                        <p class="text-center">{{ severity.term }}</p>
+                        <p class="severity-count" ng-class="{ 'severity-serious': severity.term == 'Serious' , 'severity-non-serious': severity.term == 'Non-Serious' }">{{ severity.count | number }}</p>
+                        <p class="severity-term">{{ severity.term }} adverse events</p>
                       </div>
                     </div>
                 </div>
