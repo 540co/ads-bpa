@@ -19,10 +19,66 @@ require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
 
-// TO DO: GET list of reactions
+// GET list of reactions
 router.get('/', function(req, res, next) {
-  var example = ["UTERINE HAEMORRHAGE","BLOOD CULTURE POSITIVE","CONVULSION","DEPRESSED LEVEL OF CONSCIOUSNESS","ELECTROENCEPHALOGRAM ABNORMAL","FUNGAL INFECTION","HYPOTENSION","HYPOXIA","MENTAL STATUS CHANGES","MULTI-ORGAN FAILURE","PANCREATITIS","SEPSIS","SPUTUM CULTURE POSITIVE","BRADYCARDIA","EMBOLISM","ILEUS PARALYTIC","INTESTINAL ISCHAEMIA","OXYGEN SATURATION DECREASED","RENAL FAILURE ACUTE","RENAL TUBULAR NECROSIS","AIDS ENCEPHALOPATHY"];
-  res.json(example);
+
+  var response = {};
+
+  if (!req.query.limit) {req.query.limit = 25;} else {req.query.limit = parseInt(req.query.limit);}
+  if (req.query.limit > 200) {
+    req.query.limit = 200;
+  }
+  if (!req.query.offset) {req.query.offset = 0;} else {req.query.offset = parseInt(req.query.offset);}
+
+  var findAll = function(db, callback) {
+
+    var collection = db.collection('reactions');
+
+    var cursor = collection.find({ });
+
+    async.series([
+
+        // Get count from cursor
+        function(callback){
+          cursor.count(function(err, count) {
+            response.count = count;
+            response.limit = req.query.limit;
+            response.offset = req.query.offset;
+          });
+          callback(null);
+        },
+
+        // Get results from curor
+        function(callback){
+          cursor.limit(req.query.limit);
+          cursor.skip(req.query.offset * req.query.limit);
+
+          cursor.toArray(function(err, result) {
+            response.response = result;
+            callback(null);
+          });
+        }
+
+      ], function(err){
+
+       // ... then remove the _id keys from the results and send response back
+        _.forEach(response.response, function(v, k) {
+          delete response.response[k]['_id'];
+        })
+
+        db.close();
+
+        res.json(response);
+    });
+
+  }
+
+  MongoClient.connect(mongo_url, function(err, db) {
+    findAll(db, function() {
+
+    });
+  });
+
 });
 
 // TO DO: Post new or update reaction definition
@@ -277,7 +333,7 @@ router.get('/:id', function(req, res, next) {
     var findReaction = function(term, db, callback) {
       var collection = db.collection('reactions');
       collection.findOne({'reaction': term.toLowerCase()}, function(err, reaction) {
-    
+
         callback(reaction);
       });
     };
@@ -299,6 +355,7 @@ router.get('/:id', function(req, res, next) {
         err.message = "The reaction that you were looking for could not be found.";
         next(err);
       } else {
+        delete result['_id'];
         res.json(result);
       }
     });

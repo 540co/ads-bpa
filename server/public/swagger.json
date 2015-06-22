@@ -1,70 +1,105 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "version": "1.0.0",
-        "title": "DRE Reaction Definition Lookup"
-    },
-    "host": "dre.540.co",
-    "basePath": "/api",
-    "schemes": [
-        "https"
-    ],
-    "consumes": [
-        "application/json"
-    ],
-    "produces": [
-        "application/json"
-    ],
-    "paths": {
-        "/reactions/{reaction}": {
-            "get": {
-                "description": "Get definition of specfied reaction term",
-                "parameters": [
-                    {
-                        "name": "reaction",
-                        "in": "path",
-                        "description": "The reaction term",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "operationId": "getReactionTerm",
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                },
-                "tags":["reactions"]
-            }
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DRE Reaction Definition Lookup"
+  },
+  "host": "dre.540.co",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/reactions": {
+      "get": {
+        "description": "Get list of reactions that are currently available withing the reaction lookup dictionary",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The total number of reactions that will be returned (default = 25, limit = 200)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset to pagination thru the results",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "operationId": "getReactionList",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
         },
-        "/reactions": {
-            "post": {
-                "description": "Post a new reaction.  API will reach out to possible definition sources and create definition list.",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "The reaction term you would like created",
-                        "required": true
-                    }
-                ],
-                "operationId": "postReactionTerm",
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK - definition has been successfully created (will return the reaction definitions found for the reaction term)"
-                    },
-                    "400": {
-                        "description": "Duplicate - definition already exists"
-                    }
-                },
-                "tags":["reactions"]
-            }
-        }
+        "tags": [
+          "reactions"
+        ]
+      },
+      "post": {
+        "description": "Post a new reaction.  API will reach out to possible definition sources and create definition list.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The reaction term you would like created",
+            "required": true
+          }
+        ],
+        "operationId": "postReactionTerm",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - definition has been successfully created (will return the reaction definitions found for the reaction term)"
+          },
+          "400": {
+            "description": "Duplicate - definition already exists"
+          }
+        },
+        "tags": [
+          "reactions"
+        ]
+      }
+    },
+    "/reactions/{reaction}": {
+      "get": {
+        "description": "Get definition of specfied reaction term",
+        "parameters": [
+          {
+            "name": "reaction",
+            "in": "path",
+            "description": "The reaction term",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "operationId": "getReactionTerm",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "reactions"
+        ]
+      }
     }
+  }
 }
