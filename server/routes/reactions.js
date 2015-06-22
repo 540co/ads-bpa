@@ -13,6 +13,8 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient
 var mongo_url = config.mongo + config.db;
 
+var db = {};
+
 require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
@@ -52,13 +54,14 @@ router.post('/', function(req, res, next) {
   // Inserts reaction into Mongo
   var insertReaction = function(db, callback) {
     var collection = db.collection('reactions');
+
       collection.insert([
         reaction
       ], function(err, result) {
-      
+        db.close();
         callback(result);
-      });
 
+      });
   }
 
   // Retrieves definition available from Merriam Webster Medical Dictionary API
@@ -69,8 +72,6 @@ router.post('/', function(req, res, next) {
 
 
     request(url, function (error, response, body) {
-
-
 
       if (!error && response.statusCode == 200) {
 
@@ -216,12 +217,13 @@ router.post('/', function(req, res, next) {
       findReaction(db, function(result) {
 
         if(result) {
+
           var err = new Error();
           err.status = 400;
           err.error = "Duplicate Reaction";
           err.message = "The reaction that you are trying to create already exists" +
                         " and cannot be created again.";
-
+          db.close();
           next(err);
         } else {
 
@@ -275,6 +277,7 @@ router.get('/:id', function(req, res, next) {
     var findReaction = function(term, db, callback) {
       var collection = db.collection('reactions');
       collection.findOne({'reaction': term.toLowerCase()}, function(err, reaction) {
+    
         callback(reaction);
       });
     };
@@ -287,6 +290,7 @@ router.get('/:id', function(req, res, next) {
                     + " problem persists";
       next(err);
     }
+
     findReaction(req.params.id, db, function(result) {
       if(result === null) {
         var err = new Error();
