@@ -13,8 +13,12 @@ cache:
   - client/bower_components
   - server/node_modules
 before_script:
-- npm install -g bower grunt-cli mocha
-- npm install -g should --save-dev
+- npm install -g bower
+- npm install -g grunt-cli
+- npm install -g mocha
+- npm install -g should
+- npm install -g istanbul
+- npm install -g codeclimate-test-reporter
 - cd client
 - npm install
 - bower install
@@ -26,11 +30,16 @@ script:
 - npm test
 - cd ../server
 - npm test
+- cd ../
 notifications:
   slack:
     secure: D1GQKIasEMUds0m8aesbELb6fxOGPlG05+4GknDXD93TF5GMPu2jKJF83ahlQvyCKq+9wHzus8XwBPG/vARFyaZUOHnvjcA19ZD0O7VWQkmwzhT25awT5IenQohhhjdZOlTpcQgeL+kne4xcAoGkDBVi7EDZvXlJU13gyAcXRIbLlXn47C/vec6aGQbJQtq4bkaw+9yLlxaqtLT1O8wzaVf0NEkE2JTAA6AIB1cVxpOMuhmzkuq3909KOUyylIGE5rl35nuALC462JVW81J6NQKk8bDn/DMN8bsk5KGV7/ZaZjGWq0TZ2cK9eGgZGQt5jcM1guF66Y1pifZ8O6WIQPrQZpEb19pC9qSmXAnyFnQ/hbPnOVxGSIfCudehM9AreiAIR8Ze8ojr3sOrrYa1O57AXKAVz3IGKF8qv+qNgGsrrQP/dtGUAdqbKSzbO2CGi7lZqhQfjI+TgBix9LoJ/PQDW0GV+9cVSi0kdYvRZaJx9pByC+xYIsM5GRKRHFGYC9G0s7TRlHiYoufPqXbmn1xuealXNNtAZ5lRbZV/DJWe1M67MS63XXxxU0W55uh0N06vOLYmbtQbcbcfn7FbuEwgeaV0ShIu0MBMFb5e4LaEROI9pSc22UTFIs6Sra6h9unsyhjje/yqonyjp62e6vptj1KPEV2BdAt7YJAEIQU=
 env:
   global:
-    secure: POD8Q1ube9xZyoXSY+ICDw5fnoGgNAztzrNurg8qkC0Xzqy7C/u1LDy6bowoAQRi45oUgtd2qkbRZs5Bhjb51CaSPRWZAR9wmnuQhGZF93kIQlCYJfRFedT4S4WuDsUY8GYg4TCeFxg182NAHtkkXC3lXPh3+I9yIZQvzIOzNXv5dbNV3ttY0mjrBA5bgSje+qhd+fgEMSKF+SQKBTs20F3eyJ6kPmQ81tPTxHj6jgTnyimKDFKHFcZ4Bc3PlPg7E3ml8lVwB8ygLHzojz/h9fMAIowf0QamW04QvF+YiqX0GWTWjQ9Pm5Cdf9xwF7RssL28cRclODHYknQMDTpuCirSZ8zE3h2guKeHuWKOFtdI4S0eGK07iRnz01IgU+dra55tEhbH4BrlyB2XcDLGiNllgH4UZxktP54AxgDNxzj14hziS7Y7l54i0BTgyWQ0I/8qMGX/vg3sZxaobkm14YR2mtXviOGOkmfl2z1yLs+qckuttk8GEimSeahGpYXkjY0zqlk1LS1Mc7HRQqEPEy69yjwl1rEUUP826epd+a1Snxxe33/PJ/PGhtkc9e1JL3dec5eC11+qi7KrXQWY5hGo7ajje7WQQO9TipqoyFEOzQuhyzyX856/nDwbj5YJdKfRCXNdRGoZTKCi1l1GbvpHXud1GFKTf6ucsfNDNUc=
+  - secure: POD8Q1ube9xZyoXSY+ICDw5fnoGgNAztzrNurg8qkC0Xzqy7C/u1LDy6bowoAQRi45oUgtd2qkbRZs5Bhjb51CaSPRWZAR9wmnuQhGZF93kIQlCYJfRFedT4S4WuDsUY8GYg4TCeFxg182NAHtkkXC3lXPh3+I9yIZQvzIOzNXv5dbNV3ttY0mjrBA5bgSje+qhd+fgEMSKF+SQKBTs20F3eyJ6kPmQ81tPTxHj6jgTnyimKDFKHFcZ4Bc3PlPg7E3ml8lVwB8ygLHzojz/h9fMAIowf0QamW04QvF+YiqX0GWTWjQ9Pm5Cdf9xwF7RssL28cRclODHYknQMDTpuCirSZ8zE3h2guKeHuWKOFtdI4S0eGK07iRnz01IgU+dra55tEhbH4BrlyB2XcDLGiNllgH4UZxktP54AxgDNxzj14hziS7Y7l54i0BTgyWQ0I/8qMGX/vg3sZxaobkm14YR2mtXviOGOkmfl2z1yLs+qckuttk8GEimSeahGpYXkjY0zqlk1LS1Mc7HRQqEPEy69yjwl1rEUUP826epd+a1Snxxe33/PJ/PGhtkc9e1JL3dec5eC11+qi7KrXQWY5hGo7ajje7WQQO9TipqoyFEOzQuhyzyX856/nDwbj5YJdKfRCXNdRGoZTKCi1l1GbvpHXud1GFKTf6ucsfNDNUc=
+  - secure: iKi8XFT5o+ZLvoNhCCh7K0nQwDm7RY7FRyRGm1HXYFgwSJJpKZuT7K924SN9Kq7WF8sbnr2Ob5sd1zXUPwavr8R/3533Za//cQBnx/bCRcCbD8TyjMTOTOsI/RU4dnK6Czg8uzvt3jhVMnPSdj3nkpRKCucTVotCpa6gJknNrEg75AiVcgMogUOQqzE0NdAWOFa8EizlarK+K/QunHLH2Cjz86ylx//jXoHQUw7PM6r4piItEwr1vroqf5dJkKpbQJXE1wqRMdF+9dPSQz42GyNQ2/ER16YzblD4t0n92WvbqyiXiGIwTwyw0EztOQ7rqb2yiYpfxqsF4H/C9u4pMXO9S5YmkPEimFSQEfxqhtV5hIek1RpdWhkEuV2aBrnH0UXJCAelcHSyaelFJQCEIon2PZbMQa5fnmKbsA9j/0pBTZACRzBkLn1fyEguiq78brDUZAE8MiBEX3begwvefqST2sQiimjNcql9shNBaWZvcA+OLqaoAwulwL19gUtEAwMATREbuEYihkPwN17SBKBTM8cMIFlM2dTj87hRtFxi46WlbJO2hoVwmQoPjiuCd0S9sygglQvZXtJnmNZrJ0fEUMaVeIPzDbz/mopcpW/LRLF6pWLU6Kxyiorji7ljAmbs6hL+iDUwP2PfqB2k7lCC9H0hihuFVJ0jFr1lVyE=
 after_success:
-  - curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST" https://dre.540.co/docker/deploy.php
+- istanbul cover _mocha -- -R spec server/test/*.js
+- codeclimate < ./coverage/lcov.info
+- curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST"
+  https://dre.540.co/docker/deploy.php

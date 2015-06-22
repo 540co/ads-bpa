@@ -13,6 +13,8 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient
 var mongo_url = config.mongo + config.db;
 
+var db = {};
+
 require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
@@ -52,12 +54,14 @@ router.post('/', function(req, res, next) {
   // Inserts reaction into Mongo
   var insertReaction = function(db, callback) {
     var collection = db.collection('reactions');
+
       collection.insert([
         reaction
       ], function(err, result) {
+        db.close();
         callback(result);
-      });
 
+      });
   }
 
   // Retrieves definition available from Merriam Webster Medical Dictionary API
@@ -69,7 +73,6 @@ router.post('/', function(req, res, next) {
 
     request(url, function (error, response, body) {
 
-
       if (!error && response.statusCode == 200) {
 
         var parser = new xml2js.Parser({ignoreAttrs: false});
@@ -80,8 +83,7 @@ router.post('/', function(req, res, next) {
 
           _.forEach(result.entry_list.entry, function(v,k) {
 
-
-            if (v.hw[0] == reaction.reaction.toLowerCase()) {
+            if (v['$'].id == reaction.reaction.toLowerCase()) {
 
                 if (v.def) {
 
@@ -92,8 +94,6 @@ router.post('/', function(req, res, next) {
                         if (v.sens[0].dt[0]['_']) {
 
                           if (typeof v.sens[0].dt[0]['_'] == "string") {
-
-                            console.log('adding');
 
                             var definition = new Definition;
                             var dt = new Date();
@@ -111,7 +111,7 @@ router.post('/', function(req, res, next) {
                         } else {
                           var def = {};
                           if (typeof v.sens[0].dt[0] == "string") {
-                              console.log('adding');
+
                             var definition = new Definition;
                             var dt = new Date();
 
@@ -131,7 +131,7 @@ router.post('/', function(req, res, next) {
                     } else {
 
                       if (typeof v.def[0].sensb[0].sens[0].dt == "string") {
-                          console.log('adding');
+
                         var definition = new Definition;
                         var dt = new Date();
 
@@ -203,53 +203,67 @@ router.post('/', function(req, res, next) {
   // - If it does not exist, find definitions and insert
 
   MongoClient.connect(mongo_url, function(err, db) {
-    findReaction(db, function(result) {
 
-      if(result) {
-        var err = new Error();
-        err.status = 400;
-        err.error = "Duplicate Reaction";
-        err.message = "The reaction that you are trying to create already exists" +
-                      " and cannot be created again.";
+    if (err) {
+      var err = new Error();
+      err.status = 500;
+      err.error = "Internal Error";
+      next(err);
+    }
 
-        next(err);
-      } else {
-
-        var dt = new Date();
-
-        reaction.reaction = req.body.reaction;
-        reaction.definitions = [];
-        reaction.created_at = dt.getTime();
-        reaction.created_by = "";
+    if (!err) {
 
 
-        async.series([
-            function(callback){
-              getTermDefinitionFromMerriamWebsterMedical(function (result) {
-                console.log(reaction);
-                callback(null);
-              });
-            },
-            function(callback){
-              getDefinitionFromWordnik(function (result) {
-                console.log(reaction);
-                callback(null);
-              });
-            }
-        ],
+      findReaction(db, function(result) {
 
-        // insert into mongo
-        function(err, results){
+        if(result) {
 
-          insertReaction(db, function(result) {
-              res.json(reaction);
+          var err = new Error();
+          err.status = 400;
+          err.error = "Duplicate Reaction";
+          err.message = "The reaction that you are trying to create already exists" +
+                        " and cannot be created again.";
+          db.close();
+          next(err);
+        } else {
+
+          var dt = new Date();
+
+          reaction.reaction = req.body.reaction;
+          reaction.definitions = [];
+          reaction.created_at = dt.getTime();
+          reaction.created_by = "";
+
+
+          async.series([
+              function(callback){
+                getTermDefinitionFromMerriamWebsterMedical(function (result) {
+                  callback(null);
+                });
+              },
+              function(callback){
+                getDefinitionFromWordnik(function (result) {
+                  callback(null);
+                });
+              }
+          ],
+
+          // insert into mongo
+          function(err, results){
+
+            insertReaction(db, function(result) {
+
+                res.json(reaction);
+
+            });
+
+
           });
 
-        });
+        }
+     });
 
-
-      }
-   });
+    }
 
  });
 
@@ -263,6 +277,7 @@ router.get('/:id', function(req, res, next) {
     var findReaction = function(term, db, callback) {
       var collection = db.collection('reactions');
       collection.findOne({'reaction': term.toLowerCase()}, function(err, reaction) {
+    
         callback(reaction);
       });
     };
@@ -275,6 +290,7 @@ router.get('/:id', function(req, res, next) {
                     + " problem persists";
       next(err);
     }
+
     findReaction(req.params.id, db, function(result) {
       if(result === null) {
         var err = new Error();

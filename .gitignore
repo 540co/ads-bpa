@@ -6,3 +6,4 @@
 **/*.log
 **/dist
 server/config.js
+/coverage

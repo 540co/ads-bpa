@@ -2,7 +2,7 @@
 
 angular
     .module('dreApp')
-    .factory('DashboardService', ['$http', '$q', 'openFDA', function ($http, $q, openFDA) {
+    .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', function ($http, $q, openFDA, reactions) {
 
       function getSymptoms(drugKeyword) {
         return openFDA.adverseEvents.topSymptoms(drugKeyword).then(function(data) {
@@ -77,8 +77,14 @@ angular
       }
 
       function getEvents(drugKeyword) {
-        return openFDA.adverseEvents.eventCountByDate().then(function(data) {
+        return openFDA.adverseEvents.eventCountByDate(drugKeyword).then(function(data) {
           return data.data.results;
+        });
+      }
+
+      function getSymptomDefinitions(drugKeyword) {
+        return reactions.reactions.getSymptomDefinition(drugKeyword).then(function(data) {
+          return data.data.definitions;
         });
       }
 
@@ -89,6 +95,7 @@ angular
         getSeverity: getSeverity,
         getGenders: getGenders,
         getCountries: getCountries,
-        getEvents: getEvents
+        getEvents: getEvents,
+        getSymptomDefinitions: getSymptomDefinitions
       };
 }]);

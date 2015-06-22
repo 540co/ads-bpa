@@ -1,34 +1,41 @@
-# To build:
-# 1. Install docker (http://docker.io)
-# 2. Checkout source: git@github.com:540co/ads-bpa.git
-# 3. Build container: docker build .
-
 FROM node:0.12.4
 MAINTAINER 540 Co LLC <info@540.co>
 
-# Environment Variables
-ENV SRC_PATH /src/dre
-ENV CLIENT_PATH $SRC_PATH/client
-ENV SERVER_PATH $SRC_PATH/server
+RUN mkdir -p /usr/src/dre
+WORKDIR /usr/src/dre
 
-# App
-ADD . $SRC_PATH
-
-# Install dependencies
-WORKDIR $SRC_PATH
 RUN npm install -g bower grunt-cli mocha
 
+RUN groupadd -r node \
+&&  useradd -r -m -g node node
+
+# Copy source
+COPY . /usr/src/dre
+RUN chown -R node:node /usr/src/dre
+
+USER node
+
 # Install client dependencies
-WORKDIR $CLIENT_PATH
-RUN npm install; bower install --allow-root; grunt build
+WORKDIR /usr/src/dre/client
+RUN npm install; bower install; grunt build
 
 # Install server dependencies
-WORKDIR $SERVER_PATH
+WORKDIR /usr/src/dre/server
 RUN npm install
 
 # Expose port 3000 to host
 EXPOSE 3000
 
 # Start server
-WORKDIR $SERVER_PATH
+WORKDIR /usr/src/dre/server
 CMD ["npm", "start"]
+
+# How to build:
+# git clone https://github.com/540co/ads-bpa.git
+# cd ads-bpa
+# docker build -t dre .
+
+# How to run
+# docker pull mongo
+# docker run -d --name db mongo
+# docker run -p 3000:3000 --link db:db dre
