@@ -44,7 +44,16 @@
                         <div class="face back">
                             <div class="mc mc-default mc-text-back">
                                 <div class="term-container">{{ symptom.term }}</div>
-                                <div class="def-container flex-center">{{ symptom.definition }}</div>
+                                <div class="def-container flex-center">
+                                  <div class="def-content">
+                                    <div class="def" ng-show="definitions[$index].length == 0">
+                                      NO DEFINITION FOUND
+                                    </div>
+                                    <div class="def" ng-repeat="definition in definitions[$index]">
+                                      {{ $index + 1 }} - {{ definition.definition }}
+                                    </div>
+                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -107,14 +116,14 @@
                     <div class="panel-heading">Gender Count</div>
                     <div class="panel-body text-center">
                         <div class="row" ng-repeat="gender in allGenderCount" >
-                           
+
                             <div class="col-md-12 gender-font" ng-class="{ 'female-color': gender.term == 'Female' , 'male-color': gender.term == 'Male' }">
                                 <i class="fa fa-female" ng-hide="gender.term != 'Female'"></i>
                                 <i class="fa fa-question-circle" ng-hide="gender.term != 'Unknown'"></i>
                                 <i class="fa fa-male" ng-hide="gender.term != 'Male'"></i>
                               {{ gender.count | number }}
                             </div>
-                            <p class="gender-term">{{gender.term}} reported side effects</p> 
+                            <p class="gender-term">{{gender.term}} reported side effects</p>
                         </div>
                     </div>
                 </div>

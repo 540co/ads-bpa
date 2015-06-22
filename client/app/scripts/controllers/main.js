@@ -8,7 +8,7 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('MainCtrl', ['$scope', 'DashboardService', function ($scope, DashboardService) {
+  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', function ($scope, $q, DashboardService) {
     $scope.searchTerm;
     $scope.initDashboard = function() {
       setDashboard();
@@ -19,11 +19,27 @@ angular.module('dreApp')
       $scope.showFilter = true;
       $scope.searchTerm = keyword;
       setDashboard(keyword);
+      $scope.definitions = [];
     };
 
     function setDashboard(keyword) {
+
+      // DashboardService.getSymptomDefinitions('death').then(function (definition) {
+      //   $scope.definition = definition;
+      // });
+
+      loadSymptoms(keyword)
+        .then(parallelLoad);
+
       DashboardService.getSymptoms(keyword).then(function (symptoms) {
         $scope.allSymptoms = symptoms;
+        _.forEach(symptoms, function(symptom) {
+          return DashboardService.getSymptomDefinitions(symptom.term);
+        });
+        //return DashboardService.getSymptomDefinitions('death');
+      }).then(function(definition) {
+        console.log(definition);
+        $scope.definition = definition;
       });
 
       DashboardService.getManufacturers(keyword).then(function (manufacturers){
@@ -68,10 +84,29 @@ angular.module('dreApp')
     }
 
     function parseDate(str) {
-    var y = str.substr(0,4),
-        m = str.substr(4,2) - 1,
-        d = str.substr(6,2);
-    var D = new Date(y,m,d);
-    return (D.getFullYear() == y && D.getMonth() == m && D.getDate() == d) ? m.toString() + '/' + d + '/' + y : 'invalid date';
-}
+      var y = str.substr(0,4),
+          m = str.substr(4,2) - 1,
+          d = str.substr(6,2);
+      var D = new Date(y,m,d);
+      return (D.getFullYear() == y && D.getMonth() == m && D.getDate() == d) ? m.toString() + '/' + d + '/' + y : 'invalid date';
+    }
+
+    var loadSymptoms = function(drugKeyword) {
+      return DashboardService.getSymptoms(drugKeyword);
+    },
+    parallelLoad = function(symptoms) {
+      var definition = DashboardService.getSymptomDefinitions('death');
+      var allDefs = [];
+
+      _.forEach(symptoms, function(symptom) {
+        var defCall = DashboardService.getSymptomDefinitions(symptom.term);
+        allDefs.push(defCall);
+      });
+
+      return $q.all(_.slice(allDefs, 0, 8)).then(function (data) {
+        console.log(data);
+        $scope.definitions = data;
+
+      });
+    };
   }]);
