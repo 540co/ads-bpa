@@ -1,33 +1,40 @@
 /* COLORS
-	- default body text     #222222
-    - navbar background     #336E7B
+    - DARK PRIMARY COLOR    #455A64
+    - PRIMARY COLOR         #607D8B
+    - LIGHT PRIMARY COLOR   #CFD8DC
+    - TEXT / ICONS          #FFFFFF
+    - ACCENT COLOR          #009688
+    - PRIMARY TEXT          #212121
+    - SECONDARY TEXT        #727272
+    - DIVIDER COLOR         #B6B6B6
 */
 
 
 body{
     padding-top: 85px;
+    color: #727272;
 }
 
-.title-space {
-    margin-bottom: 25px;
+h1, h2, h3, h4, h5, h6, p {
+    color: #212121;
 }
 
 .mc{
     width: auto;
     height: 175px;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 .mc-text {
     text-align: center;
     font-size: 24px;
-    color: #222222;
+    color: #212121;
     word-wrap: break-word;
     text-transform: uppercase;
 }
 
 .mc-text-back {
-    color: #222222;
+    color: #212121;
     word-wrap: break-word;
     text-transform: uppercase;
 }
@@ -49,10 +56,6 @@ body{
     background-color: #F2F1EF;
     border: 2px #e9e8e4 solid;
 }
-.mc-navy {
-    background-color: #34495E;
-    color: #ffffff
-}
 
 .flex-center {
     display: flex;
@@ -68,31 +71,73 @@ body{
 }
 
 .gender-font {
-    font-size: 2em;
+    font-size: 3.5em;
     font-weight: 600;
 }
 
-.vs {
-    font-size: 1.5em;
-    color: #6C7A89;
+.gender-term {
+    font-size: 1.25em;
 }
 
-.blue {
+.severity-count {
+    font-size: 3.5em;
+    font-weight: 600;
+}
+
+.severity-term {
+    font-size: 1.25em;
+ }
+
+.severity-serious{
+    background-color: #D24D57;
+    color: #ffffff;
+}
+
+.severity-non-serious{
+    background-color: #F4D03F;
+    color: #ffffff;
+}
+
+.male-color {
     color: #2574A9;
 }
 
-.pink {
+.female-color {
     color: #E26A6A;
 }
 
-.green {
-    color: #336E7B;
+/* DRE COLOR PALETTE */
+
+.primary-color {
+    color: #607D8B;
 }
 
-.ptext-big {
-    font-size: 5em;
-    letter-spacing: 5px;
-    font-weight: 600;
+.primary-color-dark {
+    color: #455A64;
+}
+
+.primary-color-light {
+    color: #CFD8DC;
+}
+
+.text-icons {
+    color: #ffffff;
+}
+
+.accent-color {
+    color: #009688;
+}
+
+.primary-text {
+    color: #212121;
+}
+
+.secondary-text {
+    color: #727272;
+}
+
+.divider-color {
+    color: #B6B6B6;
 }
 
 /* CSS FLIP CARD */
