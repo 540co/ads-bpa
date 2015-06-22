@@ -67,12 +67,16 @@
                         <div class="card" ng-class="{'flipped':isFlipped1}" ng-click="isFlipped1=!isFlipped1">
 
                             <div class="face front">
-                                <div class="mc mc-default flex-center mc-text">{{ symptom.term }}</div>
+                                <div class="mc mc-default flex-center mc-text"><p>
+                                  {{ symptom.term }}
+                                </p> <p class="term-percentage">
+                                  ({{ symptom.percentage }})
+                                </p></div>
                             </div>
 
                             <div class="face back">
                                 <div class="mc mc-default mc-text-back">
-                                    <div class="term-container">{{ symptom.term }}</div>
+                                    <div class="term-container">{{ symptom.term }} ({{ symptom.percentage }})</div>
                                     <div class="def-container flex-center">
                                         <div class="def-content">
                                             <div class="def" ng-show="definitions[$index].length == 0">

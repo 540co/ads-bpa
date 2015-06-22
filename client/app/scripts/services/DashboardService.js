@@ -5,8 +5,17 @@ angular
     .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', function ($http, $q, openFDA, reactions) {
 
       function getSymptoms(drugKeyword) {
-        return openFDA.adverseEvents.topSymptoms(drugKeyword).then(function(data) {
-          return data.data.results;
+
+        var symptoms = openFDA.adverseEvents.topSymptoms(drugKeyword), symptomCount = openFDA.adverseEvents.symptomCount(drugKeyword);
+
+        return $q.all([symptomCount, symptoms]).then(function (data) {
+          var totalCount = data[0].data.meta.results.total, symptomList = data[1].data.results;
+
+          _.forEach(symptomList, function(symptom) {
+            symptom.percentage = ((symptom.count / this) * 100).toFixed(1) + '%';
+          }, totalCount);
+
+          return symptomList;
         });
       }
 
