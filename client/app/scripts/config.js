@@ -9,5 +9,5 @@
  */
 angular.module('dreApp')
   .constant('config', {
-    'apiKey': 'wBg0lNlunVhfvkyZEGxaJON39fLIQ27iJ9kZgisq'
+    'apiKey': '<api key from open.fda.gov>'
   });
