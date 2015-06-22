@@ -58,6 +58,10 @@ p {
     height: 125px;
 }
 
+.def {
+  padding-bottom: 10px;
+}
+
 .mc-default {
     background-color: #F2F1EF;
     border: 2px #e9e8e4 solid;
