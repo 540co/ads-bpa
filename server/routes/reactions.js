@@ -55,7 +55,7 @@ router.post('/', function(req, res, next) {
       collection.insert([
         reaction
       ], function(err, result) {
-        console.log(err);
+      
         callback(result);
       });
 
@@ -250,8 +250,6 @@ router.post('/', function(req, res, next) {
           function(err, results){
 
             insertReaction(db, function(result) {
-               console.log(result);
-                console.log('inserting');
 
                 res.json(reaction);
 
