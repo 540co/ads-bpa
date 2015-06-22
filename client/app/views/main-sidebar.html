@@ -9,7 +9,11 @@
     });
 </script>
 
+
+
+
 <div id="wrapper">
+
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
@@ -20,17 +24,21 @@
             <li>
                 <a href="#">General</a>
             </li>
-            <li>
+             <li>
                 <a href="#">Substance</a>
             </li>
-            <li>
+             <li>
                 <a href="#">Product Type</a>
             </li>
-            <li>
+             <li>
                 <a href="#">Manufacturer</a>
             </li>
         </ul>
     </div>
+
+
+
+
 
     <div id="page-content-wrapper">
         <div ng-init="initDashboard()">
@@ -73,16 +81,7 @@
                             <div class="face back">
                                 <div class="mc mc-default mc-text-back">
                                     <div class="term-container">{{ symptom.term }}</div>
-                                    <div class="def-container flex-center">
-                                        <div class="def-content">
-                                            <div class="def" ng-show="definitions[$index].length == 0">
-                                                NO DEFINITION FOUND
-                                            </div>
-                                            <div class="def" ng-repeat="definition in definitions[$index]">
-                                                {{ $index + 1 }} - {{ definition.definition }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div class="def-container flex-center">{{ symptom.definition }}</div>
                                 </div>
                             </div>
                         </div>
@@ -179,11 +178,11 @@
                 </div>
             </div>
             <!-- End analytics row 3-->
-
+        
         </div>
         <!-- End container -->
         <div class="footer">
-            <p><i class="fa fa-heart"></i> from the 540 team</p>
+                <p><i class="fa fa-heart"></i> from the 540 team</p>
         </div>
     </div>
     <!--  End page content wrapper  -->
