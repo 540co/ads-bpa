@@ -51,9 +51,16 @@
         </div>
     </div>
 
-    <div class="container-fluid">
-        <div ng-view></div>
+
+    <div id="wrapper">
+
+      <div class="container-fluid">
+        <div ui-view></div>
+      </div>
+
+
     </div>
+    <!-- End wrapper -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -82,6 +89,7 @@
     <script src="bower_components/angular-formly/dist/formly.js"></script>
     <script src="bower_components/Chart.js/Chart.js"></script>
     <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

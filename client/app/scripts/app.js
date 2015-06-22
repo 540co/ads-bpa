@@ -16,19 +16,42 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'chart.js'
+    'chart.js',
+    'ui.router'
   ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+  .config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/main');
+    $stateProvider
+
+      .state('main', {
+        url:'/main',
+        views:{
+          '': { templateUrl: 'views/main.html',
+                controller: 'MainCtrl'
+              },
+          'search@main': { templateUrl: 'views/search.html'},
+          'sidebar@main': { templateUrl: 'views/sidebar.html'}
+        }
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
+
+      .state('about', {
+        url:'/about',
+        templateUrl: 'views/about.html'
       });
   });
+
+
+  // .config(function ($routeProvider) {
+  //   $routeProvider
+  //     .when('/', {
+  //       templateUrl: 'views/main.html',
+  //       controller: 'MainCtrl'
+  //     })
+  //     .when('/about', {
+  //       templateUrl: 'views/about.html',
+  //       controller: 'AboutCtrl'
+  //     })
+  //     .otherwise({
+  //       redirectTo: '/'
+  //     });
+  // });

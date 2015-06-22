@@ -1,7 +1,7 @@
 <script type="text/javascript">
-    $(function () {
-        $("[name='my-checkbox']").bootstrapSwitch();
-    });
+    // $(function () {
+    //     $("[name='my-checkbox']").bootstrapSwitch();
+    // });
 
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
@@ -9,47 +9,15 @@
     });
 </script>
 
-<div id="wrapper">
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="#">
-                        FILTERS
-                    </a>
-            </li>
-            <li>
-                <a href="#">General</a>
-            </li>
-            <li>
-                <a href="#">Substance</a>
-            </li>
-            <li>
-                <a href="#">Product Type</a>
-            </li>
-            <li>
-                <a href="#">Manufacturer</a>
-            </li>
-        </ul>
-    </div>
+
+    <!-- Sidebar -->
+    <div ui-view="sidebar"></div>
 
     <div id="page-content-wrapper">
         <div ng-init="initDashboard()">
-            <!-- Start search -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="input-group" id="search">
-                        <input type="text" class="form-control" ng-model="keyword" placeholder="Search brand name or drug (example: motrin)">
-                        <span class="input-group-btn"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <button class="btn btn-dre" type="button" ng-click="getResults(keyword)">Search</button>
-                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Filters</a>
-                </div>
-            </div>
-            <!-- End search -->
+
+            <!-- Search -->
+            <div ui-view="search"></div>
 
             <div class="row">
                 <div class="col-md-6">
@@ -57,7 +25,7 @@
                     <h2 ng-show="showFilter">Symptoms for <span class="accent-color">{{ searchTerm }}</span></h2>
                 </div>
                 <div class="col-md-6 text-right">
-                    <h2>Translate <input type="checkbox" name="my-checkbox" unchecked></h2>
+                    <!-- <h2>Translate <input type="checkbox" name="my-checkbox" unchecked></h2> -->
                 </div>
             </div>
 
@@ -187,5 +155,3 @@
         </div>
     </div>
     <!--  End page content wrapper  -->
-</div>
-<!-- End wrapper -->

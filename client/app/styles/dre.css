@@ -257,7 +257,9 @@ p {
 #page-content-wrapper {
     width: 100%;
     position: absolute;
-    padding-top: 50px;  
+    padding-top: 50px;
+    padding-left: 25px;
+    padding-right: 25px; 
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -338,5 +340,4 @@ p {
         position: relative;
         margin-right: 0;
     }
-}   
-
+}
