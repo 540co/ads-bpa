@@ -27,7 +27,6 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   // Validate that incoming request is ok... and not a duplicate
   //res.json({todo: 'post reaction definition'});
-
   var reaction = new Reaction();
 
   if(Object.keys(req.body).length != 1 ||
@@ -259,7 +258,6 @@ router.post('/', function(req, res, next) {
 
           });
 
-
         }
      });
 
@@ -271,9 +269,36 @@ router.post('/', function(req, res, next) {
 
 // TO DO: Get reaction defintion
 router.get('/:id', function(req, res, next) {
-  var id = req.params.id;
-  var example = JSON.parse('{"reaction":"' + id + '","terms":[{"term":"urosepsis","text":"sepsis caused by bacteria from the urinary tract invading the bloodstream","attributionText":"from Wiktionary, Creative Commons Attribution/Share-Alike License","source":"wordnik"},{"term":"urosepsis","text":"sepsis caused by bacteria from the urinary tract invading the bloodstream","attributionText":"from Wiktionary, Creative Commons Attribution/Share-Alike License","source":"wordnik"}]}');
-  res.json(example);
+  MongoClient.connect(mongo_url, function(err, db) {
+
+    // Tries to find reaction in collection (returns the record if found)
+    var findReaction = function(term, db, callback) {
+      var collection = db.collection('reactions');
+      collection.findOne({'reaction': term.toLowerCase()}, function(err, reaction) {
+        callback(reaction);
+      });
+    };
+
+    if(req.params.id == null || typeof req.params.id == "object") {
+      var err = new Error();
+      err.status = 500;
+      err.error = "Unknown Server Error";
+      err.message = "Please retry your request again or contact us if the"
+                    + " problem persists";
+      next(err);
+    }
+    findReaction(req.params.id, db, function(result) {
+      if(result === null) {
+        var err = new Error();
+        err.status = 404;
+        err.error = "Reaction Not Found";
+        err.message = "The reaction that you were looking for could not be found.";
+        next(err);
+      } else {
+        res.json(result);
+      }
+    });
+  });
 });
 
 // TO DO: Put reaction defintion
