@@ -55,6 +55,7 @@ router.post('/', function(req, res, next) {
       collection.insert([
         reaction
       ], function(err, result) {
+        console.log(err);
         callback(result);
       });
 
@@ -70,6 +71,7 @@ router.post('/', function(req, res, next) {
     request(url, function (error, response, body) {
 
 
+
       if (!error && response.statusCode == 200) {
 
         var parser = new xml2js.Parser({ignoreAttrs: false});
@@ -80,8 +82,7 @@ router.post('/', function(req, res, next) {
 
           _.forEach(result.entry_list.entry, function(v,k) {
 
-
-            if (v.hw[0] == reaction.reaction.toLowerCase()) {
+            if (v['$'].id == reaction.reaction.toLowerCase()) {
 
                 if (v.def) {
 
@@ -92,8 +93,6 @@ router.post('/', function(req, res, next) {
                         if (v.sens[0].dt[0]['_']) {
 
                           if (typeof v.sens[0].dt[0]['_'] == "string") {
-
-                            console.log('adding');
 
                             var definition = new Definition;
                             var dt = new Date();
@@ -111,7 +110,7 @@ router.post('/', function(req, res, next) {
                         } else {
                           var def = {};
                           if (typeof v.sens[0].dt[0] == "string") {
-                              console.log('adding');
+
                             var definition = new Definition;
                             var dt = new Date();
 
@@ -131,7 +130,7 @@ router.post('/', function(req, res, next) {
                     } else {
 
                       if (typeof v.def[0].sensb[0].sens[0].dt == "string") {
-                          console.log('adding');
+
                         var definition = new Definition;
                         var dt = new Date();
 
@@ -237,13 +236,11 @@ router.post('/', function(req, res, next) {
           async.series([
               function(callback){
                 getTermDefinitionFromMerriamWebsterMedical(function (result) {
-                  console.log(reaction);
                   callback(null);
                 });
               },
               function(callback){
                 getDefinitionFromWordnik(function (result) {
-                  console.log(reaction);
                   callback(null);
                 });
               }
@@ -253,8 +250,13 @@ router.post('/', function(req, res, next) {
           function(err, results){
 
             insertReaction(db, function(result) {
+               console.log(result);
+                console.log('inserting');
+
                 res.json(reaction);
+
             });
+
 
           });
 
@@ -262,7 +264,7 @@ router.post('/', function(req, res, next) {
      });
 
     }
-    db.close();
+
  });
 
 });
