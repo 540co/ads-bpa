@@ -56,10 +56,9 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Panel heading</div>
                     <div class="panel-body">
-                      <ul ng-repeat="event in allEvents | limitTo:25">
-                        <li>{{ event.time }} - {{ event.count }}</li>
-                      </ul>
-                        <!-- <div class="demo-placeholder" id="placeholder"></div> -->
+                      <canvas id="line" class="chart chart-line" data="data"
+                        labels="labels">
+                      </canvas>
                     </div>
                 </div>
             </div>
@@ -67,10 +66,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Top Manufacturers</div>
                     <div class="panel-body">
-                      <ul ng-repeat="manufacturer in allManufacturers">
-                        <li>{{ manufacturer.term }} - {{ manufacturer.count }}</li>
-                      </ul>
-                        <!-- <div class="demo-placeholder" id="placeholder2"></div> -->
+                      <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" width="300" height="300"></canvas>
                     </div>
                 </div>
             </div>
