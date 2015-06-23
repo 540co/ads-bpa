@@ -1,3 +1,5 @@
+var helper = require('./models-helper');
+
 Definition = function() {
 
   this.definition;
@@ -19,11 +21,8 @@ Definition = function() {
     var listOfKeys = ['definition', 'source', 'votes', 'created_by',
                       'created_at', 'isValid', 'matches'];
 
-    var length = Object.keys(this).length;
-    for(var i=0; i<length; i++) {
-      if(listOfKeys.indexOf(Object.keys(this)[i]) === -1) {
-        validFlag = false;
-      }
+    if(helper.checkIndices(this, listOfKeys) === false) {
+      validFlag = false;
     }
 
     return validFlag;
