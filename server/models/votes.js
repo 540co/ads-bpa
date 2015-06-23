@@ -1,3 +1,5 @@
+var helper = require('./models-helper');
+
 Votes = function() {
 
   this.ups = 0;
@@ -6,29 +8,26 @@ Votes = function() {
   this.isValid = function() {
     var validFlag = true;
 
-    if(typeof this.ups != 'number' ||
-       typeof this.downs != 'number') {
+    if(typeof this.ups !== 'number' ||
+       typeof this.downs !== 'number') {
       validFlag = false;
     }
 
     var listOfKeys = ['ups', 'downs', 'isValid', 'up', 'down'];
 
-    var length = Object.keys(this).length;
-    for(var i=0; i<length; i++) {
-      if(listOfKeys.indexOf(Object.keys(this)[i]) == -1) {
-        validFlag = false;
-      }
+    if(helper.checkIndices(this, listOfKeys) === false) {
+      validFlag = false;
     }
 
     return validFlag;
-  }
+  };
 
   this.up = function() {
     this.ups++;
-  }
+  };
 
   this.down = function() {
     this.downs++;
-  }
+  };
 
-}
+};

@@ -9,7 +9,11 @@
     });
 </script>
 
+
+
+
 <div id="wrapper">
+
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
@@ -20,17 +24,21 @@
             <li>
                 <a href="#">General</a>
             </li>
-            <li>
+             <li>
                 <a href="#">Substance</a>
             </li>
-            <li>
+             <li>
                 <a href="#">Product Type</a>
             </li>
-            <li>
+             <li>
                 <a href="#">Manufacturer</a>
             </li>
         </ul>
     </div>
+
+
+
+
 
     <div id="page-content-wrapper">
         <div ng-init="initDashboard()">
@@ -50,7 +58,7 @@
                 </div>
             </div>
             <!-- End search -->
-        <div ng-hide="noResults">
+
             <div class="row">
                 <div class="col-md-6">
                     <h2 ng-show="!showFilter">Symptoms</h2>
@@ -67,26 +75,13 @@
                         <div class="card" ng-class="{'flipped':isFlipped1}" ng-click="isFlipped1=!isFlipped1">
 
                             <div class="face front">
-                                <div class="mc mc-default flex-center mc-text"><p>
-                                  {{ symptom.term }}
-                                </p> <p class="term-percentage">
-                                  ({{ symptom.percentage }})
-                                </p></div>
+                                <div class="mc mc-default flex-center mc-text">{{ symptom.term }}</div>
                             </div>
 
                             <div class="face back">
                                 <div class="mc mc-default mc-text-back">
-                                    <div class="term-container">{{ symptom.term }} ({{ symptom.percentage }})</div>
-                                    <div class="def-container flex-center">
-                                        <div class="def-content">
-                                            <div class="def" ng-show="definitions[$index].length == 0">
-                                                NO DEFINITION FOUND
-                                            </div>
-                                            <div class="def" ng-repeat="definition in definitions[$index]">
-                                                {{ $index + 1 }} - {{ definition.definition }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div class="term-container">{{ symptom.term }}</div>
+                                    <div class="def-container flex-center">{{ symptom.definition }}</div>
                                 </div>
                             </div>
                         </div>
@@ -183,19 +178,11 @@
                 </div>
             </div>
             <!-- End analytics row 3-->
+        
         </div>
-        <br/>
-        <div ng-show="noResults">
-          <div class="col-md-12">
-            <div class="alert alert-danger" role="alert">
-              <strong><i class="fa fa-exclamation-triangle"></i> No Results!</strong> Your search for "{{ searchTerm }}" returned no results. Please search again.
-            </div>
-          </div>
-        </div>
-      </div>
         <!-- End container -->
         <div class="footer">
-            <p><i class="fa fa-heart"></i> from the 540 team</p>
+                <p><i class="fa fa-heart"></i> from the 540 team</p>
         </div>
     </div>
     <!--  End page content wrapper  -->
