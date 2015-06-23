@@ -37,7 +37,7 @@ router.get('/', function(req, res, next) {
   if (req.query.limit > 200) {
     req.query.limit = 200;
   }
-  
+
   if (!req.query.offset) {req.query.offset = 0;} else {req.query.offset = parseInt(req.query.offset);}
 
   var findAll = function(db, callback) {
@@ -109,7 +109,123 @@ router.get('/', function(req, res, next) {
 
 });
 
-// TO DO: Post new or update reaction definition
+// POST definition to reaction
+router.post('/:id/definitions', function(req, res, next) {
+
+  var id = req.params.id;
+
+  // ensure proper content type
+  if (req.headers['content-type'] != 'application/json') {
+    var err = new Error();
+    err.status = 400;
+    err.error = "Invalid content type";
+    err.message = "Valid content type is 'application/json'";
+    next(err);
+  } else {
+
+    // ensure body has vote key value
+    if (!req.body.definition) {
+      var err = new Error();
+      err.status = 400;
+      err.error = "Definition attribute not found in body";
+      err.message = "A definition value must be passed in body (ex. {'definition':'lorem ipsum'})";
+      next(err);
+    } else {
+
+      var definition = req.body.definition;
+
+      // Tries to find reaction in collection (returns the record if found)
+      var findReaction = function(term,db, callback) {
+        var collection = db.collection('reactions');
+        collection.findOne({'reaction': term.toLowerCase()}, function(err, reaction) {
+          callback(reaction);
+        });
+      };
+
+      // Update reaction with new definition
+      var updateReaction = function(reaction, reaction_document, db, callback) {
+        var collection = db.collection('reactions');
+        collection.update({reaction:reaction}, {$set: reaction_document}, {}, function(err, result) {
+          if (err) {
+              var err = new Error();
+              err.status = 500;
+              err.error = "Internal error";
+              next(err);
+          } else {
+            callback(result);
+          }
+
+        });
+
+      };
+
+      MongoClient.connect(mongo_url, function(err, db) {
+        if (err) {
+          var err = new Error();
+          err.status = 500;
+          err.error = "Internal error";
+          next(err);
+        } else {
+
+          // find reaction in requst
+          findReaction(id, db, function (reaction) {
+            if(reaction === null) {
+              var err = new Error();
+              err.status = 404;
+              err.error = "Reaction Not Found";
+              err.message = "The reaction that you were looking for could not be found.";
+              db.close();
+              next(err);
+            } else {
+
+              // check if definition already exists
+              var duplicateFound = false;
+
+              _.forEach(reaction.definitions, function(def,def_index) {
+                if (req.body.definition == def.definition) {
+                  duplicateFound = true;
+                }
+              });
+
+              if (duplicateFound) {
+                res.status(422);
+                res.json({message:'duplicate definition found'});
+              } else {
+
+                // Create new definition
+                var newDefinition = new Definition();
+                newDefinition.definition = definition;
+                newDefinition.source = definition;
+                newDefinition.created_at = new Date().getTime();
+                newDefinition.created_by = "DRE App";
+
+                newDefinition.votes = new Votes();
+
+                // Push definition onto end of stack of definitions
+                reaction.definitions.push(newDefinition);
+
+                // Update database
+                updateReaction(id, reaction, db, function(err) {
+                  delete reaction['_id'];
+                  res.json(reaction);
+                  db.close();
+                });
+
+              }
+
+            }
+
+          });
+        }
+      });
+
+    }
+  }
+
+});
+
+
+// POST new or update reaction definition
 router.post('/', function(req, res, next) {
   // Validate that incoming request is ok... and not a duplicate
   //res.json({todo: 'post reaction definition'});
@@ -353,7 +469,7 @@ if(!err) {
 
 });
 
-// TO DO: Get reaction defintion
+// GET reaction defintion
 router.get('/:id', function(req, res, next) {
   MongoClient.connect(mongo_url, function(err, db) {
 
@@ -392,7 +508,8 @@ router.get('/:id', function(req, res, next) {
   });
 });
 
-// Reaction Definition Vote Up / Down
+
+// PUT Reaction Definition Vote Up / Down
 router.put('/:id/definitions/:index', function(req, res, next) {
 
   var id = req.params.id;

@@ -4,10 +4,10 @@
     "version": "1.0.0",
     "title": "DRE Reaction Definition Lookup"
   },
-  "host": "dre.540.co",
+  "host": "",
   "basePath": "/api",
   "schemes": [
-    "https"
+    ""
   ],
   "consumes": [
     "application/json"
@@ -98,6 +98,45 @@
         },
         "tags": [
           "reactions"
+        ]
+      }
+    },
+    "/reactions/{reaction}/definitions": {
+      "post": {
+        "description": "Post definition to a pre-existing reaction",
+        "parameters": [
+          {
+            "name": "reaction",
+            "in": "path",
+            "description": "The reaction term",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The definition - {\"definition\":\"lorem ipsum\"}",
+            "required": true
+          }
+        ],
+        "operationId": "createReactionDefinition",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description" : "OK"
+          },
+          "description": "OK (will return the updated reaction with all definitions)",
+          "400": {
+            "description": "bad request (missing attributes, bad content-type)"
+          },
+          "422": {
+            "description": "duplicate definition"
+          }
+        },
+        "tags": [
+          "reaction definition"
         ]
       }
     },

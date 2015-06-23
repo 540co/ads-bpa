@@ -38,4 +38,4 @@ CMD ["npm", "start"]
 # How to run
 # docker pull mongo
 # docker run -d --name db mongo
-# docker run -p 3000:3000 --link db:db dre
+# docker run -d --name dre -p 3000:3000 --link db:db dre
