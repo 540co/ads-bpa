@@ -99,6 +99,30 @@
         "tags": [
           "reactions"
         ]
+      },
+      "delete": {
+        "description": "Delete specific reaction term from dictionary including all definitons and votes",
+        "parameters": [
+          {
+            "name": "reaction",
+            "in": "path",
+            "description": "The reaction term",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "operationId": "deleteReaction",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete was successful"
+          }
+        },
+        "tags": [
+          "reactions"
+        ]
       }
     },
     "/reactions/{reaction}/definitions": {

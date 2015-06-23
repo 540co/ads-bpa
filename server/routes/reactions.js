@@ -664,6 +664,7 @@ router.delete('/:id', function(req, res, next) {
     }
 
     findReaction(decodeURIComponent(req.params.id.toLowerCase()), db, function(result) {
+      res.status(204);
       res.json();
     });
 
