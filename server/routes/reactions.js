@@ -22,12 +22,22 @@ require('../models/votes.js');
 // GET list of reactions
 router.get('/', function(req, res, next) {
 
+  var startTime = new Date().getTime();
+
   var response = {};
+  response.meta = {};
+  response.data = [];
 
   if (!req.query.limit) {req.query.limit = 25;} else {req.query.limit = parseInt(req.query.limit);}
+
+  if (req.query.limit < 1) {
+    req.query.limit = 1;
+  }
+
   if (req.query.limit > 200) {
     req.query.limit = 200;
   }
+  
   if (!req.query.offset) {req.query.offset = 0;} else {req.query.offset = parseInt(req.query.offset);}
 
   var findAll = function(db, callback) {
@@ -41,9 +51,10 @@ router.get('/', function(req, res, next) {
         // Get count from cursor
         function(callback){
           cursor.count(function(err, count) {
-            response.count = count;
-            response.limit = req.query.limit;
-            response.offset = req.query.offset;
+            response.meta.limit = req.query.limit;
+            response.meta.offset = req.query.offset;
+            response.meta.total_count = count;
+
           });
           callback(null);
         },
@@ -54,20 +65,38 @@ router.get('/', function(req, res, next) {
           cursor.skip(req.query.offset);
 
           cursor.toArray(function(err, result) {
-            response.response = result;
+            response.data = result;
             callback(null);
           });
         }
 
       ], function(err){
 
-       // ... then remove the _id keys from the results and send response back
-        _.forEach(response.response, function(v, k) {
-          delete response.response[k]['_id'];
-        })
-
         db.close();
-        res.json(response);
+
+        if (!response.data) {
+          var endTime = new Date().getTime();
+          response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
+
+          res.status(404);
+          res.json(response);
+
+        } else {
+
+         // ... then remove the _id keys from the results and send response back
+          _.forEach(response.data, function(v, k) {
+            delete response.data[k]['_id'];
+          })
+
+          var endTime = new Date().getTime();
+          response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
+
+          res.json(response);
+
+        }
+
+
+
     });
 
   }
