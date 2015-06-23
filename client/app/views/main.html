@@ -1,14 +1,4 @@
-<script type="text/javascript">
-    $(function () {
-        $("[name='my-checkbox']").bootstrapSwitch();
-    });
-
-    $("#menu-toggle").click(function (e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-</script>
-
+<div class="container-fluid">
 <div id="wrapper">
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
@@ -35,8 +25,9 @@
     <div id="page-content-wrapper">
         <div ng-init="initDashboard()">
             <!-- Start search -->
+
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8 col-md-offset-2">
                     <div class="input-group" id="search">
                         <input type="text" class="form-control" ng-model="keyword" placeholder="Search brand name or drug (example: motrin)">
                         <span class="input-group-btn"></span>
@@ -46,19 +37,19 @@
             <div class="row text-center">
                 <div class="col-md-12">
                     <button class="btn btn-dre" type="button" ng-click="getResults(keyword)">Search</button>
-                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Filters</a>
                 </div>
             </div>
             <!-- End search -->
         <div ng-hide="noResults">
             <div class="row">
-                <div class="col-md-6">
-                    <h2 ng-show="!showFilter">Symptoms</h2>
-                    <h2 ng-show="showFilter">Symptoms for <span class="accent-color">{{ searchTerm }}</span></h2>
+                <div class="col-md-12">
+                    <h2 ng-show="!showFilter">Reactions</h2>
+                    <h2 ng-show="showFilter">Reactions for <span class="accent-color text-uppercase">{{ searchTerm }}</span></h2>
+                    <h4>Click on the reaction below to see definitions in plain English</h4>
                 </div>
-                <div class="col-md-6 text-right">
+                <!-- <div class="col-md-6 text-right">
                     <h2>Translate <input type="checkbox" name="my-checkbox" unchecked></h2>
-                </div>
+                </div> -->
             </div>
 
             <div class="row">
@@ -67,11 +58,14 @@
                         <div class="card" ng-class="{'flipped':isFlipped1}" ng-click="isFlipped1=!isFlipped1">
 
                             <div class="face front">
-                                <div class="mc mc-default flex-center mc-text"><p>
+                                <div class="mc mc-default flex-center mc-text">
+                                  <p>
                                   {{ symptom.term }}
-                                </p> <p class="term-percentage">
+                                  </p>
+                                  <p class="term-percentage">
                                   ({{ symptom.percentage }})
-                                </p></div>
+                                  </p>
+                                </div>
                             </div>
 
                             <div class="face back">
@@ -96,48 +90,48 @@
                 </div>
             </div>
             <!-- Start analytics row 1 -->
-            <div class="row ">
-                <div class="col-md-8">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Latest Reported Adverse Events</div>
-                        <div class="panel-body">
-                            <canvas id="line" class="chart chart-line" data="eventCounts" labels="eventDates">
-                            </canvas>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                  <div class="panel panel-default">
+                      <div class="panel-heading">Brand Names Containing <span class="text-uppercase">{{searchTerm}}</span></div>
+                      <div class="panel-body">
+                          <table class="table table-striped table-hover ">
+                              <thead>
+                                  <tr>
+                                      <th>Brand</th>
+                                      <th>Number of Reaction Reports</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr ng-repeat="brand in allBrands | limitTo:10">
+                                      <td>{{ brand.term }}</td>
+                                      <td>{{ brand.count | number }}</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Top Manufacturers</div>
+                        <div class="panel-heading">Top Manufacturers of <span class="text-uppercase">{{searchTerm}}</span></div>
                         <div class="panel-body text-center">
-                            <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" width="100%" height="100%"></canvas>
+                            <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" width="100%" height="90"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- End analytics row 1-->
             <!-- Start analytics row 2-->
-            <div class="row ">
+            <div class="row">
                 <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Top Brands</div>
-                        <div class="panel-body">
-                            <table class="table table-striped table-hover ">
-                                <thead>
-                                    <tr>
-                                        <th>Brand</th>
-                                        <th>Count</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="brand in allBrands | limitTo:10">
-                                        <td>{{ brand.term }}</td>
-                                        <td>{{ brand.count | number }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                  <div class="panel panel-default">
+                      <div class="panel-heading">Frequency of Reactions for <span class="text-uppercase">{{searchTerm}}</span></div>
+                      <div class="panel-body">
+                          <canvas id="line" class="chart chart-line" data="eventCounts" labels="eventDates">
+                          </canvas>
+                      </div>
+                  </div>
                 </div>
             </div>
             <!-- End analytics row 2-->
@@ -145,23 +139,22 @@
             <div class="row ">
                 <div class="col-md-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Gender Count</div>
+                        <div class="panel-heading">Reactions Reported By Gender</div>
                         <div class="panel-body text-center">
                             <div class="row" ng-repeat="gender in allGenderCount">
 
-                                <div class="col-md-12 gender-font" ng-class="{ 'female-color': gender.term == 'Female' , 'male-color': gender.term == 'Male' }">
-                                    <i class="fa fa-female" ng-hide="gender.term != 'Female'"></i>
-                                    <i class="fa fa-question-circle" ng-hide="gender.term != 'Unknown'"></i>
-                                    <i class="fa fa-male" ng-hide="gender.term != 'Male'"></i> {{ gender.count | number }}
+                                <div class="col-md-12 gender-font" ng-class="{ 'female-color': gender.description == 'Female' , 'male-color': gender.description == 'Male' }">
+                                    <i class="fa fa-female" ng-hide="gender.description != 'Female'"></i>
+                                    <i class="fa fa-question-circle" ng-hide="gender.description != 'Unknown'"></i>
+                                    <i class="fa fa-male" ng-hide="gender.description != 'Male'"></i> {{ gender.count | number }}
                                 </div>
-                                <p class="gender-term">{{gender.term}} reported side effects</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Top 10 Origin Countries</div>
+                        <div class="panel-heading">Reactions Reported By Country</div>
                         <ul class="list-group">
                             <li class="list-group-item" ng-repeat="country in allCountries | limitTo:10">
                                 <span class="badge">{{ country.count | number }}</span> {{ country.term }}</li>
@@ -172,11 +165,11 @@
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Severity Count</div>
+                        <div class="panel-heading">Serious vs. Non Serious Reactions</div>
                         <div class="panel-body text-center">
                             <div ng-repeat="severity in allSeverityCount">
-                                <p class="severity-count" ng-class="{ 'severity-serious': severity.term == 'Serious' , 'severity-non-serious': severity.term == 'Non-Serious' }">{{ severity.count | number }}</p>
-                                <p class="severity-term">{{ severity.term }} adverse events</p>
+                                <p class="severity-count" ng-class="{ 'severity-serious': severity.description == 'Serious' , 'severity-non-serious': severity.description == 'Non-Serious' }">{{ severity.count | number }}</p>
+                                <p class="severity-term">{{ severity.description }} adverse events</p>
                             </div>
                         </div>
                     </div>
@@ -214,3 +207,4 @@
 </script>
 
 <!-- End wrapper -->
+</div>

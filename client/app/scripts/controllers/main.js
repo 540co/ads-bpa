@@ -8,18 +8,33 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', function ($scope, $q, DashboardService, $modal) {
+  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', function ($scope, $q, DashboardService, $modal, $location) {
 
     $scope.searchTerm;
 
     $scope.initDashboard = function() {
-      setDashboard();
-      $scope.showFilter = false;
+      var params = $location.search();
+
+      if(params.q) {
+        $scope.getResults(params.q);
+        $scope.searchTerm = params.q;
+      }
+      else
+        setDashboard();
+
+      $scope.showFilter = true;
       $scope.noResults = false;
     };
 
+    $scope.homeSearch = function(keyword) {
+      $scope.getResults(keyword);
+
+      $location.path('search');
+    }
+
     $scope.getResults = function(keyword) {
       $scope.showFilter = true;
+      $location.search({'q': keyword});
       var countPromise = DashboardService.getSymptomCount(keyword);
 
       $q.all([countPromise]).then(function (data) {
@@ -77,8 +92,8 @@ angular.module('dreApp')
           manufacturerNames.push(manufacturer.term);
           manufacturerCounts.push(manufacturer.count);
         });
-        $scope.manufacturerCounts = manufacturerCounts;
-        $scope.manufacturerNames = manufacturerNames;
+        $scope.manufacturerCounts = _.drop(manufacturerCounts, 18);
+        $scope.manufacturerNames = _.drop(manufacturerNames, 18);
       }, errorHandler);
 
       DashboardService.getBrands(keyword).then(function (brands){
@@ -170,7 +185,7 @@ angular.module('dreApp')
 
           });
         } else {
-          alert('Non 404 error');
+          //alert('Non 404 error');
         }
         });
 
