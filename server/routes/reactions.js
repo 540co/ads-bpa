@@ -85,7 +85,7 @@ router.post('/', function(req, res, next) {
   // Validate that incoming request is ok... and not a duplicate
   //res.json({todo: 'post reaction definition'});
   var reaction = new Reaction();
-console.log(req.headers['content-type']);
+
   if(Object.keys(req.body).length != 1 ||
      req.body.reaction == null ||
      req.headers['content-type'] != 'application/json' ||
@@ -114,6 +114,7 @@ console.log(req.headers['content-type']);
       collection.insert([
         reaction
       ], function(err, result) {
+
         db.close();
         callback(result);
 
@@ -304,9 +305,8 @@ if(!err) {
 
           // insert into mongo
           function(err, results){
-
             insertReaction(db, function(result) {
-
+                delete reaction['_id'];
                 res.json(reaction);
 
             });
@@ -361,6 +361,16 @@ router.get('/:id', function(req, res, next) {
       }
     });
   });
+});
+
+// Reaction Definition Vote Up / Down
+router.put('/:id/definitions/:index', function(req, res, next) {
+  var id = req.params.id;
+  var definitionIndex = req.params.index;
+
+
+
+  res.json(example);
 });
 
 // TO DO: Put reaction defintion
