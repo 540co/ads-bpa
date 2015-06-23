@@ -15,24 +15,36 @@ angular.module('dreApp')
     $scope.initDashboard = function() {
       setDashboard();
       $scope.showFilter = false;
+      $scope.noResults = false;
     };
 
     $scope.getResults = function(keyword) {
       $scope.showFilter = true;
+      var countPromise = DashboardService.getSymptomCount(keyword);
+
+      $q.all([countPromise]).then(function (data) {
+        if(data > 0)
+          setDashboard(keyword);
+        else
+          $scope.noResults = true;
+
+      }, function (error) {
+        console.log(error);
+      });
+
       $scope.searchTerm = keyword;
-      setDashboard(keyword);
+      $scope.definitions = [];
     };
 
     function setDashboard(keyword) {
 
-      // DashboardService.getSymptomDefinitions('death').then(function (definition) {
-      //   $scope.definition = definition;
-      // });
+      $scope.noResults = false;
 
       loadSymptoms(keyword)
         .then(parallelLoad);
 
       DashboardService.getSymptoms(keyword).then(function (symptoms) {
+
         $scope.allSymptoms = symptoms;
         _.forEach(symptoms, function(symptom) {
           return DashboardService.getSymptomDefinitions(symptom.term);
@@ -111,7 +123,13 @@ angular.module('dreApp')
 
         function (data) {
 
+          _.forEach(data, function(definition, idx) {
+            if(definition.length === undefined)
+              this[idx] = [];
+          }, data);
+
           $scope.definitions = data;
+          console.log(data);
 
         }, function(error) {
 

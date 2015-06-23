@@ -2,7 +2,7 @@
 
 angular
     .module('dreApp')
-    .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', function ($http, $q, openFDA, reactions) {
+    .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', 'Utilities', function ($http, $q, openFDA, reactions, Utilities) {
 
       function getSymptoms(drugKeyword) {
 
@@ -16,26 +16,30 @@ angular
           }, totalCount);
 
           return symptomList;
+        }, function (error) {
+          console.log(error);
+          return error;
+        });
+      }
+
+      function getSymptomCount(drugKeyword) {
+        return openFDA.adverseEvents.symptomCount(drugKeyword).then(function(data) {
+          return data.data.meta.results.total;
+        }, function(error) {
+          return {'count': 0};
         });
       }
 
       function getManufacturers(drugKeyword) {
         return openFDA.adverseEvents.topManufacturers(drugKeyword).then(function(data) {
           return data.data.results;
-        });
+        }, Utilities.errorResolver);
       }
 
       function getBrands(drugKeyword) {
         return openFDA.adverseEvents.topBrandNames(drugKeyword).then(function(data) {
-
-          // _.forEach(data.data.results, function(record) {
-          //   openFDA.label.getLabelInfoByBrand(record.term).then(function (data) {
-          //     record.label = data.data.results;
-          //   });
-          // });
-
           return data.data.results;
-        });
+        }, Utilities.errorResolver);
       }
 
       function getSeverity(drugKeyword) {
@@ -55,7 +59,7 @@ angular
               }
           });
           return data.data.results;
-        });
+        }, Utilities.errorResolver);
       }
 
       function getGenders(drugKeyword) {
@@ -76,25 +80,25 @@ angular
               });
 
           return data.data.results;
-        });
+        }, Utilities.errorResolver);
       }
 
       function getCountries(drugKeyword) {
         return openFDA.adverseEvents.topCountries(drugKeyword).then(function(data) {
           return data.data.results;
-        });
+        }, Utilities.errorResolver);
       }
 
       function getEvents(drugKeyword) {
         return openFDA.adverseEvents.eventCountByDate(drugKeyword).then(function(data) {
           return data.data.results;
-        });
+        }, Utilities.errorResolver);
       }
 
       function getSymptomDefinitions(drugKeyword) {
         return reactions.reactions.getSymptomDefinition(drugKeyword).then(function(data) {
           return data.data.definitions;
-        });
+        }, Utilities.errorResolver);
       }
 
       function postSymptomDefinitions(drugKeyword) {
@@ -105,6 +109,7 @@ angular
 
       return {
         getSymptoms: getSymptoms,
+        getSymptomCount: getSymptomCount,
         getManufacturers: getManufacturers,
         getBrands: getBrands,
         getSeverity: getSeverity,
