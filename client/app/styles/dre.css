@@ -59,6 +59,10 @@ p {
     font-weight: 600;
 }
 
+.term-percentage {
+  font-size: 18px;
+}
+
 .def-container {
     height: 125px;
 }
@@ -257,7 +261,7 @@ p {
 #page-content-wrapper {
     width: 100%;
     position: absolute;
-    padding-top: 50px;  
+    padding-top: 50px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -338,5 +342,4 @@ p {
         position: relative;
         margin-right: 0;
     }
-}   
-
+}

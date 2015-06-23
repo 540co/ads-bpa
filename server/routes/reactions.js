@@ -67,7 +67,6 @@ router.get('/', function(req, res, next) {
         })
 
         db.close();
-
         res.json(response);
     });
 
@@ -86,9 +85,10 @@ router.post('/', function(req, res, next) {
   // Validate that incoming request is ok... and not a duplicate
   //res.json({todo: 'post reaction definition'});
   var reaction = new Reaction();
-
+console.log(req.headers['content-type']);
   if(Object.keys(req.body).length != 1 ||
      req.body.reaction == null ||
+     req.headers['content-type'] != 'application/json' ||
      typeof req.body.reaction != "string") {
     var err = new Error();
     err.status = 400;
@@ -102,7 +102,7 @@ router.post('/', function(req, res, next) {
   // Tries to find reaction in collection (returns the record if found)
   var findReaction = function(db, callback) {
     var collection = db.collection('reactions');
-    collection.findOne({'reaction': req.body.reaction}, function(err, reaction) {
+    collection.findOne({'reaction': req.body.reaction.toLowerCase()}, function(err, reaction) {
       callback(reaction);
     });
   }
@@ -257,17 +257,15 @@ router.post('/', function(req, res, next) {
   // - Establish connection to mongo
   // - Check to see if reaction exists
   // - If it does not exist, find definitions and insert
-
+if(!err) {
   MongoClient.connect(mongo_url, function(err, db) {
-
     if (err) {
       var err = new Error();
       err.status = 500;
       err.error = "Internal Error";
       next(err);
     }
-
-    if (!err) {
+    else {
 
 
       findReaction(db, function(result) {
@@ -285,7 +283,7 @@ router.post('/', function(req, res, next) {
 
           var dt = new Date();
 
-          reaction.reaction = req.body.reaction;
+          reaction.reaction = req.body.reaction.toLowerCase();
           reaction.definitions = [];
           reaction.created_at = dt.getTime();
           reaction.created_by = "";
@@ -321,7 +319,8 @@ router.post('/', function(req, res, next) {
 
     }
 
- });
+   });
+ }
 
 });
 
@@ -347,16 +346,18 @@ router.get('/:id', function(req, res, next) {
       next(err);
     }
 
-    findReaction(req.params.id, db, function(result) {
+    findReaction(decodeURIComponent(req.params.id.toLowerCase()), db, function(result) {
       if(result === null) {
         var err = new Error();
         err.status = 404;
         err.error = "Reaction Not Found";
         err.message = "The reaction that you were looking for could not be found.";
+        db.close();
         next(err);
       } else {
         delete result['_id'];
         res.json(result);
+        db.close();
       }
     });
   });
