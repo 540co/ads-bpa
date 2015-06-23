@@ -28,7 +28,6 @@ app.use('/api/reactions', reactions);
 
 app.use('/', express.static(__dirname + '/../client/dist'));
 app.use('/apidocs', express.static(__dirname + '/swagger'));
-app.use('/swagger', express.static(__dirname + '/public/swagger.json'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
