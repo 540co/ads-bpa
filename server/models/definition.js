@@ -1,18 +1,18 @@
 Definition = function() {
 
-  var definition;
-  var source;
-  var votes = new Votes();
-  var created_at;
-  var created_by;
+  this.definition;
+  this.source;
+  this.votes = new Votes();
+  this.created_at;
+  this.created_by;
 
 
   this.isValid = function() {
     var validFlag = true;
 
-    if(typeof this.definition != 'string' ||
-       typeof this.source != 'string' ||
-       typeof this.votes != 'object') {
+    if(typeof this.definition !== 'string' ||
+       typeof this.source !== 'string' ||
+       typeof this.votes !== 'object') {
       validFlag = false;
     }
 
@@ -21,17 +21,17 @@ Definition = function() {
 
     var length = Object.keys(this).length;
     for(var i=0; i<length; i++) {
-      if(listOfKeys.indexOf(Object.keys(this)[i]) == -1) {
+      if(listOfKeys.indexOf(Object.keys(this)[i]) === -1) {
         validFlag = false;
       }
     }
 
     return validFlag;
-  }
+  };
 
 
   this.matches = function(def) {
-    return (def == this.definition) ? true : false;
-  }
+    return (def === this.definition) ? true : false;
+  };
 
-}
+};
