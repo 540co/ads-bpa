@@ -42,6 +42,12 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Invalid header (requires application/json)"
+          },
+          "404": {
+            "description": "Reactions not found (will occur it an offset < 0 is provided)"
           }
         },
         "tags": [
@@ -94,6 +100,12 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Invalid header (requires application/json)"
+          },
+          "404": {
+            "description": "Reaction term definitions not found"
           }
         },
         "tags": [
@@ -117,7 +129,10 @@
         ],
         "responses": {
           "204": {
-            "description": "Delete was successful"
+            "description": "Delete was successful (no additional content will be provided in response body)"
+          },
+          "400": {
+            "description": "Invalid header (requires application/json)"
           }
         },
         "tags": [
@@ -156,7 +171,7 @@
             "description": "bad request (missing attributes, bad content-type)"
           },
           "422": {
-            "description": "duplicate definition"
+            "description": "duplicate definition provide (no definition will be added)"
           }
         },
         "tags": [
@@ -196,6 +211,12 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad request (missing attributes, bad content-type)"
+          },
+          "404": {
+            "description": "Reaction could not be found"
           }
         },
         "tags": [
@@ -255,6 +276,9 @@
         "responses": {
           "200": {
             "description": "OK - search term count was incremented"
+          },
+          "400": {
+            "description": "bad request (missing attributes, bad content-type)"
           }
         },
         "tags": [

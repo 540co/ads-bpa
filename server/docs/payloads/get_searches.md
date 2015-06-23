@@ -25,20 +25,28 @@ Below is a response to a `GET` to the `/searches` API if none of the below error
 ```
 {
   "meta": {
-    "execution_time": "0.004s",
     "limit": 25,
     "offset": 0,
-    "total_count": 333
+    "total_count": 16,
+    "execution_time": "0.061s"
   },
   "data": [
     {
-      "search": "<search>",
-      "count": 3;
-      "created_at": "yyyy-mm-dd hh:mm:ss",
-      "created_by": "dre-harvester"    }
+      "search": "ibuprofen",
+      "count": 98
+    },
+    {
+      "search": "pain",
+      "count": 35
+    },
+    {
+      "search": "off label use",
+      "count": 25
+    },
     ...
-  ]
+   ]
 }
+
 ```
 
 
@@ -49,6 +57,6 @@ Below is a table showing the errors that could be returned on the endpoint.
 |Status Code | Description |
 |------------|-------------|
 | 400        | Anything other than `application/json` is requested in the `Accept` header |
-
+| 404        | Invalid offset (will occur if offset is less than 0) |
 
 For more information on the format of the error responses please see the [API Error Response Page](./errors.md).
