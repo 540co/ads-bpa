@@ -365,12 +365,128 @@ router.get('/:id', function(req, res, next) {
 
 // Reaction Definition Vote Up / Down
 router.put('/:id/definitions/:index', function(req, res, next) {
+
   var id = req.params.id;
   var definitionIndex = req.params.index;
 
+  // ensure proper content type
+  if (req.headers['content-type'] != 'application/json') {
+    var err = new Error();
+    err.status = 400;
+    err.error = "Invalid content type";
+    err.message = "Valid content type is 'application/json'";
+    next(err);
+  } else {
+
+    // ensure body has vote key value
+    if (!req.body.vote) {
+      var err = new Error();
+      err.status = 400;
+      err.error = "Vote attribute not found in body";
+      err.message = "A vote attribute must be passed in body (ex. {'vote':'up'}) - valid values are 'up' or 'down'";
+      next(err);
+    } else {
 
 
-  res.json(example);
+      var vote = req.body.vote.toLowerCase();
+
+      // ensure valid value for vote (up | down)
+      if (!(vote == 'up' || vote == 'down')) {
+        var err = new Error();
+        err.status = 400;
+        err.error = "Vote attribute '" + vote  + "' not valid";
+        err.message = "A vote attribute must be passed in body (ex. {'vote':'up'}) - valid values are 'up' or 'down'";
+        next(err);
+      } else {
+
+        // Tries to find reaction in collection (returns the record if found)
+        var findReaction = function(term,db, callback) {
+          var collection = db.collection('reactions');
+          collection.findOne({'reaction': term.toLowerCase()}, function(err, reaction) {
+            callback(reaction);
+          });
+        };
+
+        // Update reaction with updated votes
+        var updateReaction = function(reaction, reaction_document, db, callback) {
+          var collection = db.collection('reactions');
+          collection.update({reaction:reaction}, {$set: reaction_document}, {}, function(err, result) {
+            if (err) {
+                var err = new Error();
+                err.status = 500;
+                err.error = "Internal error";
+                next(err);
+            } else {
+              callback(result);
+            }
+
+          });
+
+        };
+
+
+        MongoClient.connect(mongo_url, function(err, db) {
+          if (err) {
+            var err = new Error();
+            err.status = 500;
+            err.error = "Internal error";
+            next(err);
+          } else {
+
+            // find reaction in requst
+            findReaction(id, db, function (reaction) {
+              if(reaction === null) {
+                var err = new Error();
+                err.status = 404;
+                err.error = "Reaction Not Found";
+                err.message = "The reaction that you were looking for could not be found.";
+                db.close();
+                next(err);
+              } else {
+
+                // check if definition exists - error if not
+                if(!reaction.definitions[definitionIndex]) {
+                  var err = new Error();
+                  err.status = 404;
+                  err.error = "Definition [" + definitionIndex + "] not found";
+                  err.message = "The definition index provided was not found.";
+                  db.close();
+                  next(err);
+
+                } else {
+
+                  // update update count of ups / downs based upon request
+                  if(vote == 'up') {
+                    reaction.definitions[definitionIndex].votes.ups++;
+                  }
+
+                  if(vote == 'down') {
+                    reaction.definitions[definitionIndex].votes.downs++;
+                  }
+
+                  // update the reaction document and respond
+                  updateReaction(reaction.reaction, reaction, db, function (result) {
+                    delete reaction['_id'];
+                    db.close();
+                    res.json(reaction);
+                  });
+
+                }
+
+              }
+            })
+          }
+        });
+
+
+      }
+
+
+    }
+
+  }
+
+
 });
 
 // TO DO: Put reaction defintion
