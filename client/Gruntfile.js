@@ -391,9 +391,14 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    lcovMerge: {
+      src: ['coverage/**/*.info', '../coverage/**/*.info']
     }
   });
 
+  grunt.loadNpmTasks('grunt-lcov-merge');
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
