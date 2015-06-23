@@ -16,9 +16,6 @@ angular
           }, totalCount);
 
           return symptomList;
-        }, function (error) {
-          console.log(error);
-          return error;
         });
       }
 
@@ -33,13 +30,13 @@ angular
       function getManufacturers(drugKeyword) {
         return openFDA.adverseEvents.topManufacturers(drugKeyword).then(function(data) {
           return data.data.results;
-        }, Utilities.errorResolver);
+        });
       }
 
       function getBrands(drugKeyword) {
         return openFDA.adverseEvents.topBrandNames(drugKeyword).then(function(data) {
           return data.data.results;
-        }, Utilities.errorResolver);
+        });
       }
 
       function getSeverity(drugKeyword) {
@@ -59,7 +56,7 @@ angular
               }
           });
           return data.data.results;
-        }, Utilities.errorResolver);
+        });
       }
 
       function getGenders(drugKeyword) {
@@ -80,25 +77,25 @@ angular
               });
 
           return data.data.results;
-        }, Utilities.errorResolver);
+        });
       }
 
       function getCountries(drugKeyword) {
         return openFDA.adverseEvents.topCountries(drugKeyword).then(function(data) {
           return data.data.results;
-        }, Utilities.errorResolver);
+        });
       }
 
       function getEvents(drugKeyword) {
         return openFDA.adverseEvents.eventCountByDate(drugKeyword).then(function(data) {
           return data.data.results;
-        }, Utilities.errorResolver);
+        });
       }
 
       function getSymptomDefinitions(drugKeyword) {
         return reactions.reactions.getSymptomDefinition(drugKeyword).then(function(data) {
           return data.data.definitions;
-        }, Utilities.errorResolver);
+        });
       }
 
       function postSymptomDefinitions(drugKeyword) {

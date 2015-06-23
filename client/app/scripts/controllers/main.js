@@ -8,7 +8,7 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', function ($scope, $q, DashboardService) {
+  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', function ($scope, $q, DashboardService, $modal) {
 
     $scope.searchTerm;
 
@@ -36,6 +36,22 @@ angular.module('dreApp')
       $scope.definitions = [];
     };
 
+    $scope.showErrorModal = function(error) {
+
+      var modalInstance = $modal.open({
+        animation: true,
+        backdrop: 'static',
+        keyboard: false,
+        templateUrl: 'myModalContent.html',
+        controller: 'ModalInstanceCtrl',
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+    };
+
     function setDashboard(keyword) {
 
       $scope.noResults = false;
@@ -50,7 +66,7 @@ angular.module('dreApp')
           return DashboardService.getSymptomDefinitions(symptom.term);
         });
 
-      }).then(function(definition) {
+      }, errorHandler).then(function(definition) {
         $scope.definition = definition;
       });
 
@@ -63,23 +79,23 @@ angular.module('dreApp')
         });
         $scope.manufacturerCounts = manufacturerCounts;
         $scope.manufacturerNames = manufacturerNames;
-      });
+      }, errorHandler);
 
       DashboardService.getBrands(keyword).then(function (brands){
         $scope.allBrands = brands;
-      });
+      }, errorHandler);
 
       DashboardService.getSeverity(keyword).then(function (severity){
         $scope.allSeverityCount = severity;
-      });
+      }, errorHandler);
 
       DashboardService.getGenders(keyword).then(function (genders) {
         $scope.allGenderCount = genders;
-      });
+      }, errorHandler);
 
       DashboardService.getCountries(keyword).then(function (countries) {
         $scope.allCountries = countries;
-      });
+      }, errorHandler);
 
       DashboardService.getEvents(keyword).then(function (events) {
         $scope.allEvents = events;
@@ -92,7 +108,7 @@ angular.module('dreApp')
         eventDates = _.drop(eventDates, eventDates.length - 25);
         $scope.eventCounts = [eventCounts];
         $scope.eventDates = eventDates;
-      });
+      }, errorHandler);
     }
 
     function parseDate(str) {
@@ -132,7 +148,7 @@ angular.module('dreApp')
           console.log(data);
 
         }, function(error) {
-
+          if(error.status == 404) {
           // If any of GET reactions throws an error, go thru and POST this list to fill in the defintions
           _.forEach(symptoms, function(symptom, idx) {
             var defCall = DashboardService.postSymptomDefinitions(symptom.term);
@@ -153,11 +169,23 @@ angular.module('dreApp')
             });
 
           });
-
+        } else {
+          alert('Non 404 error');
+        }
         });
 
       return;
 
+    },
+    errorHandler = function(error) {
+      console.log(error);
+      if (error.status == 404){
+        console.log('404 Error');
+      } else if (error.status == 429) {
+        $scope.showErrorModal(error);
+      } else {
+        console.log(error.status)
+      }
     };
 
   }]);
