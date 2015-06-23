@@ -273,7 +273,7 @@ if(!err) {
         if(result) {
 
           var err = new Error();
-          err.status = 400;
+          err.status = 422;
           err.error = "Duplicate Reaction";
           err.message = "The reaction that you are trying to create already exists" +
                         " and cannot be created again.";
