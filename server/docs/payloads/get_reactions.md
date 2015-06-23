@@ -20,7 +20,7 @@ Below is a list URL parameters that may/must be passed to a request to this list
 | offset    | No        | `?` Query | This field skips to the position in the list that was passed (starting with 0) |
 
 ### Example Successful Response
-Below is a response to a `POST` to the `/reactions` API if non of the below error conditions has occured and everything is `200 OK`.
+Below is a response to a `GET` to the `/reactions` API if none of the below error conditions has occurred and everything is `200 OK`.
 
 ```
 {
@@ -57,7 +57,7 @@ Below is a response to a `POST` to the `/reactions` API if non of the below erro
 
 ### Error Response
 
-Below is a table showing the errors that will be returned on the endpoint if not 
+Below is a table showing the errors that could be returned on the endpoint.
 
 |Status Code | Description |
 |------------|-------------|
@@ -89,7 +89,7 @@ Below is a list URL parameters that may/must be passed to a request to this list
 | reaction  | Yes       | URL Path | This field is a URL Encoded string of the medical reaction that is being fetched |
 
 ### Example Successful Response
-Below is a response to a `POST` to the `/reactions` API if non of the below error conditions has occured and everything is `200 OK`.
+Below is a response to a `GET` to the `/reactions/:reaction` API if none of the below error conditions have occurred and everything is `200 OK`.
 
 ```
 {
@@ -121,7 +121,7 @@ Below is a response to a `POST` to the `/reactions` API if non of the below erro
 
 ### Error Response
 
-Below is a table showing the errors that will be returned on the endpoint if not 
+Below is a table showing the errors that could be returned on the endpoint. 
 
 |Status Code | Description |
 |------------|-------------|

@@ -23,7 +23,7 @@ This is the payload that should be present in the request body for the `POST` re
 ```
 
 ### Example Successful Response
-Below is a response to a `POST` to the `/reactions` API if non of the below error conditions has occured and everything is `200 OK`.
+Below is a response to a `POST` to the `/reactions` API if none of the below error conditions has occurred and everything is `200 OK`.
 
 ```
 {
@@ -55,7 +55,7 @@ Below is a response to a `POST` to the `/reactions` API if non of the below erro
 
 ### Error Response
 
-Below is a table showing the errors that will be returned on the endpoint if not 
+Below is a table showing the errors that could be returned on the endpoint.
 
 |Status Code | Description |
 |------------|-------------|
