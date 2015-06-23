@@ -51,7 +51,7 @@ router.get('/', function(req, res, next) {
         // Get results from curor
         function(callback){
           cursor.limit(req.query.limit);
-          cursor.skip(req.query.offset * req.query.limit);
+          cursor.skip(req.query.offset);
 
           cursor.toArray(function(err, result) {
             response.response = result;
