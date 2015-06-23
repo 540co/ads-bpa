@@ -88,6 +88,12 @@ angular
         });
       }
 
+      function postSymptomDefinitions(drugKeyword) {
+        return reactions.reactions.postSymptomDefinition(drugKeyword).then(function(data) {
+          return data.data.definitions;
+        });
+      }
+
       return {
         getSymptoms: getSymptoms,
         getManufacturers: getManufacturers,
@@ -96,6 +102,7 @@ angular
         getGenders: getGenders,
         getCountries: getCountries,
         getEvents: getEvents,
-        getSymptomDefinitions: getSymptomDefinitions
+        getSymptomDefinitions: getSymptomDefinitions,
+        postSymptomDefinitions: postSymptomDefinitions
       };
 }]);
