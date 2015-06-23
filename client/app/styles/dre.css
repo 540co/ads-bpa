@@ -11,22 +11,35 @@
 
 body {
     padding-top: 45px;
-    color: #727272;
+    color: #212121;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-    color: #212121;
+.splash-layer {
+    background-color: rgba(96, 125, 139, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
 #search {
     margin-bottom: 25px;
-    width: inherit;
+    width: 100%;
+}
+
+#search-wrapper {
+  margin-bottom: 100px;
+}
+
+#intro-row {
+  padding-top: 50px;
+  margin-bottom: 100px;
+}
+
+#intro-row h3 {
+  font-size: 60px;
+  letter-spacing: 3px;
+  font-weight: bold;
 }
 
 .mc {
@@ -342,4 +355,48 @@ p {
         position: relative;
         margin-right: 0;
     }
+}
+
+.footer {
+  background-color: #fff;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  color: #212121;
+}
+
+.footer h4 {
+  color: #212121;
+}
+
+.footer-icon {
+  height: 50px;
+}
+
+header{
+  position: relative;
+  width: 100%;
+  min-height: auto;
+  text-align: center;
+  color: #f8f8f8;
+  background-image: url(../images/bg-dre.jpg);
+  background-position: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+header .header-content {
+  background: rgba(33, 33, 33,0.8);
+  position: relative;
+  width: 100%;
+  text-align: center;
+  color: #f8f8f8;
+  padding-bottom: 50px;
+}
+
+#dre-title {
+  background-color: #455A64;
+  padding-left: 10px;
+  padding-right: 10px;
 }

@@ -8,6 +8,8 @@
         $("#wrapper").toggleClass("toggled");
     });
 </script>
+<div class="container-fluid">
+
 
 <div id="wrapper">
     <div id="sidebar-wrapper">
@@ -36,7 +38,7 @@
         <div ng-init="initDashboard()">
             <!-- Start search -->
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8 col-md-offset-2">
                     <div class="input-group" id="search">
                         <input type="text" class="form-control" ng-model="keyword" placeholder="Search brand name or drug (example: motrin)">
                         <span class="input-group-btn"></span>
@@ -193,3 +195,4 @@
     <!--  End page content wrapper  -->
 </div>
 <!-- End wrapper -->
+</div>
