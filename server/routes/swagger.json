@@ -125,7 +125,7 @@
         ],
         "responses": {
           "200": {
-            "description" : "OK"
+            "description": "OK"
           },
           "description": "OK (will return the updated reaction with all definitions)",
           "400": {
@@ -136,7 +136,7 @@
           }
         },
         "tags": [
-          "reaction definition"
+          "reactions"
         ]
       }
     },
@@ -175,7 +175,66 @@
           }
         },
         "tags": [
-          "reaction definition votes"
+          "reactions"
+        ]
+      }
+    },
+    "/searches": {
+      "get": {
+        "description": "Get list of search terms that have been submitted and the total count (ordered from descending order)",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The total number of reactions that will be returned (default = 25, limit = 200)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset to pagination thru the results",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "operationId": "getDRESearchMetrics",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "No results found (can occur when there is a bad offset)"
+          }
+        },
+        "tags": [
+          "searches"
+        ]
+      },
+      "post": {
+        "description": "Post search term to increase counter",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The search term- {\"search\":\"ibuprofen\"}",
+            "required": true
+          }
+        ],
+        "operationId": "postDRESearchMetrics",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - search term count was incremented"
+          }
+        },
+        "tags": [
+          "searches"
         ]
       }
     }
