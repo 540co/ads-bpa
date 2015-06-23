@@ -54,7 +54,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "The reaction term you would like created",
+            "description": "The reaction term you would like created - {\"reaction\":\"death\"}",
             "required": true
           }
         ],
@@ -98,6 +98,45 @@
         },
         "tags": [
           "reactions"
+        ]
+      }
+    },
+    "/reactions/{reaction}/definitions/{index}": {
+      "put": {
+        "description": "Get definition of specfied reaction term",
+        "parameters": [
+          {
+            "name": "reaction",
+            "in": "path",
+            "description": "The reaction term",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "index",
+            "in": "path",
+            "description": "The definition index (based upon the order shown in the GET /reaction response - starts with 0)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The vote to be increased - {\"vote\":\"up\"} or {\"vote\":\"down\"}",
+            "required": true
+          }
+        ],
+        "operationId": "updateReactionDefinitionVote",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "reaction definition votes"
         ]
       }
     }

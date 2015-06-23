@@ -23,12 +23,11 @@ This is the payload that should be present in the request body for the `POST` re
 ```
 
 ### Example Successful Response
-Below is a response to a `POST` to the `/reactions` API if non of the below error conditions has occured and everything is `200 OK`.
+Below is a response to a `POST` to the `/reactions` API if none of the below error conditions has occurred and everything is `200 OK`.
 
 ```
 {
   "meta": {
-    "last_updated": "",
     "execution_time": "0.004s",
     "total_count": 333
   },
@@ -56,12 +55,15 @@ Below is a response to a `POST` to the `/reactions` API if non of the below erro
 
 ### Error Response
 
-Below is a table showing the errors that will be returned on the endpoint if not 
+Below is a table showing the errors that could be returned on the endpoint.
 
 |Status Code | Description |
 |------------|-------------|
 | 400        | `reaction` attribute not found... required |
-| 400        | Any other root attributes other than `reaction`
+| 400        | Any other root attributes other than `reaction`|
+| 400        | Any request `Content-Type` other than `application/json` |
+| 400        | `reaction` node being anything other than a String node |
+| 422        | Duplicate `reaction` (one that already exists in the database) |
 
 
 For more information on the format of the error responses please see the [API Error Response Page](./errors.md).

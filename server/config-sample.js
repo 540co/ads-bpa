@@ -1,4 +1,4 @@
-var config = {}
+var config = {};
 
 config.mongo = "mongodb://localhost:27017/";
 config.db = "MONGO DB NAME HERE";
