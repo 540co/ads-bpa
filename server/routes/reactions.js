@@ -85,9 +85,10 @@ router.post('/', function(req, res, next) {
   // Validate that incoming request is ok... and not a duplicate
   //res.json({todo: 'post reaction definition'});
   var reaction = new Reaction();
-
+console.log(req.headers['content-type']);
   if(Object.keys(req.body).length != 1 ||
      req.body.reaction == null ||
+     req.headers['content-type'] != 'application/json' ||
      typeof req.body.reaction != "string") {
     var err = new Error();
     err.status = 400;
@@ -256,17 +257,15 @@ router.post('/', function(req, res, next) {
   // - Establish connection to mongo
   // - Check to see if reaction exists
   // - If it does not exist, find definitions and insert
-
+if(!err) {
   MongoClient.connect(mongo_url, function(err, db) {
-
     if (err) {
       var err = new Error();
       err.status = 500;
       err.error = "Internal Error";
       next(err);
     }
-
-    if (!err) {
+    else {
 
 
       findReaction(db, function(result) {
@@ -320,7 +319,8 @@ router.post('/', function(req, res, next) {
 
     }
 
- });
+   });
+ }
 
 });
 
