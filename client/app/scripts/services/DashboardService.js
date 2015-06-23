@@ -2,7 +2,7 @@
 
 angular
     .module('dreApp')
-    .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', function ($http, $q, openFDA, reactions) {
+    .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', 'Utilities', function ($http, $q, openFDA, reactions, Utilities) {
 
       function getSymptoms(drugKeyword) {
 
@@ -19,6 +19,14 @@ angular
         });
       }
 
+      function getSymptomCount(drugKeyword) {
+        return openFDA.adverseEvents.symptomCount(drugKeyword).then(function(data) {
+          return data.data.meta.results.total;
+        }, function(error) {
+          return {'count': 0};
+        });
+      }
+
       function getManufacturers(drugKeyword) {
         return openFDA.adverseEvents.topManufacturers(drugKeyword).then(function(data) {
           return data.data.results;
@@ -27,13 +35,6 @@ angular
 
       function getBrands(drugKeyword) {
         return openFDA.adverseEvents.topBrandNames(drugKeyword).then(function(data) {
-
-          // _.forEach(data.data.results, function(record) {
-          //   openFDA.label.getLabelInfoByBrand(record.term).then(function (data) {
-          //     record.label = data.data.results;
-          //   });
-          // });
-
           return data.data.results;
         });
       }
@@ -105,6 +106,7 @@ angular
 
       return {
         getSymptoms: getSymptoms,
+        getSymptomCount: getSymptomCount,
         getManufacturers: getManufacturers,
         getBrands: getBrands,
         getSeverity: getSeverity,

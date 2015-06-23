@@ -1,10 +1,19 @@
 var config = require('../config');
+var fs = require('fs');
 var express = require('express');
 var router = express.Router();
 
 // TO DO: apis.json file
 router.get('/', function(req, res, next) {
   res.json({todo: 'apis.json file'});
+});
+
+// TO DO: apis.json file
+router.get('/swagger', function(req, res, next) {
+  var swagger = JSON.parse(fs.readFileSync('./routes/swagger.json'));
+  swagger.host = config.host;
+  swagger.schemes = config.schemes;
+  res.json(swagger);
 });
 
 
