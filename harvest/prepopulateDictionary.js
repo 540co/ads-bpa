@@ -8,7 +8,7 @@ if (!process.argv[2] || !process.argv[3] || !process.argv[4] || !process.argv[5]
   console.log("---");
   console.log("dre-reaction-dictionary-warmer")
   console.log("---");
-  console.log("node prepopulateDictionary.js [dre_hostname] [openFDA_api_key] [FROM_YYYY] [TO_YYYY]");
+  console.log("node prepopulateDictionary.js [dre_reaction_uri] [openFDA_api_key] [FROM_YYYY] [TO_YYYY]");
   console.log("");
   console.log("Please refer to the README for more details.");
   console.log("---");
@@ -16,7 +16,7 @@ if (!process.argv[2] || !process.argv[3] || !process.argv[4] || !process.argv[5]
 
 } else {
 
-var dre_hostname = process.argv[2];
+var dre_reaction_uri = process.argv[2];
 var api_key = process.argv[3];
 var from_year = process.argv[4];
 var to_year = process.argv[5];
@@ -33,17 +33,22 @@ var postReactions = function (reactionmeddrapt, callback) {
 
     reaction = v.toLowerCase();
 
-    url = dre_hostname + '/api/reactions';
+    url = dre_reaction_uri;
 
     reactionbody = {'reaction' : reaction};
 
     request({method: 'POST', uri: url, json: reactionbody}, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        console.log(body.reaction + ' succesffully added to reaction directory (' + body.definitions.length + ' definitions found)');
+        console.log('['+ response.statusCode +'] ' + body.reaction + ' succesffully added to reaction directory (' + body.definitions.length + ' definitions found)');
       }
 
-      else if (!error && response.statusCode == 400) {
-        console.log('duplicate');
+      else if (!error && (response.statusCode == 400 || response.statusCode == 422)) {
+        console.log('['+ response.statusCode +'] duplicate reaction (' + response.request.uri.href + ')');
+      } else {
+        console.log('['+ response.statusCode +'] unknown error (' + response.request.uri.href + ')');
+        console.log('---');
+        console.log(body);
+        console.log('---');
       }
 
     });
@@ -170,7 +175,7 @@ async.series([
     function(callback){
       console.log('---');
       console.log('GETTING UNIQUE REACTIONS FOR EACH PAGE OF RECORDS AND POSTING TO:');
-      console.log(dre_hostname);
+      console.log(dre_reaction_uri);
       async.eachSeries(eventPageUrls, getReactions, function(err){
             callback();
           }, function(err) {
