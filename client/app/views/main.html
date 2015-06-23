@@ -50,7 +50,7 @@
                 </div>
             </div>
             <!-- End search -->
-
+        <div ng-hide="noResults">
             <div class="row">
                 <div class="col-md-6">
                     <h2 ng-show="!showFilter">Symptoms</h2>
@@ -183,8 +183,16 @@
                 </div>
             </div>
             <!-- End analytics row 3-->
-
         </div>
+        <br/>
+        <div ng-show="noResults">
+          <div class="col-md-12">
+            <div class="alert alert-danger" role="alert">
+              <strong><i class="fa fa-exclamation-triangle"></i> No Results!</strong> Your search for "{{ searchTerm }}" returned no results. Please search again.
+            </div>
+          </div>
+        </div>
+      </div>
         <!-- End container -->
         <div class="footer">
             <p><i class="fa fa-heart"></i> from the 540 team</p>
