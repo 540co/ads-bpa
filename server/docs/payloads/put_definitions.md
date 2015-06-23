@@ -1,12 +1,12 @@
 #PUT /reactions/:reaction/definitions/:index
 
-The POST definitions endpoint will be used to create a new definition on an existing DRE reaction.
+The PUT definitions endpoint will be used to vote on a definition for an existing DRE reaction.
 
 ### Example Request Header
 Here is an example header to insure the proper header values are being passed:
 
 ```
-POST /api/reactions/death/definitions HTTP/1.1
+PUT /api/reactions/death/definitions/0 HTTP/1.1
 Host: dre.540.co
 Content-Type: application/json
 
@@ -15,12 +15,12 @@ Content-Type: application/json
 
 ### URL Parameters
 
-Below is a list URL parameters that may/must be passed to a request to this list resource
+Below is a list of URL parameters that may/must be passed to a request to this list resource
 
 | Parameter | Required? | Type |  Description |
 |-----------|-----------|------|--------------|
 | reaction  | Yes        | URL Path | This field is a URL Encoded string of the medical reaction that is being fetched |
-| index     | Yes        | URL Path | This field is the index of the array in the definitions list (numerical) |
+| index     | Yes        | URL Path | This field is the index of the definitions list within the specified reaction (numerical) |
 
 
 ###Example Request Body

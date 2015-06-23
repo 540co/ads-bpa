@@ -12,7 +12,7 @@ Host: dre.540.co
 
 ### URL Parameters
 
-Below is a list URL parameters that may/must be passed to a request to this list resource
+Below is a list of URL parameters that may/must be passed to a request to this list resource
 
 | Parameter | Required? | Type |  Description |
 |-----------|-----------|------|--------------|
@@ -70,19 +70,19 @@ For more information on the format of the error responses please see the [API Er
 
 #GET /reactions/:reaction
 
-The GET reactions endpoint will be used to retrieve a list of DRE reactions.
+The GET reactions endpoint will be used to retrieve an instance of a DRE reactions.
 
 ### Example Request Header
 Here is an example header to insure the proper header values are being passed:
 
 ```
-GET /api/reactions HTTP/1.1
+GET /api/reactions/death HTTP/1.1
 Host: dre.540.co
 ```
 
 ### URL Parameters
 
-Below is a list URL parameters that may/must be passed to a request to this list resource
+Below is a list of URL parameters that may/must be passed to a request to this instance resource
 
 | Parameter | Required? | Type |  Description |
 |-----------|-----------|------|--------------|

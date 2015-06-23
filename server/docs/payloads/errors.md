@@ -6,7 +6,7 @@ Generic payload response bodies will be returned to portray any errors with the 
 | Attribute | Description |
 |-----------|-------------|
 | error     | A brief error message describing the nature of the error. |
-| message   | A more description message that gives insight into why the error may have occurred. |
+| message   | A more descriptive message that gives insight into why the error may have occurred. |
 | request_body | `DEBUG` This field echos the request body for any request that has a JSON payload.  This is only returned in the development environment.  `app['env'] == 'development'` 
 
 ### Example Request Body

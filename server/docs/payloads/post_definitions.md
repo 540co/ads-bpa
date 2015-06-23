@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ### URL Parameters
 
-Below is a list URL parameters that may/must be passed to a request to this list resource
+Below is a list of URL parameters that may/must be passed to a request to this list resource
 
 | Parameter | Required? | Type |  Description |
 |-----------|-----------|------|--------------|

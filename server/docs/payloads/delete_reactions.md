@@ -1,18 +1,18 @@
 #DELETE /reactions/:reaction
 
-The DELETE reactions endpoint will be used to delete a DRE reactions.
+The DELETE reactions endpoint will be used to delete a DRE reaction.
 
 ### Example Request Header
 Here is an example header to insure the proper header values are being passed:
 
 ```
-DELETE /api/reactions HTTP/1.1
+DELETE /api/reactions/death HTTP/1.1
 Host: dre.540.co
 ```
 
 ### URL Parameters
 
-Below is a list URL parameters that may/must be passed to a request to this list resource
+Below is a list of URL parameters that may/must be passed to a request to this endpoint.
 
 | Parameter | Required? | Type |  Description |
 |-----------|-----------|------|--------------|
