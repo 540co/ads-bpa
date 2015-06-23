@@ -20,8 +20,8 @@ It is responsible for:
 * MongoDB ([MongoDB](https://www.mongodb.org/))
 
 ### You will also need a set of API keys for:
-* The Merriam Webster API ([Merriam Webster API](http://www.dictionaryapi.com))
-* The Wordnik API
+* The [Merriam Webster API](http://www.dictionaryapi.com)
+* The [Wordnik API](https://www.wordnik.com/)
 
 # Running the application
 1. Clone this repo
