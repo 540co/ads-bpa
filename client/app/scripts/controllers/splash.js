@@ -8,10 +8,9 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('SplashCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('SplashCtrl', function ($scope, $location) {
+    $scope.search = function (keyword) {
+      //$location.path('search');
+      $location.path('search').search({'q': keyword});
+    }
   });

@@ -2,7 +2,7 @@
 
 angular
     .module('dreApp')
-    .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', 'Utilities', function ($http, $q, openFDA, reactions, Utilities) {
+    .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', function ($http, $q, openFDA, reactions) {
 
       function getSymptoms(drugKeyword) {
 
@@ -45,13 +45,13 @@ angular
           _.forEach(data.data.results, function (record) {
               switch (record.term) {
               case 1:
-                  record.term = "Serious";
+                  record.description = "Serious";
                   break;
               case 2:
-                  record.term = "Non-Serious";
+                  record.description = "Non-Serious";
                   break;
               default:
-                  record.term = "Unknown";
+                  record.description = "Unknown";
                   break;
               }
           });
@@ -65,13 +65,13 @@ angular
               _.forEach(data.data.results, function (record) {
                   switch (record.term) {
                   case 1:
-                      record.term = "Male";
+                      record.description = "Male";
                       break;
                   case 2:
-                      record.term = "Female";
+                      record.description = "Female";
                       break;
                   default:
-                      record.term = "Unknown";
+                      record.description = "Unknown";
                       break;
                   }
               });
