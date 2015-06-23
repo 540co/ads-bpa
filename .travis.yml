@@ -40,6 +40,8 @@ env:
   - secure: iKi8XFT5o+ZLvoNhCCh7K0nQwDm7RY7FRyRGm1HXYFgwSJJpKZuT7K924SN9Kq7WF8sbnr2Ob5sd1zXUPwavr8R/3533Za//cQBnx/bCRcCbD8TyjMTOTOsI/RU4dnK6Czg8uzvt3jhVMnPSdj3nkpRKCucTVotCpa6gJknNrEg75AiVcgMogUOQqzE0NdAWOFa8EizlarK+K/QunHLH2Cjz86ylx//jXoHQUw7PM6r4piItEwr1vroqf5dJkKpbQJXE1wqRMdF+9dPSQz42GyNQ2/ER16YzblD4t0n92WvbqyiXiGIwTwyw0EztOQ7rqb2yiYpfxqsF4H/C9u4pMXO9S5YmkPEimFSQEfxqhtV5hIek1RpdWhkEuV2aBrnH0UXJCAelcHSyaelFJQCEIon2PZbMQa5fnmKbsA9j/0pBTZACRzBkLn1fyEguiq78brDUZAE8MiBEX3begwvefqST2sQiimjNcql9shNBaWZvcA+OLqaoAwulwL19gUtEAwMATREbuEYihkPwN17SBKBTM8cMIFlM2dTj87hRtFxi46WlbJO2hoVwmQoPjiuCd0S9sygglQvZXtJnmNZrJ0fEUMaVeIPzDbz/mopcpW/LRLF6pWLU6Kxyiorji7ljAmbs6hL+iDUwP2PfqB2k7lCC9H0hihuFVJ0jFr1lVyE=
 after_success:
 - istanbul cover _mocha -- -R spec server/test/*.js
-- codeclimate < ./coverage/lcov.info
+- cd client
+- grunt lcovMerge
+- codeclimate < ./coverage/lcov-merge.info
 - curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST"
   https://dre.540.co/docker/deploy.php

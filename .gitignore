@@ -5,5 +5,6 @@
 **/bower_components
 **/*.log
 **/dist
+client/config.js
 server/config.js
-/coverage
+**/coverage

@@ -37,7 +37,7 @@ angular
         };
 
         var catalogEndpoint = function (catalog, resource) {
-            var reactionsApiUrl = 'http://dre.540.co/api/';
+            var reactionsApiUrl = config.reactionUrl;
 
             var catalogs = {
                 reactions: 'reactions/'

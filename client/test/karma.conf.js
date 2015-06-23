@@ -47,6 +47,17 @@ module.exports = function(config) {
     exclude: [
     ],
 
+    reporters: ['progress', 'coverage'],
+
+    preprocessors: {
+      'app/scripts/**/*.js': ['coverage']
+    },
+
+    coverageReporter: {
+      type: 'lcov',
+      dir: 'coverage/'
+    },
+
     // web server port
     port: 8080,
 
@@ -64,6 +75,7 @@ module.exports = function(config) {
 
     // Which plugins to enable
     plugins: [
+      "karma-coverage",
       "karma-phantomjs-launcher",
       "karma-jasmine"
     ],

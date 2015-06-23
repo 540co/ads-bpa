@@ -8,7 +8,7 @@ describe('Configuration', function(){
   describe('MongoDB', function(){
 
     it('should not have a hostname that is null', function(){
-      (config.mongo === null).should.not.be.true;
+      (config.mongo === null).should.eql(false);
     });
 
   });

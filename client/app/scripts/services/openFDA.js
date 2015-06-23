@@ -44,6 +44,15 @@ angular
                     url: catalogEndpoint('drugAdverseEvent', url),
                 }));
             },
+            symptomCount: function(drugKeyword) {
+              var url = '';
+              if (drugKeyword)
+                url='&search=(patient.drug.openfda.brand_name:' + encodeURIComponent(drugKeyword) + '+patient.drug.openfda.substance_name:' + encodeURIComponent(drugKeyword) + ')';
+
+                return $http(requestParams({
+                    url: catalogEndpoint('drugAdverseEvent', url),
+                }));
+            },
             topManufacturers: function (drugKeyword) {
                 var url = '&count=patient.drug.openfda.manufacturer_name.exact&limit=25';
                 if (drugKeyword)
