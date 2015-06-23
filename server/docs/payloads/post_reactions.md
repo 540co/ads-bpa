@@ -28,7 +28,6 @@ Below is a response to a `POST` to the `/reactions` API if non of the below erro
 ```
 {
   "meta": {
-    "last_updated": "",
     "execution_time": "0.004s",
     "total_count": 333
   },
@@ -61,7 +60,10 @@ Below is a table showing the errors that will be returned on the endpoint if not
 |Status Code | Description |
 |------------|-------------|
 | 400        | `reaction` attribute not found... required |
-| 400        | Any other root attributes other than `reaction`
+| 400        | Any other root attributes other than `reaction`|
+| 400        | Any request `Content-Type` other than `application/json` |
+| 400        | `reaction` node being anything other than a String node |
+| 422        | Duplicate `reaction` (one that already exists in the database) |
 
 
 For more information on the format of the error responses please see the [API Error Response Page](./errors.md).
