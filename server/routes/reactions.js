@@ -372,7 +372,31 @@ router.put('/:id', function(req, res, next) {
 
 // TO DO: Delete reaction definition
 router.delete('/:id', function(req, res, next) {
-  res.json({todo: 'delete reaction definition ' +  req.params.id});
+  MongoClient.connect(mongo_url, function(err, db) {
+
+    // Tries to find reaction in collection (returns the record if found)
+    var findReaction = function(term, db, callback) {
+      var collection = db.collection('reactions');
+      collection.findOneAndDelete({'reaction': term.toLowerCase()}, function(err, reaction) {
+        callback(reaction);
+      });
+    };
+
+    if(req.params.id == null || typeof req.params.id == "object") {
+      var err = new Error();
+      err.status = 500;
+      err.error = "Unknown Server Error";
+      err.message = "Please retry your request again or contact us if the"
+                    + " problem persists";
+      next(err);
+    }
+
+    findReaction(decodeURIComponent(req.params.id.toLowerCase()), db, function(result) {
+      res.json();
+    });
+
+    db.close();
+  });
 });
 
 
