@@ -45,3 +45,5 @@ after_success:
 - codeclimate < ./coverage/lcov-merge.info
 - curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST"
   https://dre.540.co/docker/deploy.php
+- curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST"
+  https://dre-dev.540.co/docker/deploy.php

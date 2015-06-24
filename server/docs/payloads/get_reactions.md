@@ -25,31 +25,27 @@ Below is a response to a `GET` to the `/reactions` API if none of the below erro
 ```
 {
   "meta": {
-    "execution_time": "0.004s",
     "limit": 25,
     "offset": 0,
-    "total_count": 333
+    "total_count": 79,
+    "execution_time": "0.008s"
   },
   "data": [
     {
-      "reaction": "<reaction>",
       "definitions": [
         {
-          "definition": "<text>",
-          "source": "<source>",
-          "created_at": "yyyy-mm-dd hh:mm:ss",
-          "created_by": "dre-app",
           "votes": {
-            "up": 1,
-            "down": 4
-           }
-        }
+            "ups": 0,
+            "downs": 0
+          },
+          "definition": "Physical or mental weariness resulting from exertion.",
+          "source": "wordnik.com",
+          "created_at": 1435064639523,
+          "created_by": ""
+        },
         ...
-      ],
-      "created_at": "yyyy-mm-dd hh:mm:ss",
-      "created_by": "dre-harvester"
+      ]
     }
-    ...
   ]
 }
 ```
@@ -62,6 +58,7 @@ Below is a table showing the errors that could be returned on the endpoint.
 |Status Code | Description |
 |------------|-------------|
 | 400        | Anything other than `application/json` is requested in the `Accept` header |
+| 404        | Not found (will occur if offset is set to less than zero) |
 
 
 For more information on the format of the error responses please see the [API Error Response Page](./errors.md).
@@ -121,7 +118,7 @@ Below is a response to a `GET` to the `/reactions/:reaction` API if none of the 
 
 ### Error Response
 
-Below is a table showing the errors that could be returned on the endpoint. 
+Below is a table showing the errors that could be returned on the endpoint.
 
 |Status Code | Description |
 |------------|-------------|
@@ -130,4 +127,3 @@ Below is a table showing the errors that could be returned on the endpoint.
 
 
 For more information on the format of the error responses please see the [API Error Response Page](./errors.md).
-

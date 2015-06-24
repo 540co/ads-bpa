@@ -19,6 +19,14 @@ angular
         });
       }
 
+      function getSymptomCount(drugKeyword) {
+        return openFDA.adverseEvents.symptomCount(drugKeyword).then(function(data) {
+          return data.data.meta.results.total;
+        }, function(error) {
+          return {'count': 0};
+        });
+      }
+
       function getManufacturers(drugKeyword) {
         return openFDA.adverseEvents.topManufacturers(drugKeyword).then(function(data) {
           return data.data.results;
@@ -27,13 +35,6 @@ angular
 
       function getBrands(drugKeyword) {
         return openFDA.adverseEvents.topBrandNames(drugKeyword).then(function(data) {
-
-          // _.forEach(data.data.results, function(record) {
-          //   openFDA.label.getLabelInfoByBrand(record.term).then(function (data) {
-          //     record.label = data.data.results;
-          //   });
-          // });
-
           return data.data.results;
         });
       }
@@ -44,13 +45,13 @@ angular
           _.forEach(data.data.results, function (record) {
               switch (record.term) {
               case 1:
-                  record.term = "Serious";
+                  record.description = "Serious";
                   break;
               case 2:
-                  record.term = "Non-Serious";
+                  record.description = "Non-Serious";
                   break;
               default:
-                  record.term = "Unknown";
+                  record.description = "Unknown";
                   break;
               }
           });
@@ -64,13 +65,13 @@ angular
               _.forEach(data.data.results, function (record) {
                   switch (record.term) {
                   case 1:
-                      record.term = "Male";
+                      record.description = "Male";
                       break;
                   case 2:
-                      record.term = "Female";
+                      record.description = "Female";
                       break;
                   default:
-                      record.term = "Unknown";
+                      record.description = "Unknown";
                       break;
                   }
               });
@@ -105,6 +106,7 @@ angular
 
       return {
         getSymptoms: getSymptoms,
+        getSymptomCount: getSymptomCount,
         getManufacturers: getManufacturers,
         getBrands: getBrands,
         getSeverity: getSeverity,

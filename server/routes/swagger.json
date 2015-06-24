@@ -4,10 +4,10 @@
     "version": "1.0.0",
     "title": "DRE Reaction Definition Lookup"
   },
-  "host": "dre.540.co",
+  "host": "",
   "basePath": "/api",
   "schemes": [
-    "https"
+    ""
   ],
   "consumes": [
     "application/json"
@@ -42,6 +42,12 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Invalid header (requires application/json)"
+          },
+          "404": {
+            "description": "Reactions not found (will occur it an offset < 0 is provided)"
           }
         },
         "tags": [
@@ -94,6 +100,39 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Invalid header (requires application/json)"
+          },
+          "404": {
+            "description": "Reaction term definitions not found"
+          }
+        },
+        "tags": [
+          "reactions"
+        ]
+      },
+      "delete": {
+        "description": "Delete specific reaction term from dictionary including all definitons and votes",
+        "parameters": [
+          {
+            "name": "reaction",
+            "in": "path",
+            "description": "The reaction term",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "operationId": "deleteReaction",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete was successful (no additional content will be provided in response body)"
+          },
+          "400": {
+            "description": "Invalid header (requires application/json)"
           }
         },
         "tags": [
@@ -125,18 +164,18 @@
         ],
         "responses": {
           "200": {
-            "description" : "OK"
+            "description": "OK"
           },
           "description": "OK (will return the updated reaction with all definitions)",
           "400": {
             "description": "bad request (missing attributes, bad content-type)"
           },
           "422": {
-            "description": "duplicate definition"
+            "description": "duplicate definition provide (no definition will be added)"
           }
         },
         "tags": [
-          "reaction definition"
+          "reactions"
         ]
       }
     },
@@ -172,10 +211,78 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad request (missing attributes, bad content-type)"
+          },
+          "404": {
+            "description": "Reaction could not be found"
           }
         },
         "tags": [
-          "reaction definition votes"
+          "reactions"
+        ]
+      }
+    },
+    "/searches": {
+      "get": {
+        "description": "Get list of search terms that have been submitted and the total count (ordered from descending order)",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The total number of reactions that will be returned (default = 25, limit = 200)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset to pagination thru the results",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "operationId": "getDRESearchMetrics",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "No results found (can occur when there is a bad offset)"
+          }
+        },
+        "tags": [
+          "searches"
+        ]
+      },
+      "post": {
+        "description": "Post search term to increase counter",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The search term- {\"search\":\"ibuprofen\"}",
+            "required": true
+          }
+        ],
+        "operationId": "postDRESearchMetrics",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - search term count was incremented"
+          },
+          "400": {
+            "description": "bad request (missing attributes, bad content-type)"
+          }
+        },
+        "tags": [
+          "searches"
         ]
       }
     }
