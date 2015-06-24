@@ -54,6 +54,16 @@ angular
             return reactionsApiUrl + catalogs[catalog];
         };
 
+        var putEndpoint = function (catalog, drugKeyword, index) {
+          var reactionsApiUrl = config.reactionUrl;
+
+          var catalogs = {
+              reactions: 'reactions/'
+          };
+
+          return reactionsApiUrl + catalogs[catalog] + drugKeyword + '/definitions/' + index;
+        };
+
 
         var reactions = {
             getSymptomDefinition: function (drugKeyword) {
@@ -65,11 +75,25 @@ angular
             },
 
             postSymptomDefinition: function (drugKeyword) {
-                var body = {"reaction":drugKeyword}
+                var body = {"reaction":drugKeyword};
 
                 return $http(requestParams({
                     method:'POST', url: postEndpoint('reactions'), headers: {'Content-Type': 'application/json'}, data: body
                 }));
+            },
+            postNewDefinition: function (drugKeyword, newDefinition) {
+              var body = { "definition": newDefinition };
+
+              return $http(requestParams({
+                  method:'POST', url: postEndpoint('reactions') + '/' + drugKeyword + 'definitions', headers: {'Content-Type': 'application/json'}, data: body
+              }));
+            },
+            putDefinitionVote: function (drugKeyword, vote, index) {
+              var body = {"vote": vote};
+
+              return $http(requestParams({
+                  method:'PUT', url: putEndpoint('reactions', drugKeyword, index), headers: {'Content-Type': 'application/json'}, data: body
+              }));
             }
         };
 

@@ -67,6 +67,17 @@ angular.module('dreApp')
       });
     };
 
+    $scope.vote = function(keyword, vote, definitionIndex, symptomIndex) {
+      $scope.definitionIndex = definitionIndex;
+      $scope.symptomIndex = symptomIndex;
+      //alert('Voted: ' + vote + ' for ' + keyword + ' at definition index ' + definitionIndex + ' symptom index ' + symptomIndex);
+      DashboardService.putDefinitionVote(keyword, vote, definitionIndex).then(function(data) {
+        $scope.definitions[$scope.symptomIndex][$scope.definitionIndex] = data[$scope.definitionIndex];
+      }, function(error) {
+        console.log(error);
+      })
+    };
+
     function setDashboard(keyword) {
 
       $scope.noResults = false;
@@ -160,7 +171,6 @@ angular.module('dreApp')
           }, data);
 
           $scope.definitions = data;
-          console.log(data);
 
         }, function(error) {
           if(error.status == 404) {

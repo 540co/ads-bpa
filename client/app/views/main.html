@@ -78,10 +78,20 @@
                                     <div class="def-container flex-center">
                                         <div class="def-content">
                                             <div class="def" ng-show="definitions[$index].length == 0" ng-mouseenter="show = true" ng-mouseleave="show = false">
-                                                NO DEFINITION FOUND <i ng-show="show" class="fa fa-thumbs-o-up"></i> <i class="fa fa-thumbs-o-down" ng-show="show"></i>
+                                                NO DEFINITION FOUND
                                             </div>
                                             <div class="def" ng-repeat="definition in definitions[$index]" ng-mouseenter="show = true" ng-mouseleave="show = false">
-                                                  {{ $index + 1 }} - {{ definition.definition }} <i ng-show="show" class="fa fa-thumbs-o-up"></i> <i class="fa fa-thumbs-o-down" ng-show="show"></i>
+                                                  {{ $index + 1 }} - {{ definition.definition }}
+                                                  <div class="secondary-text def-info-container">
+                                                    <span ng-repeat="(key, value) in definition.votes">
+                                                      {{ value }}
+                                                    <i ng-show="key=='ups'" class="fa fa-thumbs-o-up" ng-click="vote('{{ symptom.term }}', 'up', $parent.$index, $parent.$parent.$index)"
+                                                     ng-class="{ 'voter': hover }" ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                                                    <i ng-show="key=='downs'" class="fa fa-thumbs-o-down" ng-click="vote('{{ symptom.term }}', 'down', $parent.$index, $parent.$parent.$index)"
+                                                     ng-class="{ 'voter': hover }" ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                                                   </span>
+                                                   <span class="pull-right source-text">Source: {{ definition.source }}</span>
+                                                 </div>
                                             </div>
                                         </div>
                                     </div>
