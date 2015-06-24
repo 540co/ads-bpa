@@ -110,6 +110,12 @@ angular
         });
       }
 
+      function postSearchTerm(drugKeyword) {
+        return reactions.reactions.postSearchTerm(drugKeyword).then(function(data) {
+          return data;
+        });
+      }
+
       function putDefinitionVote(drugKeyword, vote, index) {
         return reactions.reactions.putDefinitionVote(drugKeyword, vote, index).then(function(data) {
           return data.data.definitions;
@@ -128,6 +134,7 @@ angular
         getSymptomDefinitions: getSymptomDefinitions,
         postSymptomDefinitions: postSymptomDefinitions,
         postNewDefinition: postNewDefinition,
+        postSearchTerm: postSearchTerm,
         putDefinitionVote: putDefinitionVote
       };
 }]);

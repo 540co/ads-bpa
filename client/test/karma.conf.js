@@ -56,7 +56,10 @@ module.exports = function(config) {
       'bower_components/angulartics/src/angulartics-woopra.js',
       'bower_components/angulartics/src/angulartics-marketo.js',
       'bower_components/angulartics/src/angulartics-intercom.js',
+<<<<<<< HEAD
       'bower_components/ngDialog/js/ngDialog.js',
+=======
+>>>>>>> origin/reactions_crowd_source
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

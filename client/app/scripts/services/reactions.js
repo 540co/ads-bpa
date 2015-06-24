@@ -49,7 +49,8 @@ angular
             var reactionsApiUrl = config.reactionUrl;
 
             var catalogs = {
-                reactions: 'reactions'
+                reactions: 'reactions',
+                search: 'searches'
             };
             return reactionsApiUrl + catalogs[catalog];
         };
@@ -73,12 +74,18 @@ angular
                     url: catalogEndpoint('reactions', searchTerm),
                 }));
             },
-
             postSymptomDefinition: function (drugKeyword) {
                 var body = {"reaction":drugKeyword};
 
                 return $http(requestParams({
                     method:'POST', url: postEndpoint('reactions'), headers: {'Content-Type': 'application/json'}, data: body
+                }));
+            },
+            postSearchTerm: function (drugKeyword) {
+                var body = {"search":drugKeyword};
+
+                return $http(requestParams({
+                    method:'POST', url: postEndpoint('search'), headers: {'Content-Type': 'application/json'}, data: body
                 }));
             },
             postNewDefinition: function (drugKeyword, newDefinition) {
