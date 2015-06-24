@@ -110,9 +110,9 @@ angular
         });
       }
 
-      function getSearchTerms(drugKeyword) {
+      function getSearchTerms() {
         return reactions.reactions.getSearchTerm().then(function(data) {
-          return data.data;
+          return data.data.data;
         });
       }
 
@@ -137,6 +137,7 @@ angular
         getGenders: getGenders,
         getCountries: getCountries,
         getEvents: getEvents,
+        getSearchTerms: getSearchTerms,
         getSymptomDefinitions: getSymptomDefinitions,
         postSymptomDefinitions: postSymptomDefinitions,
         postNewDefinition: postNewDefinition,
