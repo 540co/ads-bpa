@@ -43,8 +43,11 @@ Below is a response to a `GET` to the `/reactions` API if none of the below erro
           "created_at": 1435064639523,
           "created_by": ""
         },
-        {
         ...
+      ]
+    }
+  ]
+}
 ```
 
 
@@ -115,7 +118,7 @@ Below is a response to a `GET` to the `/reactions/:reaction` API if none of the 
 
 ### Error Response
 
-Below is a table showing the errors that could be returned on the endpoint. 
+Below is a table showing the errors that could be returned on the endpoint.
 
 |Status Code | Description |
 |------------|-------------|
@@ -124,4 +127,3 @@ Below is a table showing the errors that could be returned on the endpoint.
 
 
 For more information on the format of the error responses please see the [API Error Response Page](./errors.md).
-
