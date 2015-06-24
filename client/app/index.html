@@ -16,7 +16,6 @@
   <!-- endbuild -->
   <!-- build:css styles/main.css -->
   <link rel="stylesheet" href="styles/bootswatch.css" media="screen">
-  <link rel="stylesheet" href="styles/bootstrap-switch.min.css" media="screen">
   <link rel="stylesheet" href="styles/dre.css" media="screen">
   <!-- endbuild -->
 
@@ -62,8 +61,8 @@
         r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
     }(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-XXXXX-X');
-    ga('send', 'pageview');
+    ga('create', 'UA-39336767-7', 'auto');
+    // ga('send', 'pageview');        coded out for angular-ga
   </script>
 
   <!-- build:js(.) scripts/vendor.js -->
@@ -83,6 +82,7 @@
   <script src="bower_components/Chart.js/Chart.js"></script>
   <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/angulartics/dist/angulartics-ga.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -97,7 +97,6 @@
   <script src="scripts/services/DashboardService.js"></script>
   <script src="scripts/services/Utilities.js"></script>
   <script src="scripts/bootswatch.js"></script>
-  <script src="scripts/bootstrap-switch.min.js"></script>
   <script src="scripts/config.js"></script>
   <!-- endbuild -->
 
