@@ -72,11 +72,11 @@
                                     <div class="term-container">
                                       {{ symptom.term }} ({{ symptom.percentage }})
                                       <div class="back-add-reaction">
-                                        <i class="fa fa-plus accent-color" ng-click="showDefinitionModal()"></i>
+                                        <i class="fa fa-plus accent-color"></i>
                                       </div>
                                     </div>
                                     <div class="def-container flex-center">
-                                        <div class="def-content">                                      
+                                        <div class="def-content">
                                             <div class="def" ng-show="definitions[$index].length == 0" ng-mouseenter="show = true" ng-mouseleave="show = false">
                                                 NO DEFINITION FOUND <i ng-show="show" class="fa fa-thumbs-o-up"></i> <i class="fa fa-thumbs-o-down" ng-show="show"></i>
                                             </div>
@@ -210,20 +210,6 @@
     <p class="text-center"><i class="fa fa-5x fa-spinner fa-pulse"></i></p>
     <br>
     <p>For more information about the API limits, visit <a href="https://open.fda.gov/api/reference/#authentication">here</a>. </p>
-  </div>
-</script>
-
-
-<script type="text/ng-template" id="myModalDefinitionContent.html">
-  <div class="modal-header">
-    <h3 class="modal-title">Add Your Definition Here!</h3>
-  </div>
-  <div class="modal-body">
-
-    <p>Know a better way to explain the med term? Please provide your definition:</p>
-    <textarea class="form-control" rows="3"></textarea>
-    <br>
-    <button type="submit" class="btn btn-primary">Submit</button>
   </div>
 </script>
 
