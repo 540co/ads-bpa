@@ -71,7 +71,7 @@
                                 <div class="mc mc-default mc-text-back">
                                     <div class="term-container">
                                       {{ symptom.term }} ({{ symptom.percentage }})
-                                      <div class="back-add-reaction" ng-click="openConfirm('{{ symptom.term }}')">
+                                      <div class="back-add-reaction" ng-click="openConfirm('{{ symptom.term }}', $index)">
                                         <i class="fa fa-plus accent-color"></i>
                                       </div>
                                     </div>
@@ -228,7 +228,7 @@
         <p><textarea class="full" ng-model="newDefinition" /></p>
     </div>
     <div class="ngdialog-buttons">
-        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(newDefinition)">Confirm</button>
+        <button type="button" class="ngdialog-button btn-dre" ng-click="confirm(newDefinition)">Add</button>
         <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('button')">Cancel</button>
     </div>
 </script>

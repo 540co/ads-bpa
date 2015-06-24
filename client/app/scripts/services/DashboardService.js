@@ -106,7 +106,7 @@ angular
 
       function postNewDefinition(drugKeyword, definition) {
         return reactions.reactions.postNewDefinition(drugKeyword, definition).then(function(data) {
-          return data;
+          return data.data.definitions;
         });
       }
 

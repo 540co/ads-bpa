@@ -47,14 +47,21 @@ angular.module('dreApp')
       $scope.definitions = [];
     };
 
-    $scope.openConfirm = function (reaction) {
+    $scope.openConfirm = function (reaction, symptomIndex) {
       $scope.selectedDefinition = reaction;
+      $scope.updateSymptomIndex = symptomIndex;
       ngDialog.openConfirm({
         template: 'definitionModalDialog',
         controller: 'DefinitionModalCtrl',
         scope: $scope
       }).then(function (newDefinition) {
         console.log('Post to new definition call:  {"' + $scope.selectedDefinition + '": "' + newDefinition +'"}');
+        DashboardService.postNewDefinition($scope.selectedDefinition, newDefinition).then(function(data) {
+          console.log(data);
+          $scope.definitions[$scope.updateSymptomIndex] = data;
+        }, function(error) {
+          console.log(error);
+        });
       }, function (reason) {
         //console.log('Modal promise rejected. Reason: ', reason);
       });

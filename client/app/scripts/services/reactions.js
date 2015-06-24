@@ -92,7 +92,7 @@ angular
               var body = { "definition": newDefinition };
 
               return $http(requestParams({
-                  method:'POST', url: postEndpoint('reactions') + '/' + drugKeyword + 'definitions', headers: {'Content-Type': 'application/json'}, data: body
+                  method:'POST', url: postEndpoint('reactions') + '/' + drugKeyword + '/definitions', headers: {'Content-Type': 'application/json'}, data: body
               }));
             },
             putDefinitionVote: function (drugKeyword, vote, index) {
