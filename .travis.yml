@@ -6,7 +6,6 @@ branches:
   only:
   - master
   - develop
-  - code_coverage
 cache:
   directories:
   - node_modules
