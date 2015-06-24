@@ -26,16 +26,12 @@ angular.module('dreApp')
       $scope.noResults = false;
     };
 
-    $scope.homeSearch = function(keyword) {
-      $scope.getResults(keyword);
-
-      $location.path('search');
-    }
-
     $scope.getResults = function(keyword) {
       $scope.showFilter = true;
       $location.search({'q': keyword});
       var countPromise = DashboardService.getSymptomCount(keyword);
+
+      DashboardService.postSearchTerm(keyword);
 
       $q.all([countPromise]).then(function (data) {
         if(data > 0)
