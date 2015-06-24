@@ -59,7 +59,6 @@ body {
 .mc-text-back {
     color: #212121;
     word-wrap: break-word;
-    text-transform: uppercase;
 }
 
 .term-container {
@@ -200,10 +199,10 @@ body {
     -moz-transform-style: preserve-3d;
     -opera-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    -webkit-transition: 0.5s;
-    -moz-transition: 0.5s;
-    -opera-transition: 0.5s;
-    transition: 0.5s;
+    -webkit-transition: 1s;
+    -moz-transition: 1s;
+    -opera-transition: 1s;
+    transition: 1s;
 }
 
 .flip .card .face {
@@ -224,32 +223,26 @@ body {
     cursor: pointer;
 }
 
+.back-flip-icon {
+    cursor: pointer;
+    position: absolute;
+    opacity: .6;
+    bottom: 5px;
+    right: 5px;
+}
+
+.back-add-reaction {
+    cursor: pointer;
+    position: absolute;
+    top: 6px;
+    right: 10px;
+}
+
 .flip .card .back {
     -webkit-transform: rotatex(-180deg);
     -moz-transform: rotatex(-180deg);
     -opera-transform: rotatex(-180deg);
     transform: rotatex(-180deg);
-    cursor: pointer;
-}
-
-/*!
- * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
-
-/* Toggle Styles */
-
-#wrapper {
-    padding-left: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-
-#wrapper.toggled {
-    padding-left: 200px;
 }
 
 #sidebar-wrapper {
@@ -260,15 +253,8 @@ body {
     height: 100%;
     margin-left: -200px;
     overflow-y: auto;
-    background: #607D8B;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-    width: 200px;
+    background: #fff;
+    border-right: 1px solid #B6B6B6;
 }
 
 #page-content-wrapper {
@@ -301,12 +287,12 @@ body {
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #ffffff;
+    color: #212121;
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
+    color: #212121;
     background: rgba(255,255,255,0.2);
 }
 
@@ -322,11 +308,11 @@ body {
 }
 
 .sidebar-nav > .sidebar-brand a {
-    color: #ffffff;
+    color: #212121;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
+    color: #212121;
     background: none;
 }
 
@@ -369,7 +355,7 @@ body {
 }
 
 .footer-icon {
-  height: 50px;
+  height: 40px;
 }
 
 header{

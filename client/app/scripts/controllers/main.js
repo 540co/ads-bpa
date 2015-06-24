@@ -51,6 +51,21 @@ angular.module('dreApp')
       $scope.definitions = [];
     };
 
+    $scope.showDefinitionModal = function(){
+      var modalInstance = $modal.open({
+        animation: true,
+        backdrop: 'static',
+        keyboard: false,
+        templateUrl: 'myModalDefinitionContent.html',
+        controller: 'ModalInstanceCtrl',
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+    };
+
     $scope.showErrorModal = function(error) {
 
       var modalInstance = $modal.open({
