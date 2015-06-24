@@ -9,6 +9,12 @@ Kickoff of agile delivery services development challenge
 #Demo
 Link to be added
 
+#Architecture
+
+![Architecture Diagram](./server/docs/architecture/architecture_diagram)
+
+For more details on various architectural documents and other documentation, [click here](./server/docs/)
+
 #Description
 750 words or less project Description
 
