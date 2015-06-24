@@ -18,7 +18,6 @@
     "jade": "~1.9.2",
     "mongodb": "^2.0.34",
     "morgan": "~1.5.3",
-    "newrelic": "*",
     "request": "^2.58.0",
     "serve-favicon": "~2.2.1",
     "should": "^7.0.1",
