@@ -8,7 +8,7 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', function ($scope, $q, DashboardService, $modal, $location) {
+  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', 'ngDialog', function ($scope, $q, DashboardService, $modal, $location, ngDialog) {
 
     $scope.searchTerm;
 
@@ -50,6 +50,19 @@ angular.module('dreApp')
       $scope.searchTerm = keyword;
       $scope.definitions = [];
     };
+
+    $scope.openConfirm = function (reaction) {
+      $scope.selectedDefinition = reaction;
+      ngDialog.openConfirm({
+        template: 'definitionModalDialog',
+        controller: 'DefinitionModalCtrl',
+        scope: $scope
+      }).then(function (newDefinition) {
+        console.log('Post to new definition call:  {"' + $scope.selectedDefinition + '": "' + newDefinition +'"}');
+      }, function (reason) {
+        //console.log('Modal promise rejected. Reason: ', reason);
+      });
+   };
 
     $scope.showErrorModal = function(error) {
 
