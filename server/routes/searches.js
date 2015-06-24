@@ -51,8 +51,11 @@ router.post('/', function(req, res, next) {
           var endTime = new Date().getTime();
           response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
 
-          // The find and upsert capability starts the first count at 0, so response is incremented by 1 before responding to API consumer
-          if (searchDocument === null || !searchDocument.value.count) {
+          // The find and upsert capability starts the first count at 0, so
+          // response is incremented by 1 before responding to API consumer
+          if (searchDocument === null ||
++             searchDocument.value === null ||
++             !searchDocument.value.count) {
             response.data.search = search.search;
             response.data.count = 1;
 
