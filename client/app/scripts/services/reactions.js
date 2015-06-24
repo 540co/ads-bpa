@@ -40,7 +40,8 @@ angular
             var reactionsApiUrl = config.reactionUrl;
 
             var catalogs = {
-                reactions: 'reactions/'
+                reactions: 'reactions/',
+                search: 'searches'
             };
             return reactionsApiUrl + catalogs[catalog] + resource;
         };
@@ -79,6 +80,13 @@ angular
 
                 return $http(requestParams({
                     method:'POST', url: postEndpoint('reactions'), headers: {'Content-Type': 'application/json'}, data: body
+                }));
+            },
+            getSearchTerm: function () {
+                var limit = '?limit=100';
+
+                return $http(requestParams({
+                    url: catalogEndpoint('search', limit),
                 }));
             },
             postSearchTerm: function (drugKeyword) {

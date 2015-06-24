@@ -110,6 +110,12 @@ angular
         });
       }
 
+      function getSearchTerms() {
+        return reactions.reactions.getSearchTerm().then(function(data) {
+          return data.data.data;
+        });
+      }
+
       function postSearchTerm(drugKeyword) {
         return reactions.reactions.postSearchTerm(drugKeyword).then(function(data) {
           return data;
@@ -131,6 +137,7 @@ angular
         getGenders: getGenders,
         getCountries: getCountries,
         getEvents: getEvents,
+        getSearchTerms: getSearchTerms,
         getSymptomDefinitions: getSymptomDefinitions,
         postSymptomDefinitions: postSymptomDefinitions,
         postNewDefinition: postNewDefinition,
