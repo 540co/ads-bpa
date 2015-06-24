@@ -11,9 +11,10 @@ Link to be added
 
 #Architecture
 
+For more details on various architectural documents and other documentation, [click here](./server/docs/)
+
 ![Architecture Diagram](./server/docs/architecture/architecture_diagram.png)
 
-For more details on various architectural documents and other documentation, [click here](./server/docs/)
 
 #Description
 750 words or less project Description
