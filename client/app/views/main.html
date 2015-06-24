@@ -71,7 +71,7 @@
                                 <div class="mc mc-default mc-text-back">
                                     <div class="term-container">
                                       {{ symptom.term }} ({{ symptom.percentage }})
-                                      <div class="back-add-reaction">
+                                      <div class="back-add-reaction" ng-click="openConfirm('{{ symptom.term }}', $index)">
                                         <i class="fa fa-plus accent-color"></i>
                                       </div>
                                     </div>
@@ -221,6 +221,16 @@
     <br>
     <p>For more information about the API limits, visit <a href="https://open.fda.gov/api/reference/#authentication">here</a>. </p>
   </div>
+</script>
+<script type="text/ng-template" id="definitionModalDialog">
+    <div class="ngdialog-message">
+        <h3>Add new definition for {{ selectedDefinition }}</h3>
+        <p><textarea class="full" ng-model="newDefinition" /></p>
+    </div>
+    <div class="ngdialog-buttons">
+        <button type="button" class="ngdialog-button btn-dre" ng-click="confirm(newDefinition)">Add</button>
+        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('button')">Cancel</button>
+    </div>
 </script>
 <!-- End wrapper -->
 </div>
