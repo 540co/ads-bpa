@@ -110,6 +110,12 @@ angular
         });
       }
 
+      function getSearchTerms(drugKeyword) {
+        return reactions.reactions.getSearchTerm().then(function(data) {
+          return data.data;
+        });
+      }
+
       function postSearchTerm(drugKeyword) {
         return reactions.reactions.postSearchTerm(drugKeyword).then(function(data) {
           return data;
