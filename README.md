@@ -11,7 +11,7 @@ Link to be added
 
 #Architecture
 
-![Architecture Diagram](./server/docs/architecture/architecture_diagram)
+![Architecture Diagram](./server/docs/architecture/architecture_diagram.png)
 
 For more details on various architectural documents and other documentation, [click here](./server/docs/)
 
