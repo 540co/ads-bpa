@@ -6,7 +6,7 @@ var _ = require('lodash');
 
 var router = express.Router();
 
-var MongoClient = require('mongodb').MongoClient
+var MongoClient = require('mongodb').MongoClient;
 var mongo_url = config.mongo + config.db;
 
 require('../models/search.js');
@@ -16,10 +16,10 @@ require('../models/response.js');
 router.post('/', function(req, res, next) {
 
   var startTime = new Date().getTime();
-  var response = new Response;
+  var response = new Response();
 
   // ensure proper content type
-  if (req.headers['content-type'] != 'application/json') {
+  if (req.headers['content-type'] !== 'application/json') {
     var err = new Error();
     err.status = 400;
     err.error = "Invalid content type";
@@ -35,7 +35,7 @@ router.post('/', function(req, res, next) {
       next(err);
     } else {
 
-      var search = new Search;
+      var search = new Search();
 
       search.search = req.body.search;
 
@@ -75,7 +75,7 @@ router.post('/', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
 
-    var response = new Response;
+    var response = new Response();
     var startTime = new Date().getTime();
 
     if (!req.query.limit) {req.query.limit = 25;} else {req.query.limit = parseInt(req.query.limit);}
@@ -88,7 +88,11 @@ router.get('/', function(req, res, next) {
       req.query.limit = 200;
     }
 
-    if (!req.query.offset) {req.query.offset = 0;} else {req.query.offset = parseInt(req.query.offset);}
+    if (!req.query.offset) {
+      req.query.offset = 0;
+    } else {
+      req.query.offset = parseInt(req.query.offset);
+    }
 
     var findAll = function(db, callback) {
 
@@ -136,7 +140,7 @@ router.get('/', function(req, res, next) {
 
            // ... then remove the _id keys from the results and send response back
             _.forEach(response.data, function(v, k) {
-              delete response.data[k]['_id'];
+              delete response.data[k]._id;
             })
 
             var endTime = new Date().getTime();
@@ -145,14 +149,11 @@ router.get('/', function(req, res, next) {
             res.json(response);
             db.close();
 
-
           }
 
       });
 
-
     }
-
 
     MongoClient.connect(mongo_url, function(err, db) {
       findAll(db, function() {
@@ -160,14 +161,6 @@ router.get('/', function(req, res, next) {
 
       });
     });
-
-
-
-
-
-
-
-
 
 });
 
