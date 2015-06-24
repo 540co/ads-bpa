@@ -29,6 +29,7 @@ app.use('/api/reactions', reactions);
 app.use('/api/searches', searches);
 
 app.use('/', express.static(__dirname + '/../client/dist'));
+app.use('/public', express.static(__dirname + '/public'));
 app.use('/apidocs', express.static(__dirname + '/swagger'));
 
 
