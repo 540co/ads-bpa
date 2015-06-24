@@ -9,6 +9,7 @@ To see all of the architecture diagrams, please browse the table for the diagram
 | Diagram | Description |
 |---------|-------------|
 | [Architecture Diagram](./architecture/architecture_diagram.png) | This diagram shows the interoperability of components (internal and external) including the ports used for communication (also shown below) |
+| [Continuous Integration and Deployment](./architecture/continuous_integration_deployment.png) | This diagram shows the code management process including continuous integration, continuous deployment, and continuous monitoring. 
 
 ![Architecture Diagram](./architecture/architecture_diagram.png)
 
