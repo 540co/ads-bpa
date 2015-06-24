@@ -19,7 +19,7 @@ Below is a list of URL parameters that may/must be passed to a request to this e
 | reaction  | Yes       | URL Path | This field is a URL Encoded string of the medical reaction that is being deleted |
 
 ### Example Successful Response
-Below is a response to a `DELETE` to the `/reactions/:reaction` API if none of the below error conditions has occurred and everything is `204 OK`.  The response from a successful `DELETE` is empty.
+Below is a response to a `DELETE` to the `/reactions/:reaction` API if none of the below error conditions has occurred and everything is `204 No Content`.  The response from a successful `DELETE` is empty.
 ```
 
 ```
