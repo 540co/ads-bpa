@@ -44,7 +44,8 @@ after_success:
 - grunt lcovMerge
 - sed -i -e 's/^SF:\.\/app\/\(.*\)$/SF:\.\/client\/app\/\1/g' ./coverage/lcov-merge.info
 - sed -i -e 's/^SF:.*\/server\/\(.*\)$/SF:\.\/server\/\1/g' ./coverage/lcov-merge.info
-- codeclimate < ./coverage/lcov-merge.info
+- cd ..
+- codeclimate < ./client/coverage/lcov-merge.info
 - curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST"
   https://dre.540.co/docker/deploy.php
 - curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST"
