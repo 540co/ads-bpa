@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var reactions = require('./routes/reactions');
+var searches = require('./routes/searches');
 
 var app = express();
 
@@ -25,10 +26,11 @@ app.use(cookieParser());
 
 app.use('/api', index);
 app.use('/api/reactions', reactions);
+app.use('/api/searches', searches);
 
 app.use('/', express.static(__dirname + '/../client/dist'));
 app.use('/apidocs', express.static(__dirname + '/swagger'));
-app.use('/swagger', express.static(__dirname + '/public/swagger.json'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

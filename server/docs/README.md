@@ -2,6 +2,18 @@
 
 This directory houses any of the documentation that supports the development of the server side of DRE.
 
+###Architecture
+
+To see all of the architecture diagrams, please browse the table for the diagram that is of most interest:
+
+| Diagram | Description |
+|---------|-------------|
+| [Architecture Diagram](./architecture/architecture_diagram.png) | This diagram shows the interoperability of components (internal and external) including the ports used for communication (also shown below) |
+| [Continuous Integration and Deployment](./architecture/continuous_integration_deployment.png) | This diagram shows the code management process including continuous integration, continuous deployment, and continuous monitoring. 
+
+![Architecture Diagram](./architecture/architecture_diagram.png)
+
+
 ###List of API Endpoints
 
 The DRE APIs harvest necessary data from OpenFDA and allow for orchestration with additional data sets.  The table below describes  each resource type available in the DRE APIs.

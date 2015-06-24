@@ -1,16 +1,15 @@
 var config = require('../config');
-
 var express = require('express');
 var _ = require('lodash');
 var request = require('request');
 var fs = require('fs');
 var xml2js = require('xml2js');
+var async = require('async');
 
-var async = require('async')
 
 var router = express.Router();
 
-var MongoClient = require('mongodb').MongoClient
+var MongoClient = require('mongodb').MongoClient;
 var mongo_url = config.mongo + config.db;
 
 var db = {};
@@ -74,8 +73,9 @@ router.get('/', function(req, res, next) {
 
         db.close();
 
+        var endTime;
         if (!response.data) {
-          var endTime = new Date().getTime();
+          endTime = new Date().getTime();
           response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
 
           res.status(404);
@@ -85,10 +85,10 @@ router.get('/', function(req, res, next) {
 
          // ... then remove the _id keys from the results and send response back
           _.forEach(response.data, function(v, k) {
-            delete response.data[k]['_id'];
-          })
+            delete response.data[k]._id;
+          });
 
-          var endTime = new Date().getTime();
+          endTime = new Date().getTime();
           response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
 
           res.json(response);
@@ -99,7 +99,7 @@ router.get('/', function(req, res, next) {
 
     });
 
-  }
+  };
 
   MongoClient.connect(mongo_url, function(err, db) {
     findAll(db, function() {
@@ -115,7 +115,7 @@ router.post('/:id/definitions', function(req, res, next) {
   var id = req.params.id;
 
   // ensure proper content type
-  if (req.headers['content-type'] != 'application/json') {
+  if (req.headers['content-type'] !== 'application/json') {
     var err = new Error();
     err.status = 400;
     err.error = "Invalid content type";
@@ -182,7 +182,7 @@ router.post('/:id/definitions', function(req, res, next) {
               var duplicateFound = false;
 
               _.forEach(reaction.definitions, function(def,def_index) {
-                if (req.body.definition == def.definition) {
+                if (req.body.definition === def.definition) {
                   duplicateFound = true;
                 }
               });
@@ -206,7 +206,7 @@ router.post('/:id/definitions', function(req, res, next) {
 
                 // Update database
                 updateReaction(id, reaction, db, function(err) {
-                  delete reaction['_id'];
+                  delete reaction._id;
                   res.json(reaction);
                   db.close();
                 });
@@ -231,10 +231,10 @@ router.post('/', function(req, res, next) {
   //res.json({todo: 'post reaction definition'});
   var reaction = new Reaction();
 
-  if(Object.keys(req.body).length != 1 ||
-     req.body.reaction == null ||
-     req.headers['content-type'] != 'application/json' ||
-     typeof req.body.reaction != "string") {
+  if(Object.keys(req.body).length !== 1 ||
+     req.body.reaction === null ||
+     req.headers['content-type'] !== 'application/json' ||
+     typeof req.body.reaction !== "string") {
     var err = new Error();
     err.status = 400;
     err.error = "Invalid Request Body";
@@ -250,7 +250,7 @@ router.post('/', function(req, res, next) {
     collection.findOne({'reaction': req.body.reaction.toLowerCase()}, function(err, reaction) {
       callback(reaction);
     });
-  }
+  };
 
   // Inserts reaction into Mongo
   var insertReaction = function(db, callback) {
@@ -264,7 +264,7 @@ router.post('/', function(req, res, next) {
         callback(result);
 
       });
-  }
+  };
 
   // Retrieves definition available from Merriam Webster Medical Dictionary API
   var getTermDefinitionFromMerriamWebsterMedical = function (callback) {
@@ -275,7 +275,7 @@ router.post('/', function(req, res, next) {
 
     request(url, function (error, response, body) {
 
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode === 200) {
 
         var parser = new xml2js.Parser({ignoreAttrs: false});
 
@@ -285,7 +285,7 @@ router.post('/', function(req, res, next) {
 
           _.forEach(result.entry_list.entry, function(v,k) {
 
-            if (v['$'].id == reaction.reaction.toLowerCase()) {
+            if (v['$'].id === reaction.reaction.toLowerCase()) {
 
                 if (v.def) {
 
@@ -295,9 +295,9 @@ router.post('/', function(req, res, next) {
 
                         if (v.sens[0].dt[0]['_']) {
 
-                          if (typeof v.sens[0].dt[0]['_'] == "string") {
+                          if (typeof v.sens[0].dt[0]['_'] === "string") {
 
-                            var definition = new Definition;
+                            var definition = new Definition();
                             var dt = new Date();
 
                             definition.definition = v.sens[0].dt[0]['_'];
@@ -312,9 +312,9 @@ router.post('/', function(req, res, next) {
 
                         } else {
                           var def = {};
-                          if (typeof v.sens[0].dt[0] == "string") {
+                          if (typeof v.sens[0].dt[0] === "string") {
 
-                            var definition = new Definition;
+                            var definition = new Definition();
                             var dt = new Date();
 
                             definition.definition = v.sens[0].dt[0];
@@ -332,9 +332,9 @@ router.post('/', function(req, res, next) {
 
                     } else {
 
-                      if (typeof v.def[0].sensb[0].sens[0].dt == "string") {
+                      if (typeof v.def[0].sensb[0].sens[0].dt === "string") {
 
-                        var definition = new Definition;
+                        var definition = new Definition();
                         var dt = new Date();
 
                         definition.definition = v.def[0].sensb[0].sens[0].dt;
@@ -361,22 +361,22 @@ router.post('/', function(req, res, next) {
       } else {
         callback(null);
       }
-    })
-  }
+    });
+  };
 
   // Retrieves definition available from Wordnik API
   var getDefinitionFromWordnik = function (callback) {
     var url = "http://api.wordnik.com:80/v4/word.json/" + encodeURIComponent(reaction.reaction.toLowerCase()) + "/definitions?limit=200&includeRelated=true&useCanonical=false&includeTags=false&api_key=" + config.wordnikapi_key ;
 
     request(url, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode === 200) {
         var deflist = JSON.parse(body);
         if (deflist[0]) {
           _.forEach(deflist, function(v,k) {
 
-            var definition = new Definition;
+            var definition = new Definition();
 
-            if (v.partOfSpeech == "noun") {
+            if (v.partOfSpeech === "noun") {
               var dt = new Date();
 
               definition.definition = v.text;
@@ -396,9 +396,9 @@ router.post('/', function(req, res, next) {
       } else {
         callback();
       }
-    })
+    });
 
-  }
+  };
 
   // - Establish connection to mongo
   // - Check to see if reaction exists
@@ -451,7 +451,7 @@ if(!err) {
           // insert into mongo
           function(err, results){
             insertReaction(db, function(result) {
-                delete reaction['_id'];
+                delete reaction._id;
                 res.json(reaction);
 
             });
@@ -482,12 +482,12 @@ router.get('/:id', function(req, res, next) {
       });
     };
 
-    if(req.params.id == null || typeof req.params.id == "object") {
+    if(req.params.id === null || typeof req.params.id === "object") {
       var err = new Error();
       err.status = 500;
       err.error = "Unknown Server Error";
-      err.message = "Please retry your request again or contact us if the"
-                    + " problem persists";
+      err.message = "Please retry your request again or contact us if the" +
+                    " problem persists";
       next(err);
     }
 
@@ -500,7 +500,7 @@ router.get('/:id', function(req, res, next) {
         db.close();
         next(err);
       } else {
-        delete result['_id'];
+        delete result._id;
         res.json(result);
         db.close();
       }
@@ -516,7 +516,7 @@ router.put('/:id/definitions/:index', function(req, res, next) {
   var definitionIndex = req.params.index;
 
   // ensure proper content type
-  if (req.headers['content-type'] != 'application/json') {
+  if (req.headers['content-type'] !== 'application/json') {
     var err = new Error();
     err.status = 400;
     err.error = "Invalid content type";
@@ -537,7 +537,7 @@ router.put('/:id/definitions/:index', function(req, res, next) {
       var vote = req.body.vote.toLowerCase();
 
       // ensure valid value for vote (up | down)
-      if (!(vote == 'up' || vote == 'down')) {
+      if (!(vote === 'up' || vote === 'down')) {
         var err = new Error();
         err.status = 400;
         err.error = "Vote attribute '" + vote  + "' not valid";
@@ -620,13 +620,11 @@ router.put('/:id/definitions/:index', function(req, res, next) {
                 }
 
               }
-            })
+            });
           }
         });
 
-
       }
-
 
     }
 
@@ -654,16 +652,17 @@ router.delete('/:id', function(req, res, next) {
       });
     };
 
-    if(req.params.id == null || typeof req.params.id == "object") {
+    if(req.params.id === null || typeof req.params.id === "object") {
       var err = new Error();
       err.status = 500;
       err.error = "Unknown Server Error";
-      err.message = "Please retry your request again or contact us if the"
-                    + " problem persists";
+      err.message = "Please retry your request again or contact us if the" +
+                    " problem persists";
       next(err);
     }
 
     findReaction(decodeURIComponent(req.params.id.toLowerCase()), db, function(result) {
+      res.status(204);
       res.json();
     });
 

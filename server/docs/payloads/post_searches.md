@@ -28,14 +28,11 @@ Below is a response to a `POST` to the `/searches` API if none of the below erro
 ```
 {
   "meta": {
-    "execution_time": "0.004s",
-    "total_count": 333
+    "execution_time": "0.024s"
   },
   "data": {
-    "search": "<search>",
-    "count": 3;
-    "created_at": "yyyy-mm-dd hh:mm:ss",
-    "created_by": "dre-harvester"
+    "search": "ibuprofen",
+    "count": 21
   }
 }
 ```

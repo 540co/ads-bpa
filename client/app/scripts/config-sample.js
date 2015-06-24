@@ -10,5 +10,6 @@
 angular.module('dreApp')
   .constant('config', {
     'apiKey': '<api key from open.fda.gov>',
-    'reactionUrl': 'https://localhost:3000/api/'
+    'reactionUrl': 'https://localhost:3000/api/',
+    'timeoutLength': 15
   });
