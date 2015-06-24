@@ -8,7 +8,7 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', function ($scope, $q, DashboardService, $modal, $location) {
+  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', 'ngDialog', function ($scope, $q, DashboardService, $modal, $location, ngDialog) {
 
     $scope.searchTerm;
 
@@ -26,16 +26,12 @@ angular.module('dreApp')
       $scope.noResults = false;
     };
 
-    $scope.homeSearch = function(keyword) {
-      $scope.getResults(keyword);
-
-      $location.path('search');
-    }
-
     $scope.getResults = function(keyword) {
       $scope.showFilter = true;
       $location.search({'q': keyword});
       var countPromise = DashboardService.getSymptomCount(keyword);
+
+      DashboardService.postSearchTerm(keyword);
 
       $q.all([countPromise]).then(function (data) {
         if(data > 0)
@@ -51,6 +47,25 @@ angular.module('dreApp')
       $scope.definitions = [];
     };
 
+    $scope.openConfirm = function (reaction, symptomIndex) {
+      $scope.selectedDefinition = reaction;
+      $scope.updateSymptomIndex = symptomIndex;
+      ngDialog.openConfirm({
+        template: 'definitionModalDialog',
+        controller: 'DefinitionModalCtrl',
+        scope: $scope
+      }).then(function (newDefinition) {
+        DashboardService.postNewDefinition($scope.selectedDefinition, newDefinition).then(function(data) {
+          console.log(data);
+          $scope.definitions[$scope.updateSymptomIndex] = data;
+        }, function(error) {
+          console.log(error);
+        });
+      }, function (reason) {
+        //console.log('Modal promise rejected. Reason: ', reason);
+      });
+   };
+
     $scope.showErrorModal = function(error) {
 
       var modalInstance = $modal.open({
@@ -65,6 +80,17 @@ angular.module('dreApp')
           }
         }
       });
+    };
+
+    $scope.vote = function(keyword, vote, definitionIndex, symptomIndex) {
+      $scope.definitionIndex = definitionIndex;
+      $scope.symptomIndex = symptomIndex;
+      //alert('Voted: ' + vote + ' for ' + keyword + ' at definition index ' + definitionIndex + ' symptom index ' + symptomIndex);
+      DashboardService.putDefinitionVote(keyword, vote, definitionIndex).then(function(data) {
+        $scope.definitions[$scope.symptomIndex][$scope.definitionIndex] = data[$scope.definitionIndex];
+      }, function(error) {
+        console.log(error);
+      })
     };
 
     function setDashboard(keyword) {
@@ -160,7 +186,6 @@ angular.module('dreApp')
           }, data);
 
           $scope.definitions = data;
-          console.log(data);
 
         }, function(error) {
           if(error.status == 404) {

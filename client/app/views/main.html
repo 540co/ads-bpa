@@ -71,17 +71,27 @@
                                 <div class="mc mc-default mc-text-back">
                                     <div class="term-container">
                                       {{ symptom.term }} ({{ symptom.percentage }})
-                                      <div class="back-add-reaction">
+                                      <div class="back-add-reaction" ng-click="openConfirm('{{ symptom.term }}', $index)">
                                         <i class="fa fa-plus accent-color"></i>
                                       </div>
                                     </div>
                                     <div class="def-container flex-center">
                                         <div class="def-content">
                                             <div class="def" ng-show="definitions[$index].length == 0" ng-mouseenter="show = true" ng-mouseleave="show = false">
-                                                NO DEFINITION FOUND <i ng-show="show" class="fa fa-thumbs-o-up"></i> <i class="fa fa-thumbs-o-down" ng-show="show"></i>
+                                                NO DEFINITION FOUND
                                             </div>
                                             <div class="def" ng-repeat="definition in definitions[$index]" ng-mouseenter="show = true" ng-mouseleave="show = false">
-                                                  {{ $index + 1 }} - {{ definition.definition }} <i ng-show="show" class="fa fa-thumbs-o-up"></i> <i class="fa fa-thumbs-o-down" ng-show="show"></i>
+                                                  {{ $index + 1 }} - {{ definition.definition }}
+                                                  <div class="secondary-text def-info-container">
+                                                    <span ng-repeat="(key, value) in definition.votes">
+                                                      {{ value }}
+                                                    <i ng-show="key=='ups'" class="fa fa-thumbs-o-up" ng-click="vote('{{ symptom.term }}', 'up', $parent.$index, $parent.$parent.$index)"
+                                                     ng-class="{ 'voter': hover }" ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                                                    <i ng-show="key=='downs'" class="fa fa-thumbs-o-down" ng-click="vote('{{ symptom.term }}', 'down', $parent.$index, $parent.$parent.$index)"
+                                                     ng-class="{ 'voter': hover }" ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                                                   </span>
+                                                   <span class="pull-right source-text">Source: {{ definition.source }}</span>
+                                                 </div>
                                             </div>
                                         </div>
                                     </div>
@@ -211,6 +221,16 @@
     <br>
     <p>For more information about the API limits, visit <a href="https://open.fda.gov/api/reference/#authentication">here</a>. </p>
   </div>
+</script>
+<script type="text/ng-template" id="definitionModalDialog">
+    <div class="ngdialog-message">
+        <h3>Add new definition for {{ selectedDefinition }}</h3>
+        <p><textarea class="full" ng-model="newDefinition" /></p>
+    </div>
+    <div class="ngdialog-buttons">
+        <button type="button" class="ngdialog-button btn-dre" ng-click="confirm(newDefinition)">Add</button>
+        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('button')">Cancel</button>
+    </div>
 </script>
 <!-- End wrapper -->
 </div>

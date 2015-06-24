@@ -19,7 +19,8 @@ angular
     'chart.js',
     'ui.bootstrap',
     'angulartics',
-    'angulartics.google.analytics'
+    'angulartics.google.analytics',
+    'ngDialog'
   ])
   .config(function ($routeProvider) {
     $routeProvider
