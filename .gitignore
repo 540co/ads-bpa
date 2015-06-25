@@ -8,3 +8,4 @@
 client/config.js
 server/config.js
 /coverage
+client/app/scripts/config.js

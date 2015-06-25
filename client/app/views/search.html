@@ -1,25 +1,24 @@
 <script type="text/javascript">
-    $("#menu-toggle").click(function (e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
+  $("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
 </script>
-
 
 <!-- Start search -->
 <div class="row">
-    <div class="col-md-12">
-        <div class="input-group" id="search">
-            <input type="text" class="form-control" ng-model="keyword" placeholder="Search brand name or drug (example: motrin)">
-        </div>
+  <div class="col-md-12">
+    <div class="input-group" id="search">
+      <input type="text" class="form-control" ng-model="keyword" placeholder="Search brand name or drug (example: motrin)">
     </div>
+  </div>
 </div>
 <div class="row text-center">
-    <div class="col-md-12">
-        <button class="btn btn-dre" type="button" ng-click="getResults(keyword)">Search</button>
+  <div class="col-md-12">
+    <button class="btn btn-dre" type="button" ng-click="getResults(keyword, filterModel)">Search</button>
 
-        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Filters</a>
+    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Filters</a>
 
-    </div>
+  </div>
 </div>
 <!-- End search -->
