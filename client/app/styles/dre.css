@@ -417,6 +417,18 @@ header .header-content {
   margin-top: 25px;
 }
 
+.search-btn {
+  margin-top: 25px;
+}
+
+.search-common-btn {
+  margin: 5px 5px 5px 5px;
+}
+
 .search-tag {
   border-radius: .25em;
+}
+
+.top-search {
+  margin-top: 5px;
 }
