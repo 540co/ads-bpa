@@ -130,7 +130,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Top Manufacturers of <span class="text-uppercase">{{searchTerm}}</span></div>
                         <div class="panel-body text-center">
-                            <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" height="238"></canvas>
+                            <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" legend="true" height="238"></canvas>
                         </div>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
                         <div class="panel-heading">Reactions Reported By Country</div>
                         <ul class="list-group">
                             <li class="list-group-item" ng-repeat="country in allCountries | limitTo:10">
-                                <span class="badge">{{ country.count | number }}</span> {{ country.term }}</li>
+                                <span class="badge">{{ country.count | number }}</span> {{ country.term }} <img src="../images/flags/{{ country.term }}.png" alt="{{country.term}}"></li>
                         </ul>
                         <div class="panel-body">
                         </div>

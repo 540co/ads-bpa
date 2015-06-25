@@ -120,12 +120,12 @@ body {
 }
 
 .severity-serious {
-    background-color: #D24D57;
+    background-color: #F7464A;
     color: #ffffff;
 }
 
 .severity-non-serious {
-    background-color: #F4D03F;
+    background-color: #FDB45C;
     color: #ffffff;
 }
 
