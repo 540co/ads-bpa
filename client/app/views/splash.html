@@ -12,7 +12,7 @@
         </div>
     </div>
 
-            <div ng-init="initDashboard()">
+            <div ng-init="init()">
             <!-- Start search -->
             <div id ="search-wrapper">
                 <div class="row">
@@ -20,8 +20,16 @@
                         <div class="input-group" id="search">
                           <form ng-submit="search(keyword)">
                             <input type="text" class="form-control" ng-model="keyword" placeholder="Search brand name or drug (example: motrin)">
-                            <button class="btn btn-dre" id="search-btn" type="submit">Search</button>
+                            <button class="btn btn-dre search-btn" id="search-btn" type="submit">Search</button>
                         </form>
+                        <div class="row text-center top-search">
+                            <div>
+                              <h6>Top Searched Terms:</h6>
+                              <button type="button" ng-click="search('{{ term.search }}')" class="btn btn-default btn-sm search-tag search-common-btn text-uppercase primary-color-dark" aria-label="Left Align" ng-repeat="term in commonSearchTerms | limitTo: 5">
+                                {{ term.search }}
+                              </button>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>

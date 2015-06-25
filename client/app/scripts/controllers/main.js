@@ -8,9 +8,13 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', 'ngDialog', function ($scope, $q, DashboardService, $modal, $location, ngDialog) {
+  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', '$rootScope', 'ngDialog', function ($scope, $q, DashboardService, $modal, $location, $rootScope, ngDialog) {
 
     $scope.searchTerm;
+
+    $rootScope.$on("$routeChangeSuccess", function(){
+      window.scrollTo(0,0);
+    });
 
     $scope.initDashboard = function() {
       var params = $location.search();
@@ -126,8 +130,8 @@ angular.module('dreApp')
           manufacturerNames.push(manufacturer.term);
           manufacturerCounts.push(manufacturer.count);
         });
-        $scope.manufacturerCounts = _.drop(manufacturerCounts, 18);
-        $scope.manufacturerNames = _.drop(manufacturerNames, 18);
+        $scope.manufacturerCounts = _.take(manufacturerCounts, 7);
+        $scope.manufacturerNames = _.take(manufacturerNames, 7);
       }, errorHandler);
 
       DashboardService.getBrands(keyword, filterList).then(function(brands) {
