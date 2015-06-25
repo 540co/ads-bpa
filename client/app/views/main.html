@@ -118,7 +118,7 @@
                               </thead>
                               <tbody>
                                   <tr ng-repeat="brand in allBrands | limitTo:10">
-                                      <td>{{ brand.term }}</td>
+                                      <td><a href ng-click="search('{{ brand.term }}')">{{ brand.term }}</a></td>
                                       <td>{{ brand.count | number }}</td>
                                   </tr>
                               </tbody>

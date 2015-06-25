@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var reactions = require('./routes/reactions');
 var searches = require('./routes/searches');
+var admin = require('./routes/admin');
 
 var app = express();
 
@@ -28,7 +29,10 @@ app.use('/api', index);
 app.use('/api/reactions', reactions);
 app.use('/api/searches', searches);
 
+app.use('/admin', admin);
+
 app.use('/', express.static(__dirname + '/../client/dist'));
+app.use('/public', express.static(__dirname + '/public'));
 app.use('/apidocs', express.static(__dirname + '/swagger'));
 
 
