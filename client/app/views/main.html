@@ -26,17 +26,14 @@
         <div ng-init="initDashboard()">
             <!-- Start search -->
 
-            <div class="row">
+            <div class="row text-center">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="input-group" id="search">
+                      <form ng-submit="search(keyword)">
                         <input type="text" class="form-control" ng-model="keyword" placeholder="Search brand name or drug (example: motrin)">
-                        <span class="input-group-btn"></span>
+                        <button class="btn btn-dre" id="search-btn" type="submit">Search</button>
+                    </form>
                     </div>
-                </div>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <button class="btn btn-dre" type="button" ng-click="getResults(keyword)">Search</button>
                 </div>
             </div>
             <!-- End search -->
