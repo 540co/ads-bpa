@@ -26,6 +26,11 @@ angular.module('dreApp')
       $scope.noResults = false;
     };
 
+    $scope.search = function(keyword) {
+      $location.search({'q': keyword});
+      console.log('Search: ' + keyword);
+    }
+
     $scope.getResults = function(keyword) {
       $scope.showFilter = true;
       $location.search({'q': keyword});

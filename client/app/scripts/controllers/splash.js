@@ -10,7 +10,6 @@
 angular.module('dreApp')
   .controller('SplashCtrl', ['$scope', '$location', 'DashboardService', function ($scope, $location, DashboardService) {
     $scope.search = function (keyword) {
-      //$location.path('search');
       $location.path('search').search({'q': keyword});
     }
 
