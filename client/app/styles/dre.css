@@ -176,6 +176,11 @@ body {
     border-color: #455A64;
 }
 
+.label-dre {
+  background-color: #009688;
+  color: #ffffff;
+}
+
 .voter {
   cursor: pointer;
   color: #009688;
@@ -410,4 +415,8 @@ header .header-content {
 
 #about-m3-540 {
   margin-top: 25px;
+}
+
+.search-tag {
+  border-radius: .25em;
 }

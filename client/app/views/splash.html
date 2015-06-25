@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
                         <div class="input-group" id="search">
-                            <input type="text" class="form-control" ng-model="keyword" placeholder="Search by drug name, brand, or substance name (Example: Enbrel)">
+                            <input type="text" class="form-control" ng-focus="onFocus = true" ng-blur="onFocus = false" ng-model="keyword" placeholder="Search by drug name, brand, or substance name (Example: Enbrel)">
                             <span class="input-group-btn"></span>
                         </div>
                     </div>
@@ -28,7 +28,13 @@
                         <button class="btn btn-dre" type="button" ng-click="search(keyword)">SEARCH</button>
                     </div>
                 </div>
-
+                <div class="row text-center" style="margin-top: 25px;">
+                    <div class="">
+                      <button type="button" class="btn btn-default btn-sm search-tag" aria-label="Left Align">
+                        Default Term
+                      </button>
+                    </div>
+                </div>
               </div>
                 <!-- End search -->
 
