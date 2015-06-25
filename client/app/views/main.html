@@ -36,7 +36,7 @@
             </div>
             <div class="row text-center">
                 <div class="col-md-12">
-                    <button class="btn btn-dre" type="button" ng-click="getResults(keyword)">Search</button>
+                    <button class="btn btn-dre" type="button" ng-click="search(keyword)">Search</button>
                 </div>
             </div>
             <!-- End search -->
@@ -121,7 +121,7 @@
                               </thead>
                               <tbody>
                                   <tr ng-repeat="brand in allBrands | limitTo:10">
-                                      <td>{{ brand.term }}</td>
+                                      <td><a href ng-click="search('{{ brand.term }}')">{{ brand.term }}</a></td>
                                       <td>{{ brand.count | number }}</td>
                                   </tr>
                               </tbody>
