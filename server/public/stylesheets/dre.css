@@ -1,0 +1,402 @@
+/* COLORS
+    - DARK PRIMARY COLOR    #455A64
+    - PRIMARY COLOR         #607D8B
+    - LIGHT PRIMARY COLOR   #CFD8DC
+    - TEXT / ICONS          #FFFFFF
+    - ACCENT COLOR          #009688
+    - PRIMARY TEXT          #212121
+    - SECONDARY TEXT        #727272
+    - DIVIDER COLOR         #B6B6B6
+*/
+
+body {
+    padding-top: 45px;
+    color: #212121;
+}
+
+.splash-layer {
+    background-color: rgba(96, 125, 139, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#search {
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+#search-wrapper {
+  margin-bottom: 100px;
+}
+
+#intro-row {
+  padding-top: 50px;
+  margin-bottom: 100px;
+}
+
+#intro-row h3 {
+  font-size: 60px;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+
+.mc {
+    width: auto;
+    height: 175px;
+    border-radius: 3px;
+}
+
+.mc-text {
+    text-align: center;
+    font-size: 24px;
+    color: #212121;
+    word-wrap: break-word;
+    text-transform: uppercase;
+}
+
+.mc-text-back {
+    color: #212121;
+    word-wrap: break-word;
+    text-transform: uppercase;
+}
+
+.term-container {
+    height: auto;
+    padding-top: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    border-bottom: 3px solid #ffffff;
+    font-weight: 600;
+}
+
+.term-percentage {
+  font-size: 18px;
+}
+
+.def-container {
+    height: 125px;
+}
+
+.def {
+  padding-bottom: 10px;
+}
+
+.mc-default {
+    background-color: #F2F1EF;
+    border: 2px #e9e8e4 solid;
+}
+
+.flex-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: auto;
+    padding: 10px;
+}
+
+.demo-placeholder {
+    width: 100%;
+    height: 350px;
+}
+
+.gender-font {
+    font-size: 3em;
+    font-weight: 600;
+}
+
+.gender-term {
+    font-size: 1.25em;
+}
+
+.severity-count {
+    font-size: 3.5em;
+    font-weight: 600;
+}
+
+.severity-term {
+    font-size: 1.25em;
+}
+
+.severity-serious {
+    background-color: #D24D57;
+    color: #ffffff;
+}
+
+.severity-non-serious {
+    background-color: #F4D03F;
+    color: #ffffff;
+}
+
+.male-color {
+    color: #2574A9;
+}
+
+.female-color {
+    color: #E26A6A;
+}
+/* DRE COLOR PALETTE */
+
+.primary-color {
+    color: #607D8B;
+}
+
+.primary-color-dark {
+    color: #455A64;
+}
+
+.primary-color-light {
+    color: #CFD8DC;
+}
+
+.text-icons {
+    color: #ffffff;
+}
+
+.accent-color {
+    color: #009688;
+}
+
+.primary-text {
+    color: #212121;
+}
+
+.secondary-text {
+    color: #727272;
+}
+
+.divider-color {
+    color: #B6B6B6;
+}
+
+.btn-dre {
+    color: #ffffff;
+    background-color: #607D8B;
+    border-color: #455A64;
+}
+/* CSS FLIP CARD */
+
+.flip {
+    -webkit-perspective: 800;
+    -moz-perspective: 800;
+    -o-perspective: 800;
+    perspective: 800;
+    position: relative;
+}
+
+.flip .card.flipped {
+    -webkit-transform: rotatex(-180deg);
+    -moz-transform: rotatex(-180deg);
+    -opera-transform: rotatex(-180deg);
+    transform: rotatex(-180deg);
+}
+
+.flip .card {
+    width: 100%;
+    height: 100%;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -opera-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -opera-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.flip .card .face {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -opera-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    z-index: 2;
+}
+
+.flip .card .front {
+    position: absolute;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.flip .card .back {
+    -webkit-transform: rotatex(-180deg);
+    -moz-transform: rotatex(-180deg);
+    -opera-transform: rotatex(-180deg);
+    transform: rotatex(-180deg);
+    cursor: pointer;
+}
+
+/*!
+ * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 200px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 200px;
+    width: 0;
+    height: 100%;
+    margin-left: -200px;
+    overflow-y: auto;
+    background: #607D8B;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 200px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding-top: 50px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -200px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 200px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 30px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #ffffff;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 200px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 200px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
+
+.footer {
+  background-color: #fff;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  color: #212121;
+}
+
+.footer h4 {
+  color: #212121;
+}
+
+.footer-icon {
+  height: 50px;
+}
+
+header{
+  position: relative;
+  width: 100%;
+  min-height: auto;
+  text-align: center;
+  color: #f8f8f8;
+  background-image: url(../images/bg-dre.jpg);
+  background-position: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+header .header-content {
+  background: rgba(33, 33, 33,0.8);
+  position: relative;
+  width: 100%;
+  text-align: center;
+  color: #f8f8f8;
+  padding-bottom: 50px;
+}
+
+#dre-title {
+  background-color: #455A64;
+  padding-left: 10px;
+  padding-right: 10px;
+}

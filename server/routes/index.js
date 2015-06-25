@@ -1,6 +1,8 @@
 var config = require('../config');
 var fs = require('fs');
 var express = require('express');
+var jade = require('jade');
+var request = require('request');
 var router = express.Router();
 
 // TO DO: apis.json file
