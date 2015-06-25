@@ -17,7 +17,10 @@ angular
     'ngSanitize',
     'ngTouch',
     'chart.js',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'angulartics',
+    'angulartics.google.analytics',
+    'ngDialog'
   ])
   .config(function ($routeProvider) {
     $routeProvider

@@ -175,6 +175,27 @@ body {
     background-color: #607D8B;
     border-color: #455A64;
 }
+
+.voter {
+  cursor: pointer;
+  color: #009688;
+}
+
+.source-text {
+  font-size: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.full {
+  width: 100%;
+}
+
+.def-info-container {
+  position: relative;
+  padding-left: 20px;
+}
 /* CSS FLIP CARD */
 
 .flip {
