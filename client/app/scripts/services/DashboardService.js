@@ -1,12 +1,12 @@
 'use strict';
 
 angular
-    .module('dreApp')
-    .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', function ($http, $q, openFDA, reactions) {
+  .module('dreApp')
+  .factory('DashboardService', ['$http', '$q', 'openFDA', 'reactions', function($http, $q, openFDA, reactions) {
 
-      function getSymptoms(drugKeyword) {
+      function getSymptoms(drugKeyword, filterList) {
 
-        var symptoms = openFDA.adverseEvents.topSymptoms(drugKeyword), symptomCount = openFDA.adverseEvents.symptomCount(drugKeyword);
+        var symptoms = openFDA.adverseEvents.topSymptoms(drugKeyword), symptomCount = openFDA.adverseEvents.symptomCount(drugKeyword, filterList);
 
         return $q.all([symptomCount, symptoms]).then(function (data) {
           var totalCount = data[0].data.meta.results.total, symptomList = data[1].data.results;
@@ -19,28 +19,28 @@ angular
         });
       }
 
-      function getSymptomCount(drugKeyword) {
-        return openFDA.adverseEvents.symptomCount(drugKeyword).then(function(data) {
+      function getSymptomCount(drugKeyword, filterList) {
+        return openFDA.adverseEvents.symptomCount(drugKeyword, filterList).then(function(data) {
           return data.data.meta.results.total;
         }, function(error) {
           return {'count': 0};
         });
       }
 
-      function getManufacturers(drugKeyword) {
-        return openFDA.adverseEvents.topManufacturers(drugKeyword).then(function(data) {
+    function getManufacturers(drugKeyword, filterList) {
+      return openFDA.adverseEvents.topManufacturers(drugKeyword, filterList).then(function(data) {
+        return data.data.results;
+      });
+    }
+
+      function getBrands(drugKeyword, filterList) {
+        return openFDA.adverseEvents.topBrandNames(drugKeyword, filterList).then(function(data) {
           return data.data.results;
         });
       }
 
-      function getBrands(drugKeyword) {
-        return openFDA.adverseEvents.topBrandNames(drugKeyword).then(function(data) {
-          return data.data.results;
-        });
-      }
-
-      function getSeverity(drugKeyword) {
-        return openFDA.adverseEvents.severityCount(drugKeyword).then(function(data) {
+    function getSeverity(drugKeyword, filterList) {
+      return openFDA.adverseEvents.severityCount(drugKeyword, filterList).then(function(data) {
 
           _.forEach(data.data.results, function (record) {
               switch (record.term) {
@@ -56,47 +56,47 @@ angular
               }
           });
           return data.data.results;
+      });
+    }
+
+    function getGenders(drugKeyword, filterList) {
+      return openFDA.adverseEvents.genderCount(drugKeyword, filterList).then(function(data) {
+
+        _.forEach(data.data.results, function(record) {
+          switch (record.term) {
+            case 1:
+              record.term = "Male";
+              break;
+            case 2:
+              record.term = "Female";
+              break;
+            default:
+              record.term = "Unknown";
+              break;
+          }
         });
-      }
 
-      function getGenders(drugKeyword) {
-        return openFDA.adverseEvents.genderCount(drugKeyword).then(function(data) {
+        return data.data.results;
+      });
+    }
 
-              _.forEach(data.data.results, function (record) {
-                  switch (record.term) {
-                  case 1:
-                      record.description = "Male";
-                      break;
-                  case 2:
-                      record.description = "Female";
-                      break;
-                  default:
-                      record.description = "Unknown";
-                      break;
-                  }
-              });
+    function getCountries(drugKeyword, filterList) {
+      return openFDA.adverseEvents.topCountries(drugKeyword, filterList).then(function(data) {
+        return data.data.results;
+      });
+    }
 
-          return data.data.results;
-        });
-      }
+    function getEvents(drugKeyword, filterList) {
+      return openFDA.adverseEvents.eventCountByDate(drugKeyword, filterList).then(function(data) {
+        return data.data.results;
+      });
+    }
 
-      function getCountries(drugKeyword) {
-        return openFDA.adverseEvents.topCountries(drugKeyword).then(function(data) {
-          return data.data.results;
-        });
-      }
-
-      function getEvents(drugKeyword) {
-        return openFDA.adverseEvents.eventCountByDate(drugKeyword).then(function(data) {
-          return data.data.results;
-        });
-      }
-
-      function getSymptomDefinitions(drugKeyword) {
-        return reactions.reactions.getSymptomDefinition(drugKeyword).then(function(data) {
-          return data.data.definitions;
-        });
-      }
+    function getSymptomDefinitions(drugKeyword, filterList) {
+      return reactions.reactions.getSymptomDefinition(drugKeyword, filterList).then(function(data) {
+        return data.data.definitions;
+      });
+    }
 
       function postSymptomDefinitions(drugKeyword) {
         return reactions.reactions.postSymptomDefinition(drugKeyword).then(function(data) {

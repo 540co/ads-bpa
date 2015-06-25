@@ -30,7 +30,9 @@ angular.module('dreApp')
       $location.search({'q': keyword});
     }
 
-    $scope.getResults = function(keyword) {
+    $scope.getResults = function(keyword, filter) {
+      var filterList = refreshFilters(filter);
+
       $scope.showFilter = true;
       $location.search({'q': keyword});
       var countPromise = DashboardService.getSymptomCount(keyword);
@@ -39,7 +41,7 @@ angular.module('dreApp')
 
       $q.all([countPromise]).then(function (data) {
         if(data > 0)
-          setDashboard(keyword);
+          setDashboard(keyword, filterList);
         else
           $scope.noResults = true;
 
@@ -48,6 +50,7 @@ angular.module('dreApp')
       });
 
       $scope.searchTerm = keyword;
+
       $scope.definitions = [];
     };
 
@@ -97,28 +100,28 @@ angular.module('dreApp')
       })
     };
 
-    function setDashboard(keyword) {
+    function setDashboard(keyword, filterList) {
 
       $scope.noResults = false;
 
-      loadSymptoms(keyword)
+      loadSymptoms(keyword, filterList)
         .then(parallelLoad);
 
-      DashboardService.getSymptoms(keyword).then(function (symptoms) {
-
+      DashboardService.getSymptoms(keyword, filterList).then(function (symptoms) {
         $scope.allSymptoms = symptoms;
         _.forEach(symptoms, function(symptom) {
           return DashboardService.getSymptomDefinitions(symptom.term);
         });
 
       }, errorHandler).then(function(definition) {
-        $scope.definition = definition;
+          $scope.definition = definition;
       });
 
-      DashboardService.getManufacturers(keyword).then(function (manufacturers){
+      DashboardService.getManufacturers(keyword, filterList).then(function(manufacturers) {
         $scope.allManufacturers = manufacturers;
-        var manufacturerNames = [], manufacturerCounts = [];
-        _.forEach($scope.allManufacturers, function (manufacturer) {
+        var manufacturerNames = [],
+          manufacturerCounts = [];
+        _.forEach($scope.allManufacturers, function(manufacturer) {
           manufacturerNames.push(manufacturer.term);
           manufacturerCounts.push(manufacturer.count);
         });
@@ -126,26 +129,27 @@ angular.module('dreApp')
         $scope.manufacturerNames = _.drop(manufacturerNames, 18);
       }, errorHandler);
 
-      DashboardService.getBrands(keyword).then(function (brands){
+      DashboardService.getBrands(keyword, filterList).then(function(brands) {
         $scope.allBrands = brands;
       }, errorHandler);
 
-      DashboardService.getSeverity(keyword).then(function (severity){
+      DashboardService.getSeverity(keyword, filterList).then(function(severity) {
         $scope.allSeverityCount = severity;
       }, errorHandler);
 
-      DashboardService.getGenders(keyword).then(function (genders) {
+      DashboardService.getGenders(keyword, filterList).then(function(genders) {
         $scope.allGenderCount = genders;
       }, errorHandler);
 
-      DashboardService.getCountries(keyword).then(function (countries) {
+      DashboardService.getCountries(keyword, filterList).then(function(countries) {
         $scope.allCountries = countries;
       }, errorHandler);
 
-      DashboardService.getEvents(keyword).then(function (events) {
+      DashboardService.getEvents(keyword, filterList).then(function(events) {
         $scope.allEvents = events;
-        var eventDates = [], eventCounts = [];
-        _.forEach($scope.allEvents, function (event) {
+        var eventDates = [],
+          eventCounts = [];
+        _.forEach($scope.allEvents, function(event) {
           eventDates.push(parseDate(event.time));
           eventCounts.push(event.count);
         });
@@ -157,15 +161,15 @@ angular.module('dreApp')
     }
 
     function parseDate(str) {
-      var y = str.substr(0,4),
-          m = str.substr(4,2) - 1,
-          d = str.substr(6,2);
-      var D = new Date(y,m,d);
+      var y = str.substr(0, 4),
+        m = str.substr(4, 2) - 1,
+        d = str.substr(6, 2);
+      var D = new Date(y, m, d);
       return (D.getFullYear() == y && D.getMonth() == m && D.getDate() == d) ? m.toString() + '/' + d + '/' + y : 'invalid date';
     }
 
-    var loadSymptoms = function(drugKeyword) {
-      return DashboardService.getSymptoms(drugKeyword);
+    var loadSymptoms = function(drugKeyword, filterList) {
+      return DashboardService.getSymptoms(drugKeyword, filterList);
     },
     parallelLoad = function(symptoms) {
 
@@ -231,5 +235,36 @@ angular.module('dreApp')
         console.log(error.status)
       }
     };
+
+
+
+    //Checkbox Filter START
+    $scope.filterModel = [{
+      "name": "ots",
+      "type": "product_type",
+      "term": "HUMAN OTC DRUG",
+      "title": "Over the Counter",
+      "value": false
+    }, {
+      "name": "otc",
+      "type": "product_type",
+      "term": "HUMAN PRESCRIPTION DRUG",
+      "title": "Off the Shelf",
+      "value": false
+    }];
+
+    function refreshFilters(item) {
+      var filterItems = [];
+      _.each(item, function(n) {
+        var object = {};
+        if (n.value == true) {
+          object.filter = n.type;
+          object.filterText = n.term;
+          filterItems.push(object);
+        } else {}
+      });
+      return filterItems;
+    }
+
 
   }]);
