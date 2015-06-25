@@ -8,8 +8,9 @@ html
 body
   div(class="container")
     h4 [DRE] Reactions
+      small= ' ' + meta.total_count + ' reactions currently stored in lookup'
       p
-      small limited to 10,000 terms - please use /reactions API to parse deeper results
+      small note - this view is limited to 20,000 reactions - please use /reactions API to parse deeper results
       hr
       each reaction, reactionindex in data
         strong= reaction.reaction
