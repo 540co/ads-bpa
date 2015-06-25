@@ -35,7 +35,7 @@ module.exports = function(config) {
       'bower_components/api-check/dist/api-check.js',
       'bower_components/angular-formly/dist/formly.js',
       'bower_components/Chart.js/Chart.js',
-      'bower_components/angular-chart.js/dist/angular-chart.js',  
+      'bower_components/angular-chart.js/dist/angular-chart.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/waypoints/waypoints.js',
       'bower_components/SHA-1/sha1.js',

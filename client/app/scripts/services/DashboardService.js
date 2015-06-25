@@ -6,7 +6,7 @@ angular
 
       function getSymptoms(drugKeyword, filterList) {
 
-        var symptoms = openFDA.adverseEvents.topSymptoms(drugKeyword), symptomCount = openFDA.adverseEvents.symptomCount(drugKeyword, filterList);
+        var symptoms = openFDA.adverseEvents.topSymptoms(drugKeyword, filterList), symptomCount = openFDA.adverseEvents.symptomCount(drugKeyword, filterList);
 
         return $q.all([symptomCount, symptoms]).then(function (data) {
           var totalCount = data[0].data.meta.results.total, symptomList = data[1].data.results;

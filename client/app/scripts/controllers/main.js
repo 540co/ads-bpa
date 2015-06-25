@@ -14,7 +14,7 @@ angular.module('dreApp')
 
     $scope.initDashboard = function() {
       var params = $location.search();
-
+      $scope.filterList = refreshFilters($scope.filterModel);
       if(params.q) {
         $scope.getResults(params.q);
         $scope.searchTerm = params.q;
@@ -26,16 +26,17 @@ angular.module('dreApp')
       $scope.noResults = false;
     };
 
-    $scope.search = function(keyword) {
+    $scope.search = function(keyword, filter) {
       $location.search({'q': keyword});
+      $scope.filterList = refreshFilters(filter);
     }
 
-    $scope.getResults = function(keyword, filter) {
-      var filterList = refreshFilters(filter);
+    $scope.getResults = function(keyword) {
+      var filterList = $scope.filterList;
 
       $scope.showFilter = true;
       $location.search({'q': keyword});
-      var countPromise = DashboardService.getSymptomCount(keyword);
+      var countPromise = DashboardService.getSymptomCount(keyword, filterList);
 
       DashboardService.postSearchTerm(keyword);
 
@@ -249,7 +250,7 @@ angular.module('dreApp')
       "name": "otc",
       "type": "product_type",
       "term": "HUMAN PRESCRIPTION DRUG",
-      "title": "Off the Shelf",
+      "title": "Prescription",
       "value": false
     }];
 
