@@ -54,8 +54,8 @@ router.post('/', function(req, res, next) {
           // The find and upsert capability starts the first count at 0, so
           // response is incremented by 1 before responding to API consumer
           if (searchDocument === null ||
-+             searchDocument.value === null ||
-+             !searchDocument.value.count) {
+              searchDocument.value === null ||
+             !searchDocument.value.count) {
             response.data.search = search.search;
             response.data.count = 1;
 
