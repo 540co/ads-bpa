@@ -1,25 +1,25 @@
 <div class="container-fluid">
-<div id="wrapper">
+  <div id="wrapper">
+
     <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="#">
-                        FILTERS
-                    </a>
-            </li>
-            <li>
-                <a href="#">General</a>
-            </li>
-            <li>
-                <a href="#">Substance</a>
-            </li>
-            <li>
-                <a href="#">Product Type</a>
-            </li>
-            <li>
-                <a href="#">Manufacturer</a>
-            </li>
-        </ul>
+      <div class="sidebar-nav sidebar-group">
+        <div class="row">
+          <h3>FILTERS</h3>
+        </div>
+        <!-- <div class="row">
+          <h4>Program Types</h4>
+        </div> -->
+        <div ng-repeat="item in filterModel" class="row sidebar-item">
+          <input type="checkbox" ng-model="item.value" />
+          <span>{{item.title}}</span>
+        </div>
+        <br>
+        <div class="row">
+          <form ng-submit="setFilters(filterModel)">
+            <button class="btn btn-dre" id="search-btn" type="submit">Update</button>
+          </form>
+        </div>
+      </div>
     </div>
 
     <div id="page-content-wrapper">
@@ -29,7 +29,7 @@
             <div class="row text-center">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="input-group" id="search">
-                      <form ng-submit="search(keyword)">
+                      <form ng-submit="search(keyword, filterModel)">
                         <input type="text" class="form-control" ng-model="keyword" placeholder="Search brand name or drug (example: motrin)">
                         <button class="btn btn-dre search-btn" id="search-btn" type="submit">Search</button>
                     </form>
@@ -37,6 +37,13 @@
                 </div>
             </div>
             <!-- End search -->
+            <div class="col-md-12">
+              <div class="alert alert-dre alert-dismissible" ng-show="updateFilterMessageAlert" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button><i class="fa fa-exclamation-triangle"></i> <strong>Dashboard Updated</strong> A filter has been successfully applied!
+              </div>
+            </div>
           <div ng-hide="noResults">
             <div class="row">
                 <div class="col-md-12">
@@ -150,7 +157,7 @@
             </div>
             <!-- End analytics row 2-->
             <!-- Start analytics row 3-->
-            <div class="row ">
+            <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">Reactions Reported By Gender</div>

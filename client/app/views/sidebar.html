@@ -1,0 +1,17 @@
+<div id="sidebar-wrapper" style="background-color: white;">
+  <div class="sidebar-nav sidebar-group">
+      <div class="row">
+        <h3>FILTERS</h3>
+      </div>
+      <div class="row">
+        <h4>Program Types</h4>
+      </div>
+      <div ng-repeat="item in filterModel" class="row sidebar-item">
+        <input type="checkbox" ng-model="item.value" /><span>{{item.title}}</span>
+      </div>
+      <br>
+      <div class="row">
+        <button class="btn btn-dre" type="button" ng-click="getResults(keyword, filterModel)">Update Search</button>
+      </div>
+  </div>
+</div>
