@@ -128,17 +128,17 @@ angular
       }
 
       if (drugKeyword && filterList.length === 1) {
-        url = '&search=(patient.drug.openfda.brand_name:' + encodeURIComponent(drugKeyword) + '+patient.drug.openfda.substance_name:' + encodeURIComponent(drugKeyword) + ')' + '+AND+' + 'patient.drug.openfda.' + filterList[0].filter + ':"' + encodeURIComponent(filterList[0].filterText) + '"' + url;
+        url = '&search=(patient.drug.openfda.brand_name:' + encodeURIComponent(drugKeyword) + '+patient.drug.openfda.substance_name:' + encodeURIComponent(drugKeyword) + ')' + '+AND+' + filterList[0].filter + ':"' + encodeURIComponent(filterList[0].filterText) + '"' + url;
       }
 
       if (drugKeyword && filterList.length > 1) {
         var endUrl = url;
         url = '&search=(patient.drug.openfda.brand_name:' + encodeURIComponent(drugKeyword) + '+patient.drug.openfda.substance_name:' + encodeURIComponent(drugKeyword) + ')';
-        _.each(filterList),
+        _.forEach(filterList,
           function(n) {
-            var param = " + '+AND+' + '" + n.filter + ": + " + encodeURIComponent(n.filterText) + "+";
+            var param = "+AND+" + n.filter + ":" + encodeURIComponent(n.filterText) + "";
             url = url.concat(param);
-          };
+          });
         url = url + endUrl;
       }
 
