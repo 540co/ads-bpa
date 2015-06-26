@@ -8,7 +8,7 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', '$rootScope', '$timeout', 'ngDialog', function ($scope, $q, DashboardService, $modal, $location, $rootScope, $timeout, ngDialog) {
+  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', '$rootScope', 'ngDialog', function ($scope, $q, DashboardService, $modal, $location, $rootScope, ngDialog) {
 
     $scope.searchTerm;
 
@@ -18,7 +18,7 @@ angular.module('dreApp')
 
     $scope.initDashboard = function() {
       var params = $location.search();
-      $scope.filterList = refreshFilters($scope.filterModel);
+
       if(params.q) {
         $scope.getResults(params.q);
         $scope.searchTerm = params.q;
@@ -30,35 +30,20 @@ angular.module('dreApp')
       $scope.noResults = false;
     };
 
-    $scope.search = function(keyword, filter) {
-      $scope.filterList = refreshFilters(filter);
+    $scope.search = function(keyword) {
       $location.search({'q': keyword});
-    }
-
-    $scope.setFilters = function(filter) {
-      $scope.updateFilterMessageAlert = true;
-
-      $timeout(function () {
-          $scope.updateFilterMessageAlert = false;
-        }, 4000);
-
-      $scope.filterList = refreshFilters(filter);
-      $scope.initDashboard();
     }
 
     $scope.getResults = function(keyword) {
-      var filterList = $scope.filterList;
-
-
       $scope.showFilter = true;
       $location.search({'q': keyword});
-      var countPromise = DashboardService.getSymptomCount(keyword, filterList);
+      var countPromise = DashboardService.getSymptomCount(keyword);
 
       DashboardService.postSearchTerm(keyword);
 
       $q.all([countPromise]).then(function (data) {
         if(data > 0)
-          setDashboard(keyword, filterList);
+          setDashboard(keyword);
         else
           $scope.noResults = true;
 
@@ -67,7 +52,6 @@ angular.module('dreApp')
       });
 
       $scope.searchTerm = keyword;
-
       $scope.definitions = [];
     };
 
@@ -117,28 +101,28 @@ angular.module('dreApp')
       })
     };
 
-    function setDashboard(keyword, filterList) {
+    function setDashboard(keyword) {
 
       $scope.noResults = false;
 
-      loadSymptoms(keyword, filterList)
+      loadSymptoms(keyword)
         .then(parallelLoad);
 
-      DashboardService.getSymptoms(keyword, filterList).then(function (symptoms) {
+      DashboardService.getSymptoms(keyword).then(function (symptoms) {
+
         $scope.allSymptoms = symptoms;
         _.forEach(symptoms, function(symptom) {
           return DashboardService.getSymptomDefinitions(symptom.term);
         });
 
       }, errorHandler).then(function(definition) {
-          $scope.definition = definition;
+        $scope.definition = definition;
       });
 
-      DashboardService.getManufacturers(keyword, filterList).then(function(manufacturers) {
+      DashboardService.getManufacturers(keyword).then(function (manufacturers){
         $scope.allManufacturers = manufacturers;
-        var manufacturerNames = [],
-          manufacturerCounts = [];
-        _.forEach($scope.allManufacturers, function(manufacturer) {
+        var manufacturerNames = [], manufacturerCounts = [];
+        _.forEach($scope.allManufacturers, function (manufacturer) {
           manufacturerNames.push(manufacturer.term);
           manufacturerCounts.push(manufacturer.count);
         });
@@ -146,29 +130,28 @@ angular.module('dreApp')
         $scope.manufacturerNames = _.take(manufacturerNames, 7);
       }, errorHandler);
 
-      DashboardService.getBrands(keyword, filterList).then(function(brands) {
+      DashboardService.getBrands(keyword).then(function (brands){
         $scope.allBrands = brands;
       }, errorHandler);
 
-      DashboardService.getSeverity(keyword, filterList).then(function(severity) {
+      DashboardService.getSeverity(keyword).then(function (severity){
         $scope.allSeverityCount = severity;
       }, errorHandler);
 
-      DashboardService.getGenders(keyword, filterList).then(function(genders) {
+      DashboardService.getGenders(keyword).then(function (genders) {
         $scope.allGenderCount = genders;
       }, errorHandler);
 
       setTimeout(function() {
-        DashboardService.getCountries(keyword, filterList).then(function (countries) {
+        DashboardService.getCountries(keyword).then(function (countries) {
         $scope.allCountries = countries;
       }, errorHandler);
     }, 1000);
 
-      DashboardService.getEvents(keyword, filterList).then(function(events) {
+      DashboardService.getEvents(keyword).then(function (events) {
         $scope.allEvents = events;
-        var eventDates = [],
-          eventCounts = [];
-        _.forEach($scope.allEvents, function(event) {
+        var eventDates = [], eventCounts = [];
+        _.forEach($scope.allEvents, function (event) {
           eventDates.push(parseDate(event.time));
           eventCounts.push(event.count);
         });
@@ -180,15 +163,15 @@ angular.module('dreApp')
     }
 
     function parseDate(str) {
-      var y = str.substr(0, 4),
-        m = str.substr(4, 2) - 1,
-        d = str.substr(6, 2);
-      var D = new Date(y, m, d);
+      var y = str.substr(0,4),
+          m = str.substr(4,2) - 1,
+          d = str.substr(6,2);
+      var D = new Date(y,m,d);
       return (D.getFullYear() == y && D.getMonth() == m && D.getDate() == d) ? m.toString() + '/' + d + '/' + y : 'invalid date';
     }
 
-    var loadSymptoms = function(drugKeyword, filterList) {
-      return DashboardService.getSymptoms(drugKeyword, filterList);
+    var loadSymptoms = function(drugKeyword) {
+      return DashboardService.getSymptoms(drugKeyword);
     },
     parallelLoad = function(symptoms) {
 
@@ -254,60 +237,5 @@ angular.module('dreApp')
         console.log(error.status)
       }
     };
-
-
-
-    //Checkbox Filter START
-    $scope.filterModel = [{
-      "name": "product_type",
-      "type": "patient.drug.openfda.product_type",
-      "term": "HUMAN OTC DRUG",
-      "title": "Over the Counter",
-      "value": false
-    }, {
-      "name": "product_type",
-      "type": "patient.drug.openfda.product_type",
-      "term": "HUMAN PRESCRIPTION DRUG",
-      "title": "Prescription",
-      "value": false
-    }, {
-      "name": "gender",
-      "type": "patient.patientsex",
-      "term": 1,
-      "title": "Male",
-      "value": false
-    }, {
-      "name": "gender",
-      "type": "patient.patientsex",
-      "term": 2,
-      "title": "Female",
-      "value": false
-    }, {
-      "name": "severity",
-      "type": "serious",
-      "term": 1,
-      "title": "Serious",
-      "value": false
-    }, {
-      "name": "severity",
-      "type": "serious",
-      "term": 2,
-      "title": "Non Serious",
-      "value": false
-    }];
-
-    function refreshFilters(item) {
-      var filterItems = [];
-      _.each(item, function(n) {
-        var object = {};
-        if (n.value == true) {
-          object.filter = n.type;
-          object.filterText = n.term;
-          filterItems.push(object);
-        } else {}
-      });
-      return filterItems;
-    }
-
 
   }]);
