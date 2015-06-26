@@ -3,15 +3,14 @@
 
     <div id="sidebar-wrapper">
       <div class="sidebar-nav sidebar-group">
-        <div class="row">
-          <h3>FILTERS</h3>
-        </div>
-        <!-- <div class="row">
-          <h4>Program Types</h4>
-        </div> -->
-        <div ng-repeat="item in filterModel" class="row sidebar-item">
-          <input type="checkbox" ng-model="item.value" />
-          <span>{{item.title}}</span>
+        <div ng-repeat="(key, value) in filterModel | groupBy: 'name'" class="row sidebar-item">
+          <div class="row">
+            <h4 id="filter-group"><strong>{{ key }}</strong></h4>
+          </div>
+          <div ng-repeat="item in value">
+            <input type="checkbox" ng-model="item.value" />
+            <span>{{ item.title }}</span>
+          </div>
         </div>
         <br>
         <div class="row">

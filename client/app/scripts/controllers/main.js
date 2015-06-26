@@ -259,37 +259,37 @@ angular.module('dreApp')
 
     //Checkbox Filter START
     $scope.filterModel = [{
-      "name": "product_type",
+      "name": "Product Type",
       "type": "patient.drug.openfda.product_type",
       "term": "HUMAN OTC DRUG",
       "title": "Over the Counter",
       "value": false
     }, {
-      "name": "product_type",
+      "name": "Product Type",
       "type": "patient.drug.openfda.product_type",
       "term": "HUMAN PRESCRIPTION DRUG",
       "title": "Prescription",
       "value": false
     }, {
-      "name": "gender",
+      "name": "Gender",
       "type": "patient.patientsex",
       "term": 1,
       "title": "Male",
       "value": false
     }, {
-      "name": "gender",
+      "name": "Gender",
       "type": "patient.patientsex",
       "term": 2,
       "title": "Female",
       "value": false
     }, {
-      "name": "severity",
+      "name": "Severity",
       "type": "serious",
       "term": 1,
       "title": "Serious",
       "value": false
     }, {
-      "name": "severity",
+      "name": "Severity",
       "type": "serious",
       "term": 2,
       "title": "Non Serious",

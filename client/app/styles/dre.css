@@ -451,3 +451,7 @@ header .header-content {
     border-color: #00776A;
     color: #ffffff
 }
+
+#filter-group {
+  padding-left: 15px;
+}

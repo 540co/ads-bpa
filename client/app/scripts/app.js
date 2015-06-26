@@ -20,7 +20,8 @@ angular
     'ui.bootstrap',
     'angulartics',
     'angulartics.google.analytics',
-    'ngDialog'
+    'ngDialog',
+    'angular.filter'
   ])
   .config(function ($routeProvider) {
     $routeProvider
