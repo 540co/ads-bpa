@@ -1,27 +1,5 @@
-<div class="container-fluid">
+<div class="container">
 <div id="wrapper">
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="#">
-                        FILTERS
-                    </a>
-            </li>
-            <li>
-                <a href="#">General</a>
-            </li>
-            <li>
-                <a href="#">Substance</a>
-            </li>
-            <li>
-                <a href="#">Product Type</a>
-            </li>
-            <li>
-                <a href="#">Manufacturer</a>
-            </li>
-        </ul>
-    </div>
-
     <div id="page-content-wrapper">
         <div ng-init="initDashboard()">
             <!-- Start search -->
@@ -41,7 +19,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2 ng-show="!showFilter">Reactions</h2>
-                    <h2 ng-show="showFilter">Reactions for <span class="accent-color text-uppercase">{{ searchTerm }}</span></h2>
+                    <h2 ng-show="showFilter"><span class="accent-color text-uppercase">{{ searchTerm }}</span> related reactions</h2>
                     <p>Click on the reaction below to see definitions in plain English</p>
                 </div>
                 <!-- <div class="col-md-6 text-right">
@@ -107,7 +85,7 @@
             <div class="row">
                 <div class="col-md-6">
                   <div class="panel panel-default">
-                      <div class="panel-heading">Brand Names Containing <span class="text-uppercase">{{searchTerm}}</span></div>
+                      <div class="panel-heading">Brand Names by <span class="text-uppercase">{{searchTerm}}</span> Related Reactions</div>
                       <div class="panel-body">
                           <table class="table table-striped table-hover ">
                               <thead>
@@ -128,7 +106,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Top Manufacturers of <span class="text-uppercase">{{searchTerm}}</span></div>
+                        <div class="panel-heading">Top Manufacturers by <span class="text-uppercase">{{searchTerm}}</span> Related Reactions</div>
                         <div class="panel-body text-center">
                             <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" legend="true" height="238"></canvas>
                         </div>
@@ -140,7 +118,7 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                   <div class="panel panel-default">
-                      <div class="panel-heading">Frequency of Reactions for <span class="text-uppercase">{{searchTerm}}</span></div>
+                      <div class="panel-heading">Frequency of Reactions related to <span class="text-uppercase">{{searchTerm}}</span></div>
                       <div class="panel-body">
                           <canvas id="line" class="chart chart-line" data="eventCounts" labels="eventDates">
                           </canvas>
@@ -171,7 +149,7 @@
                         <div class="panel-heading">Reactions Reported By Country</div>
                         <ul class="list-group">
                             <li class="list-group-item" ng-repeat="country in allCountries | limitTo:10">
-                                <span class="badge">{{ country.count | number }}</span> <span class="text-flag-align">{{ country.term }}</span><img ng-src="../images/flags/{{ country.term }}.png" alt="{{country.term}}"></li>
+                                <span class="badge">{{ country.count | number }}</span> <span class="text-flag-align">{{ country.term }}</span><img ng-src="../images/flags/{{ country.term | lowercase}}.png" alt="{{country.term}}"></li>
                         </ul>
                         <div class="panel-body">
                         </div>
