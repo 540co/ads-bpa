@@ -432,3 +432,10 @@ header .header-content {
 .top-search {
   margin-top: 5px;
 }
+
+.text-flag-align {
+  display: inline-block;
+  width: 18px;
+  padding-right: 5px;
+  text-align: center;
+}

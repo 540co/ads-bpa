@@ -171,7 +171,7 @@
                         <div class="panel-heading">Reactions Reported By Country</div>
                         <ul class="list-group">
                             <li class="list-group-item" ng-repeat="country in allCountries | limitTo:10">
-                                <span class="badge">{{ country.count | number }}</span> {{ country.term }} <img src="../images/flags/{{ country.term }}.png" alt="{{country.term}}"></li>
+                                <span class="badge">{{ country.count | number }}</span> <span class="text-flag-align">{{ country.term }}</span><img ng-src="../images/flags/{{ country.term }}.png" alt="{{country.term}}"></li>
                         </ul>
                         <div class="panel-body">
                         </div>
