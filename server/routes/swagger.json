@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "DRE Reaction Definition Lookup"
+    "title": "DRE Reactions Definition Lookup / Searches API"
   },
   "host": "",
   "basePath": "/api",
@@ -181,7 +181,7 @@
     },
     "/reactions/{reaction}/definitions/{index}": {
       "put": {
-        "description": "Get definition of specfied reaction term",
+        "description": "Increase the up / down vote count for a specific definition {index} of a specific {reaction}",
         "parameters": [
           {
             "name": "reaction",

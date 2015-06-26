@@ -8,9 +8,19 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('SplashCtrl', function ($scope, $location) {
+  .controller('SplashCtrl', ['$scope', '$location', 'DashboardService', function ($scope, $location, DashboardService) {
     $scope.search = function (keyword) {
-      //$location.path('search');
       $location.path('search').search({'q': keyword});
-    }
-  });
+    };
+
+    $scope.init = function () {
+      DashboardService.getSearchTerms().then(function(data){
+        $scope.commonSearchTerms = data;
+      }, function (error){
+        console.log(error);
+      });
+    };
+
+    //$scope.init();
+
+  }]);

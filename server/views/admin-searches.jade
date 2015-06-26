@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='../../public/stylesheets/bootswatch.css')
+    link(rel='stylesheet', href='../../public/stylesheets/dre.css')
+
+body
+  div(class="container")
+    h4 [DRE] Top 500 Search Terms
+      p
+      small limited to top 500 search terms - please use /searches API to parse deeper results
+
+      table(class="table")
+        tr
+        th search
+        th count
+        each val, index in data
+          tr
+          td= val.search
+          td= val.count

@@ -104,6 +104,30 @@ angular
         });
       }
 
+      function postNewDefinition(drugKeyword, definition) {
+        return reactions.reactions.postNewDefinition(drugKeyword, definition).then(function(data) {
+          return data.data.definitions;
+        });
+      }
+
+      function getSearchTerms() {
+        return reactions.reactions.getSearchTerm().then(function(data) {
+          return data.data.data;
+        });
+      }
+
+      function postSearchTerm(drugKeyword) {
+        return reactions.reactions.postSearchTerm(drugKeyword).then(function(data) {
+          return data;
+        });
+      }
+
+      function putDefinitionVote(drugKeyword, vote, index) {
+        return reactions.reactions.putDefinitionVote(drugKeyword, vote, index).then(function(data) {
+          return data.data.definitions;
+        });
+      }
+
       return {
         getSymptoms: getSymptoms,
         getSymptomCount: getSymptomCount,
@@ -113,7 +137,11 @@ angular
         getGenders: getGenders,
         getCountries: getCountries,
         getEvents: getEvents,
+        getSearchTerms: getSearchTerms,
         getSymptomDefinitions: getSymptomDefinitions,
-        postSymptomDefinitions: postSymptomDefinitions
+        postSymptomDefinitions: postSymptomDefinitions,
+        postNewDefinition: postNewDefinition,
+        postSearchTerm: postSearchTerm,
+        putDefinitionVote: putDefinitionVote
       };
 }]);

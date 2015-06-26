@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='../../public/stylesheets/bootswatch.css')
+    link(rel='stylesheet', href='../../public/stylesheets/dre.css')
+
+body
+  div(class="container")
+    h4 [DRE] Reactions
+      small= ' ' + meta.total_count + ' reactions currently stored in lookup'
+      p
+      small note - this view is limited to 20,000 reactions - please use /reactions API to parse deeper results
+      hr
+      each reaction, reactionindex in data
+        strong= reaction.reaction
+        small= ' created_at '+reaction.created_at
+        p
+          ul
+            each definition, definitionindex in reaction.definitions
+              li= definition.definition
+              small= definition.source+' | '+definition.votes.ups+' ups / '+definition.votes.downs+' downs votes' + ' | created_at ' + definition.created_at
+
+        hr

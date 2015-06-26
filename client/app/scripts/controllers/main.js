@@ -8,9 +8,13 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', function ($scope, $q, DashboardService, $modal, $location) {
+  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', '$rootScope', 'ngDialog', function ($scope, $q, DashboardService, $modal, $location, $rootScope, ngDialog) {
 
     $scope.searchTerm;
+
+    $rootScope.$on("$routeChangeSuccess", function(){
+      window.scrollTo(0,0);
+    });
 
     $scope.initDashboard = function() {
       var params = $location.search();
@@ -26,16 +30,16 @@ angular.module('dreApp')
       $scope.noResults = false;
     };
 
-    $scope.homeSearch = function(keyword) {
-      $scope.getResults(keyword);
-
-      $location.path('search');
+    $scope.search = function(keyword) {
+      $location.search({'q': keyword});
     }
 
     $scope.getResults = function(keyword) {
       $scope.showFilter = true;
       $location.search({'q': keyword});
       var countPromise = DashboardService.getSymptomCount(keyword);
+
+      DashboardService.postSearchTerm(keyword);
 
       $q.all([countPromise]).then(function (data) {
         if(data > 0)
@@ -51,6 +55,25 @@ angular.module('dreApp')
       $scope.definitions = [];
     };
 
+    $scope.openConfirm = function (reaction, symptomIndex) {
+      $scope.selectedDefinition = reaction;
+      $scope.updateSymptomIndex = symptomIndex;
+      ngDialog.openConfirm({
+        template: 'definitionModalDialog',
+        controller: 'DefinitionModalCtrl',
+        scope: $scope
+      }).then(function (newDefinition) {
+        DashboardService.postNewDefinition($scope.selectedDefinition, newDefinition).then(function(data) {
+          console.log(data);
+          $scope.definitions[$scope.updateSymptomIndex] = data;
+        }, function(error) {
+          console.log(error);
+        });
+      }, function (reason) {
+        //console.log('Modal promise rejected. Reason: ', reason);
+      });
+   };
+
     $scope.showErrorModal = function(error) {
 
       var modalInstance = $modal.open({
@@ -65,6 +88,17 @@ angular.module('dreApp')
           }
         }
       });
+    };
+
+    $scope.vote = function(keyword, vote, definitionIndex, symptomIndex) {
+      $scope.definitionIndex = definitionIndex;
+      $scope.symptomIndex = symptomIndex;
+      //alert('Voted: ' + vote + ' for ' + keyword + ' at definition index ' + definitionIndex + ' symptom index ' + symptomIndex);
+      DashboardService.putDefinitionVote(keyword, vote, definitionIndex).then(function(data) {
+        $scope.definitions[$scope.symptomIndex][$scope.definitionIndex] = data[$scope.definitionIndex];
+      }, function(error) {
+        console.log(error);
+      })
     };
 
     function setDashboard(keyword) {
@@ -92,8 +126,8 @@ angular.module('dreApp')
           manufacturerNames.push(manufacturer.term);
           manufacturerCounts.push(manufacturer.count);
         });
-        $scope.manufacturerCounts = _.drop(manufacturerCounts, 18);
-        $scope.manufacturerNames = _.drop(manufacturerNames, 18);
+        $scope.manufacturerCounts = _.take(manufacturerCounts, 7);
+        $scope.manufacturerNames = _.take(manufacturerNames, 7);
       }, errorHandler);
 
       DashboardService.getBrands(keyword).then(function (brands){
@@ -108,9 +142,11 @@ angular.module('dreApp')
         $scope.allGenderCount = genders;
       }, errorHandler);
 
-      DashboardService.getCountries(keyword).then(function (countries) {
+      setTimeout(function() {
+        DashboardService.getCountries(keyword).then(function (countries) {
         $scope.allCountries = countries;
       }, errorHandler);
+    }, 1000);
 
       DashboardService.getEvents(keyword).then(function (events) {
         $scope.allEvents = events;
@@ -160,7 +196,6 @@ angular.module('dreApp')
           }, data);
 
           $scope.definitions = data;
-          console.log(data);
 
         }, function(error) {
           if(error.status == 404) {

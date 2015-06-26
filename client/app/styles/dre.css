@@ -120,12 +120,12 @@ body {
 }
 
 .severity-serious {
-    background-color: #D24D57;
+    background-color: #F7464A;
     color: #ffffff;
 }
 
 .severity-non-serious {
-    background-color: #F4D03F;
+    background-color: #FDB45C;
     color: #ffffff;
 }
 
@@ -174,6 +174,32 @@ body {
     color: #ffffff;
     background-color: #607D8B;
     border-color: #455A64;
+}
+
+.label-dre {
+  background-color: #009688;
+  color: #ffffff;
+}
+
+.voter {
+  cursor: pointer;
+  color: #009688;
+}
+
+.source-text {
+  font-size: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.full {
+  width: 100%;
+}
+
+.def-info-container {
+  position: relative;
+  padding-left: 20px;
 }
 /* CSS FLIP CARD */
 
@@ -317,9 +343,6 @@ body {
 }
 
 @media(min-width:768px) {
-    #wrapper {
-        padding-left: 200px;
-    }
 
     #wrapper.toggled {
         padding-left: 0;
@@ -385,4 +408,31 @@ header .header-content {
   background-color: #455A64;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+#about-m3-540 {
+  margin-top: 25px;
+}
+
+.search-btn {
+  margin-top: 25px;
+}
+
+.search-common-btn {
+  margin: 5px 5px 5px 5px;
+}
+
+.search-tag {
+  border-radius: .25em;
+}
+
+.top-search {
+  margin-top: 5px;
+}
+
+.text-flag-align {
+  display: inline-block;
+  width: 18px;
+  padding-right: 5px;
+  text-align: center;
 }

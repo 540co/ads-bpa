@@ -1,50 +1,25 @@
-<div class="container-fluid">
+<div class="container">
 <div id="wrapper">
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="#">
-                        FILTERS
-                    </a>
-            </li>
-            <li>
-                <a href="#">General</a>
-            </li>
-            <li>
-                <a href="#">Substance</a>
-            </li>
-            <li>
-                <a href="#">Product Type</a>
-            </li>
-            <li>
-                <a href="#">Manufacturer</a>
-            </li>
-        </ul>
-    </div>
-
     <div id="page-content-wrapper">
         <div ng-init="initDashboard()">
             <!-- Start search -->
 
-            <div class="row">
+            <div class="row text-center">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="input-group" id="search">
+                      <form ng-submit="search(keyword)">
                         <input type="text" class="form-control" ng-model="keyword" placeholder="Search brand name or drug (example: motrin)">
-                        <span class="input-group-btn"></span>
+                        <button class="btn btn-dre search-btn" id="search-btn" type="submit">Search</button>
+                    </form>
                     </div>
                 </div>
             </div>
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <button class="btn btn-dre" type="button" ng-click="getResults(keyword)">Search</button>
-                </div>
-            </div>
             <!-- End search -->
-        <div ng-hide="noResults">
+          <div ng-hide="noResults">
             <div class="row">
                 <div class="col-md-12">
                     <h2 ng-show="!showFilter">Reactions</h2>
-                    <h2 ng-show="showFilter">Reactions for <span class="accent-color text-uppercase">{{ searchTerm }}</span></h2>
+                    <h2 ng-show="showFilter"><span class="accent-color text-uppercase">{{ searchTerm }}</span> related reactions</h2>
                     <p>Click on the reaction below to see definitions in plain English</p>
                 </div>
                 <!-- <div class="col-md-6 text-right">
@@ -71,17 +46,27 @@
                                 <div class="mc mc-default mc-text-back">
                                     <div class="term-container">
                                       {{ symptom.term }} ({{ symptom.percentage }})
-                                      <div class="back-add-reaction">
+                                      <div class="back-add-reaction" ng-click="openConfirm('{{ symptom.term }}', $index)">
                                         <i class="fa fa-plus accent-color"></i>
                                       </div>
                                     </div>
                                     <div class="def-container flex-center">
                                         <div class="def-content">
                                             <div class="def" ng-show="definitions[$index].length == 0" ng-mouseenter="show = true" ng-mouseleave="show = false">
-                                                NO DEFINITION FOUND <i ng-show="show" class="fa fa-thumbs-o-up"></i> <i class="fa fa-thumbs-o-down" ng-show="show"></i>
+                                                NO DEFINITION FOUND
                                             </div>
                                             <div class="def" ng-repeat="definition in definitions[$index]" ng-mouseenter="show = true" ng-mouseleave="show = false">
-                                                  {{ $index + 1 }} - {{ definition.definition }} <i ng-show="show" class="fa fa-thumbs-o-up"></i> <i class="fa fa-thumbs-o-down" ng-show="show"></i>
+                                                  {{ $index + 1 }} - {{ definition.definition }}
+                                                  <div class="secondary-text def-info-container">
+                                                    <span ng-repeat="(key, value) in definition.votes">
+                                                      {{ value }}
+                                                    <i ng-show="key=='ups'" class="fa fa-thumbs-o-up" ng-click="vote('{{ symptom.term }}', 'up', $parent.$index, $parent.$parent.$index)"
+                                                     ng-class="{ 'voter': hover }" ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                                                    <i ng-show="key=='downs'" class="fa fa-thumbs-o-down" ng-click="vote('{{ symptom.term }}', 'down', $parent.$index, $parent.$parent.$index)"
+                                                     ng-class="{ 'voter': hover }" ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                                                   </span>
+                                                   <span class="pull-right source-text">Source: {{ definition.source }}</span>
+                                                 </div>
                                             </div>
                                         </div>
                                     </div>
@@ -100,7 +85,7 @@
             <div class="row">
                 <div class="col-md-6">
                   <div class="panel panel-default">
-                      <div class="panel-heading">Brand Names Containing <span class="text-uppercase">{{searchTerm}}</span></div>
+                      <div class="panel-heading">Brand Names by <span class="text-uppercase">{{searchTerm}}</span> Related Reactions</div>
                       <div class="panel-body">
                           <table class="table table-striped table-hover ">
                               <thead>
@@ -111,7 +96,7 @@
                               </thead>
                               <tbody>
                                   <tr ng-repeat="brand in allBrands | limitTo:10">
-                                      <td>{{ brand.term }}</td>
+                                      <td><a href ng-click="search('{{ brand.term }}')">{{ brand.term }}</a></td>
                                       <td>{{ brand.count | number }}</td>
                                   </tr>
                               </tbody>
@@ -121,9 +106,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Top Manufacturers of <span class="text-uppercase">{{searchTerm}}</span></div>
+                        <div class="panel-heading">Top Manufacturers by <span class="text-uppercase">{{searchTerm}}</span> Related Reactions</div>
                         <div class="panel-body text-center">
-                            <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" height="238"></canvas>
+                            <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" legend="true" height="238"></canvas>
                         </div>
                     </div>
                 </div>
@@ -133,7 +118,7 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                   <div class="panel panel-default">
-                      <div class="panel-heading">Frequency of Reactions for <span class="text-uppercase">{{searchTerm}}</span></div>
+                      <div class="panel-heading">Frequency of Reactions related to <span class="text-uppercase">{{searchTerm}}</span></div>
                       <div class="panel-body">
                           <canvas id="line" class="chart chart-line" data="eventCounts" labels="eventDates">
                           </canvas>
@@ -164,7 +149,7 @@
                         <div class="panel-heading">Reactions Reported By Country</div>
                         <ul class="list-group">
                             <li class="list-group-item" ng-repeat="country in allCountries | limitTo:10">
-                                <span class="badge">{{ country.count | number }}</span> {{ country.term }}</li>
+                                <span class="badge">{{ country.count | number }}</span> <span class="text-flag-align">{{ country.term }}</span><img ng-src="../images/flags/{{ country.term | lowercase}}.png" alt="{{country.term}}"></li>
                         </ul>
                         <div class="panel-body">
                         </div>
@@ -211,6 +196,16 @@
     <br>
     <p>For more information about the API limits, visit <a href="https://open.fda.gov/api/reference/#authentication">here</a>. </p>
   </div>
+</script>
+<script type="text/ng-template" id="definitionModalDialog">
+    <div class="ngdialog-message">
+        <h3>Add new definition for {{ selectedDefinition }}</h3>
+        <p><textarea class="full" ng-model="newDefinition" /></p>
+    </div>
+    <div class="ngdialog-buttons">
+        <button type="button" class="ngdialog-button btn-dre" ng-click="confirm(newDefinition)">Add</button>
+        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('button')">Cancel</button>
+    </div>
 </script>
 <!-- End wrapper -->
 </div>
