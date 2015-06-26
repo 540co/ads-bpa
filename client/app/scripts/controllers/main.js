@@ -20,6 +20,7 @@ angular.module('dreApp')
       var params = $location.search();
       $scope.filterList = refreshFilters($scope.filterModel);
       if(params.q) {
+        $scope.filterList = refreshFilters(params.q);
         $scope.getResults(params.q);
         $scope.searchTerm = params.q;
       }
@@ -32,11 +33,12 @@ angular.module('dreApp')
 
     $scope.search = function(keyword, filter) {
       $location.search({'q': keyword});
-      $scope.filterList = refreshFilters(filter);
+      $scope.filterList = refreshFilters(params.q);
     }
 
     $scope.getResults = function(keyword) {
       var filterList = $scope.filterList;
+
 
       $scope.showFilter = true;
       $location.search({'q': keyword});

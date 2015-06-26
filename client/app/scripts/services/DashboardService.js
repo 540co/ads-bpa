@@ -65,13 +65,13 @@ angular
         _.forEach(data.data.results, function(record) {
           switch (record.term) {
             case 1:
-              record.term = "Male";
+              record.description = "Male";
               break;
             case 2:
-              record.term = "Female";
+              record.description = "Female";
               break;
             default:
-              record.term = "Unknown";
+              record.description = "Unknown";
               break;
           }
         });

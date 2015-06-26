@@ -14,6 +14,39 @@ body {
     color: #212121;
 }
 
+/* DRE COLOR PALETTE */
+.primary-color {
+    color: #607D8B;
+}
+
+.primary-color-dark {
+    color: #455A64;
+}
+
+.primary-color-light {
+    color: #CFD8DC;
+}
+
+.text-icons {
+    color: #ffffff;
+}
+
+.accent-color {
+    color: #009688;
+}
+
+.primary-text {
+    color: #212121;
+}
+
+.secondary-text {
+    color: #727272;
+}
+
+.divider-color {
+    color: #B6B6B6;
+}
+
 .splash-layer {
     background-color: rgba(96, 125, 139, 0.7);
     position: absolute;
@@ -135,39 +168,6 @@ body {
 
 .female-color {
     color: #E26A6A;
-}
-/* DRE COLOR PALETTE */
-
-.primary-color {
-    color: #607D8B;
-}
-
-.primary-color-dark {
-    color: #455A64;
-}
-
-.primary-color-light {
-    color: #CFD8DC;
-}
-
-.text-icons {
-    color: #ffffff;
-}
-
-.accent-color {
-    color: #009688;
-}
-
-.primary-text {
-    color: #212121;
-}
-
-.secondary-text {
-    color: #727272;
-}
-
-.divider-color {
-    color: #B6B6B6;
 }
 
 .btn-dre {
@@ -384,7 +384,7 @@ body {
   height: 40px;
 }
 
-header{
+header {
   position: relative;
   width: 100%;
   min-height: auto;
@@ -430,8 +430,9 @@ header .header-content {
 }
 
 .top-search {
-  margin-top: 5px;
+  padding-top: 5px;
 }
+
 .sidebar-group {
     padding-left: 20px;
     padding-top: 10px;
