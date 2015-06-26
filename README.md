@@ -14,8 +14,9 @@ Below is a table containing all of the relevant DRE links
 | Production Environment | [dre.540.co](https://dre.540.co) |
 | Development Environment | [dre-dev.540.co](https://dre-dev.540.co)
 | cAdvisor Monitoring | [dre-monitor.540.co](https://dre-monitor.540.co) |
-| Swagger Docs | [dre.540.co/apidocs](https://dre.540.co/apidocs)
-| Architectural Docs | [./server/docs](./server/docs)
+| Admin Portal | [dre.540.co/admin](https://dre.540.co/admin) |
+| Swagger Docs | [dre.540.co/apidocs](https://dre.540.co/apidocs) |
+| Architectural Docs | [./server/docs](./server/docs) |
 
 #Architecture
 
