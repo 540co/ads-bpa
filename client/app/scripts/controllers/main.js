@@ -282,6 +282,18 @@ angular.module('dreApp')
       "term": 2,
       "title": "Female",
       "value": false
+    }, {
+      "name": "severity",
+      "type": "serious",
+      "term": 1,
+      "title": "Serious",
+      "value": false
+    }, {
+      "name": "severity",
+      "type": "serious",
+      "term": 2,
+      "title": "Non Serious",
+      "value": false
     }];
 
     function refreshFilters(item) {
