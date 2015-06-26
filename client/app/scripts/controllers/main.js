@@ -8,7 +8,7 @@
  * Controller of the dreApp
  */
 angular.module('dreApp')
-  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', '$rootScope', 'ngDialog', function ($scope, $q, DashboardService, $modal, $location, $rootScope, ngDialog) {
+  .controller('MainCtrl', ['$scope', '$q', 'DashboardService', '$modal', '$location', '$rootScope', '$timeout', 'ngDialog', function ($scope, $q, DashboardService, $modal, $location, $rootScope, $timeout, ngDialog) {
 
     $scope.searchTerm;
 
@@ -36,6 +36,12 @@ angular.module('dreApp')
     }
 
     $scope.setFilters = function(filter) {
+      $scope.updateFilterMessageAlert = true;
+
+      $timeout(function () {
+          $scope.updateFilterMessageAlert = false;
+        }, 4000);
+
       $scope.filterList = refreshFilters(filter);
       $scope.initDashboard();
     }

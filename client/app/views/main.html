@@ -17,7 +17,8 @@
         <div class="row">
           <form ng-submit="setFilters(filterModel)">
             <button class="btn btn-dre" id="search-btn" type="submit">Update</button>
-        </form>        </div>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -35,6 +36,8 @@
                     </div>
                 </div>
             </div>
+            <div class="alert alert-dre alert-dismissible" ng-show="updateFilterMessageAlert" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Dashboard Updated</strong> A filter has been successfully applied!</div>
             <!-- End search -->
           <div ng-hide="noResults">
             <div class="row">

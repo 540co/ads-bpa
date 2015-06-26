@@ -446,3 +446,9 @@ header .header-content {
   padding-right: 5px;
   text-align: center;
 }
+
+.alert-dre {
+    background-color: #009688;
+    border-color: #00776A;
+    color: #ffffff
+}
