@@ -20,7 +20,6 @@ angular.module('dreApp')
       var params = $location.search();
       $scope.filterList = refreshFilters($scope.filterModel);
       if(params.q) {
-        $scope.filterList = refreshFilters(params.q);
         $scope.getResults(params.q);
         $scope.searchTerm = params.q;
       }
@@ -32,8 +31,13 @@ angular.module('dreApp')
     };
 
     $scope.search = function(keyword, filter) {
+      $scope.filterList = refreshFilters(filter);
       $location.search({'q': keyword});
-      $scope.filterList = refreshFilters(params.q);
+    }
+
+    $scope.setFilters = function(filter) {
+      $scope.filterList = refreshFilters(filter);
+      $scope.initDashboard();
     }
 
     $scope.getResults = function(keyword) {
@@ -149,7 +153,7 @@ angular.module('dreApp')
       }, errorHandler);
 
       setTimeout(function() {
-        DashboardService.getCountries(keyword).then(function (countries) {
+        DashboardService.getCountries(keyword, filterList).then(function (countries) {
         $scope.allCountries = countries;
       }, errorHandler);
     }, 1000);
