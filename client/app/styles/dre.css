@@ -439,3 +439,10 @@ header .header-content {
     padding-bottom: 10px;
     margin-left: 10px;
   }
+
+.text-flag-align {
+  display: inline-block;
+  width: 18px;
+  padding-right: 5px;
+  text-align: center;
+}

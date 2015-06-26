@@ -97,7 +97,7 @@ angular
       eventCountByDate: function(drugKeyword, filterList) {
 
         //create url string to share across all query options
-        var url = '+AND+receivedate:[2010101+TO+20150101]&count=receivedate';
+        var url = '+AND+receivedate:[20140601+TO+20150101]&count=receivedate';
 
         //function that determines structure and returns url for openFDA api call
         return generateQuery(url, drugKeyword, filterList);

@@ -148,9 +148,11 @@ angular.module('dreApp')
         $scope.allGenderCount = genders;
       }, errorHandler);
 
-      DashboardService.getCountries(keyword, filterList).then(function(countries) {
+      setTimeout(function() {
+        DashboardService.getCountries(keyword).then(function (countries) {
         $scope.allCountries = countries;
       }, errorHandler);
+    }, 1000);
 
       DashboardService.getEvents(keyword, filterList).then(function(events) {
         $scope.allEvents = events;
