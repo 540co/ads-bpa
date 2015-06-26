@@ -181,7 +181,7 @@
     },
     "/reactions/{reaction}/definitions/{index}": {
       "put": {
-        "description": "Get definition of specfied reaction term",
+        "description": "Increase the up / down vote count for a specific definition {index} of a specific {reaction}",
         "parameters": [
           {
             "name": "reaction",
