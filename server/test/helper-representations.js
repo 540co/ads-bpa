@@ -5,7 +5,6 @@ var mockDefinition = function(def, source, created_at, created_by) {
   definition.definition = def;
   definition.source = source;
   definition.created_at = created_at;
-  definition.created_by = created_by;
   definition.votes = mockVotes(
     Math.floor(Math.random()*10),
     Math.floor(Math.random()*10));

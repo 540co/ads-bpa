@@ -21,8 +21,7 @@ describe('Representations', function() {
         definition = helper.mockDefinition(
           "Test Definition for Death",
           "Merriam-Webster Medical Dictionary",
-          "2015-06-20 11:14:55",
-          "dre_app");
+          "2015-06-20 11:14:55");
         done();
     });
 
@@ -115,49 +114,6 @@ describe('Representations', function() {
       reaction.definitionExists(definition).should.eql(true);
     });
 
-    it('should remove a definition from the list', function() {
-      var definition = "This is another test Definition";
-      reaction.addDefinition(helper.mockDefinition(
-        definition,
-        "Custom",
-        "2015-06-20 14:56:12",
-        "dre-harvester"
-      ));
-
-      var length = reaction.definitions.length;
-      reaction.removeDefinition(definition);
-
-      reaction.definitions.length.should.eql(length-1);
-      reaction.definitionExists(definition).should.eql(false);
-
-    });
-
-    it('should return the most popular definition in the list', function() {
-      var highestFlag = true;
-
-      reaction.definitions = new Array();
-      var definition1 = helper.mockDefinition("A", "A", "A", "A");
-      var definition2 = helper.mockDefinition("B", "B", "B", "B");
-      var votes1 = helper.mockVotes(1,1);
-      var votes2 = helper.mockVotes(2,2);
-      definition1.votes = votes1;
-      definition2.votes = votes2;
-      reaction.addDefinition(definition1);
-      reaction.addDefinition(definition2);
-
-      var popularDefinition = reaction.popularDefinition();
-
-      var length = reaction.definitions.length;
-      for(var i=0; i<length; i++) {
-        if(popularDefinition.votes.ups < reaction.definitions[0].votes.ups) {
-          highestFlag = false;
-        }
-      }
-
-      highestFlag.should.eql(true);
-      popularDefinition.definition.should.eql("B");
-    });
-
     it('should check the existance of a supplied definition in the list', function() {
       var definition = "This is another test Definition";
       reaction.addDefinition(helper.mockDefinition(
@@ -222,7 +178,7 @@ describe('Representations', function() {
 
   describe('Reaction (find reaction that exists)', function() {
 
-    var reaction;
+    var response;
 
     before(function(done) {
 
@@ -232,7 +188,7 @@ describe('Representations', function() {
         reaction = new Reaction("pneumonia");
 
         reaction.find(db.connection, function (res) {
-          reaction = res;
+          response = res;
           done();
         });
 
@@ -249,7 +205,7 @@ describe('Representations', function() {
 
   describe('Reaction (find reaction that DOES NOT exist)', function() {
 
-    var reaction = null;
+    var response;
 
     before(function(done) {
 
@@ -259,7 +215,7 @@ describe('Representations', function() {
         reaction = new Reaction("xxx");
 
         reaction.find(db.connection, function (res) {
-          reaction = res;
+          response = res;
           done();
         });
 
@@ -268,10 +224,62 @@ describe('Representations', function() {
     });
 
     it('reaction should be null', function() {
-        should.equal(reaction, null);
+        should.equal(response, null);
     });
 
   });
+
+  describe('Reaction (upsert)', function() {
+
+    var response;
+
+    before(function(done) {
+
+      dataManager(function(db_connection) {
+        db = db_connection;
+
+        reaction = new Reaction("test");
+
+        reaction.upsert(db.connection, function (res) {
+          response = res;
+          done();
+        });
+
+      });
+
+    });
+
+    it('response should be object with {n, nModified, ok} properties', function() {
+
+    });
+
+  });
+
+  describe('Reaction (remove)', function() {
+      var response = null;
+
+      before(function(done) {
+        dataManager(function(db_connection) {
+          db = db_connection;
+
+          reaction = new Reaction("test");
+
+          reaction.remove(db.connection, function (res) {
+            response = res;
+            done();
+          });
+
+        });
+      });
+
+      it('response should be object with {n, ok} properties', function() {
+        response.should.have.property("n");
+        response.should.have.property("ok");
+      });
+
+  });
+
+
 
   describe('Votes (Model)', function() {
     var votes;

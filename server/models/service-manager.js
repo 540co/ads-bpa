@@ -49,8 +49,6 @@ serviceManager.getDefinitionsFromWordnikApi = function (term, api_key, callback)
 }
 
 
-
-
 serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callback) {
 
     var url = "http://www.dictionaryapi.com/api/v1/references/medical/xml/" + encodeURIComponent(term.toLowerCase()) + "?key=" + api_key;

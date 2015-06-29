@@ -6,6 +6,9 @@ var fs = require('fs');
 var xml2js = require('xml2js');
 var async = require('async');
 
+var async = require('async');
+
+require('../models/service-manager.js');
 
 var router = express.Router();
 
@@ -84,102 +87,50 @@ router.post('/:id/definitions', function(req, res, next) {
 
       var definition = req.body.definition;
 
-      // Tries to find reaction in collection (returns the record if found)
-      var findReaction = function(term,db, callback) {
-        var collection = db.collection('reactions');
-        collection.findOne({'reaction': term.toLowerCase()}, function(err, reaction) {
-          callback(reaction);
-        });
-      };
+      var reactionterm = new Reaction(req.params.id);
 
-      // Update reaction with new definition
-      var updateReaction = function(reaction, reaction_document, db, callback) {
-        var collection = db.collection('reactions');
-        collection.update({reaction:reaction.toLowerCase()}, {$set: reaction_document}, {}, function(err, result) {
-          if (err) {
-              var err = new Error();
-              err.status = 500;
-              err.error = "Internal error";
-              next(err);
-          } else {
-            callback(result);
-          }
+      reactionterm.find(db.connection, function(result) {
 
-        });
-
-      };
-
-      MongoClient.connect(mongo_url, function(err, db) {
-        if (err) {
+        if (!result) {
           var err = new Error();
-          err.status = 500;
-          err.error = "Internal error";
+          err.status = 404;
+          err.error = "Reaction cannot be found";
+          err.message = "Reaction cannot be found";
           next(err);
         } else {
+          if (reactionterm.definitionExists(definition)) {
+            var err = new Error();
+            err.status = 400;
+            err.error = "Duplicate Definition Exists";
+            err.message = "Duplicate Definition Exists";
+            next(err);
+          } else {
+            var def = new Definition();
+            def.definition = definition;
+            def.source = 'dre_app';
+            def.created_at = new Date().getTime();
 
-          // find reaction in requst
-          findReaction(id, db, function (reaction) {
-            if(reaction === null) {
-              var err = new Error();
-              err.status = 404;
-              err.error = "Reaction Not Found";
-              err.message = "The reaction that you were looking for could not be found.";
-              db.close();
-              next(err);
-            } else {
+            reactionterm.addDefinition(def);
+      
+            reactionterm.upsert(db.connection, function (result) {
+              res.json(result);
+            });
+          }
 
-              // check if definition already exists
-              var duplicateFound = false;
 
-              _.forEach(reaction.definitions, function(def,def_index) {
-                if (req.body.definition === def.definition) {
-                  duplicateFound = true;
-                }
-              });
-
-              if (duplicateFound) {
-                res.status(422);
-                res.json({message:'duplicate definition found'});
-              } else {
-
-                // Create new definition
-                var newDefinition = new Definition();
-                newDefinition.definition = definition;
-                newDefinition.source = "custom";
-                newDefinition.created_at = new Date().getTime();
-                newDefinition.created_by = "DRE App";
-
-                newDefinition.votes = new Votes();
-
-                // Push definition onto end of stack of definitions
-                reaction.definitions.push(newDefinition);
-
-                // Update database
-                updateReaction(id, reaction, db, function(err) {
-                  delete reaction._id;
-                  res.json(reaction);
-                  db.close();
-                });
-
-              }
-
-            }
-
-          });
         }
+
       });
 
-    }
   }
+
+}
 
 });
 
 
 // POST new or update reaction definition
 router.post('/', function(req, res, next) {
-  // Validate that incoming request is ok... and not a duplicate
-  //res.json({todo: 'post reaction definition'});
-  var reaction = new Reaction();
 
   if(Object.keys(req.body).length !== 1 ||
      req.body.reaction === null ||
@@ -194,194 +145,43 @@ router.post('/', function(req, res, next) {
     next(err);
   }
 
-  // Tries to find reaction in collection (returns the record if found)
-  var findReaction = function(db, callback) {
-    var collection = db.collection('reactions');
-    collection.findOne({'reaction': req.body.reaction.toLowerCase()}, function(err, reaction) {
-      callback(reaction);
-    });
-  };
 
-  // Inserts reaction into Mongo
-  var insertReaction = function(db, callback) {
-    var collection = db.collection('reactions');
+  var reactionterm = new Reaction(req.body.reaction);
 
-      collection.insert([
-        reaction
-      ], function(err, result) {
+  reactionterm.find(db.connection, function(result) {
 
-        db.close();
-        callback(result);
+    if (!result) {
+      async.series([
 
-      });
-  };
-
-  // Retrieves definition available from Merriam Webster Medical Dictionary API
-  var getTermDefinitionFromMerriamWebsterMedical = function (callback) {
-
-
-    var url = "http://www.dictionaryapi.com/api/v1/references/medical/xml/" + encodeURIComponent(reaction.reaction.toLowerCase()) + "?key=" + config.dictionaryapi_key;
-
-
-    request(url, function (error, response, body) {
-
-      if (!error && response.statusCode === 200) {
-
-        var parser = new xml2js.Parser({ignoreAttrs: false});
-
-        parser.parseString(body, function (err, result) {
-
-          if (result) {
-
-          _.forEach(result.entry_list.entry, function(v,k) {
-
-            if (v['$'].id === reaction.reaction.toLowerCase()) {
-
-                if (v.def) {
-
-                  if (Array.isArray(v.def[0].sensb[0].sens)) {
-
-                      _.forEach(v.def[0].sensb, function (v,k) {
-
-                        if (v.sens[0].dt[0]['_']) {
-
-                          if (typeof v.sens[0].dt[0]['_'] === "string") {
-
-                            var definition = new Definition();
-                            var dt = new Date();
-
-                            definition.definition = v.sens[0].dt[0]['_'];
-                            definition.source = 'dictionaryapi.com';
-                            definition.created_at = dt.getTime();
-                            definition.created_by = "";
-                            definition.votes = new Votes();
-
-                            reaction.addDefinition(definition);
-
-                          }
-
-                        } else {
-                          var def = {};
-                          if (typeof v.sens[0].dt[0] === "string") {
-
-                            var definition = new Definition();
-                            var dt = new Date();
-
-                            definition.definition = v.sens[0].dt[0];
-                            definition.source = 'dictionaryapi.com';
-                            definition.created_at = dt.getTime();
-                            definition.created_by = "";
-                            definition.votes = new Votes();
-                            reaction.addDefinition(definition);
-
-                          }
-
-                        }
-
-                      });
-
-                    } else {
-
-                      if (typeof v.def[0].sensb[0].sens[0].dt === "string") {
-
-                        var definition = new Definition();
-                        var dt = new Date();
-
-                        definition.definition = v.def[0].sensb[0].sens[0].dt;
-                        definition.source = 'dictionaryapi.com';
-                        definition.created_at = dt.getTime();
-                        definition.created_by = "";
-                        definition.votes = new Votes();
-                        reaction.addDefinition(definition);
-
-                      }
-
-                      }
-
-                    }
-
-                }
-            });
-            }
-
+        function(callback){
+          serviceManager.getDefinitionsFromDictionaryApi(reactionterm.reaction, config.dictionaryapi_key, function (result) {
+            reactionterm.addDefinition(result);
+            callback();
           });
+        },
+        function(callback){
+          serviceManager.getDefinitionsFromWordnikApi(reactionterm.reaction, config.wordnikapi_key, function (result) {
+            reactionterm.addDefinition(result);
+            callback();
+          });
+        }
 
-          callback(null);
+      ],
+      function(err, results){
+        reactionterm.upsert(db.connection, function (result) {
+          res.json(result);
+        })
+      });
 
-      } else {
-        callback(null);
-      }
-    });
-  };
-
-  // Retrieves definition available from Wordnik API
-
-  // - Establish connection to mongo
-  // - Check to see if reaction exists
-  // - If it does not exist, find definitions and insert
-if(!err) {
-  MongoClient.connect(mongo_url, function(err, db) {
-    if (err) {
+    } else {
       var err = new Error();
-      err.status = 500;
-      err.error = "Internal Error";
+      err.status = 422;
+      err.error = "Duplicate Reaction";
+      err.message = "The reaction that you are trying to create already exists" +
+                    " and cannot be created again.";
       next(err);
     }
-    else {
-
-
-      findReaction(db, function(result) {
-
-        if(result) {
-
-          var err = new Error();
-          err.status = 422;
-          err.error = "Duplicate Reaction";
-          err.message = "The reaction that you are trying to create already exists" +
-                        " and cannot be created again.";
-          db.close();
-          next(err);
-        } else {
-
-          var dt = new Date();
-
-          reaction.reaction = req.body.reaction.toLowerCase();
-          reaction.definitions = [];
-          reaction.created_at = dt.getTime();
-          reaction.created_by = "";
-
-
-          async.series([
-              function(callback){
-                getTermDefinitionFromMerriamWebsterMedical(function (result) {
-                  callback(null);
-                });
-              },
-              function(callback){
-                getDefinitionFromWordnik(function (result) {
-                  callback(null);
-                });
-              }
-          ],
-
-          // insert into mongo
-          function(err, results){
-            insertReaction(db, function(result) {
-                delete reaction._id;
-                res.json(reaction);
-
-            });
-
-
-          });
-
-        }
-     });
-
-    }
-
-   });
- }
+  });
 
 });
 
@@ -407,6 +207,7 @@ router.get('/:id', function(req, res, next) {
       err.message = "The reaction that you were looking for could not be found.";
       next(err);
     } else {
+
       res.json(reaction);
     }
   });
@@ -419,7 +220,7 @@ router.get('/:id', function(req, res, next) {
 router.put('/:id/definitions/:index', function(req, res, next) {
 
   var id = req.params.id;
-  var definitionIndex = req.params.index;
+  var definitionIndex = parseInt(req.params.index);
 
   // ensure proper content type
   if (req.headers['content-type'] !== 'application/json') {
@@ -439,8 +240,8 @@ router.put('/:id/definitions/:index', function(req, res, next) {
       next(err);
     } else {
 
-
       var vote = req.body.vote.toLowerCase();
+      var reactionterm = new Reaction(decodeURIComponent(req.params.id));
 
       // ensure valid value for vote (up | down)
       if (!(vote === 'up' || vote === 'down')) {
@@ -451,129 +252,71 @@ router.put('/:id/definitions/:index', function(req, res, next) {
         next(err);
       } else {
 
-        // Tries to find reaction in collection (returns the record if found)
-        var findReaction = function(term,db, callback) {
-          var collection = db.collection('reactions');
-          collection.findOne({'reaction': term.toLowerCase()}, function(err, reaction) {
-            callback(reaction);
-          });
-        };
-
-        // Update reaction with updated votes
-        var updateReaction = function(reaction, reaction_document, db, callback) {
-          var collection = db.collection('reactions');
-          collection.update({reaction:reaction}, {$set: reaction_document}, {}, function(err, result) {
-            if (err) {
-                var err = new Error();
-                err.status = 500;
-                err.error = "Internal error";
-                next(err);
-            } else {
-              callback(result);
-            }
-
-          });
-
-        };
-
-
-        MongoClient.connect(mongo_url, function(err, db) {
-          if (err) {
+        reactionterm.find(db.connection, function(reaction) {
+          if(reaction === null) {
             var err = new Error();
-            err.status = 500;
-            err.error = "Internal error";
+            err.status = 404;
+            err.error = "Reaction Not Found";
+            err.message = "The reaction that you were looking for could not be found.";
             next(err);
           } else {
+            if (!reactionterm.definitionIndexExists(definitionIndex)) {
+              var err = new Error();
+              err.status = 404;
+              err.error = "Definition at that index does not exist";
+              err.message = "The definition at that index does not exist";
+              next(err);
+            } else {
 
-            // find reaction in requst
-            findReaction(id, db, function (reaction) {
-              if(reaction === null) {
-                var err = new Error();
-                err.status = 404;
-                err.error = "Reaction Not Found";
-                err.message = "The reaction that you were looking for could not be found.";
-                db.close();
-                next(err);
-              } else {
+              reactionterm.vote(definitionIndex, vote);
 
-                // check if definition exists - error if not
-                if(!reaction.definitions[definitionIndex]) {
-                  var err = new Error();
-                  err.status = 404;
-                  err.error = "Definition [" + definitionIndex + "] not found";
-                  err.message = "The definition index provided was not found.";
-                  db.close();
-                  next(err);
+              reactionterm.upsert(db.connection, function (result) {
+                res.json(result);
+              })
 
-                } else {
+            }
 
-                  // update update count of ups / downs based upon request
-                  if(vote == 'up') {
-                    reaction.definitions[definitionIndex].votes.ups++;
-                  }
-
-                  if(vote == 'down') {
-                    reaction.definitions[definitionIndex].votes.downs++;
-                  }
-
-                  // update the reaction document and respond
-                  updateReaction(reaction.reaction, reaction, db, function (result) {
-                    delete reaction['_id'];
-                    db.close();
-                    res.json(reaction);
-                  });
-
-                }
-
-              }
-            });
           }
         });
 
       }
-
-    }
-
-  }
-
-
-});
-
-// TO DO: Put reaction defintion
-router.put('/:id', function(req, res, next) {
-  var id = req.params.id;
-  var example = JSON.parse('{"reaction":"' + id + '","terms":[{"term":"urosepsis","text":"sepsis caused by bacteria from the urinary tract invading the bloodstream","attributionText":"from Wiktionary, Creative Commons Attribution/Share-Alike License","source":"wordnik"},{"term":"urosepsis","text":"sepsis caused by bacteria from the urinary tract invading the bloodstream","attributionText":"from Wiktionary, Creative Commons Attribution/Share-Alike License","source":"wordnik"}]}');
-  res.json(example);
-});
-
-// TO DO: Delete reaction definition
-router.delete('/:id', function(req, res, next) {
-  MongoClient.connect(mongo_url, function(err, db) {
-
-    // Tries to find reaction in collection (returns the record if found)
-    var findReaction = function(term, db, callback) {
-      var collection = db.collection('reactions');
-      collection.findOneAndDelete({'reaction': term.toLowerCase()}, function(err, reaction) {
-        callback(reaction);
-      });
     };
 
-    if(req.params.id === null || typeof req.params.id === "object") {
+  };
+
+
+});
+
+// DELETE Reaction
+router.delete('/:id', function(req, res, next) {
+
+  if(req.params.id === null || typeof req.params.id === "object") {
+    var err = new Error();
+    err.status = 500;
+    err.error = "Unknown Server Error";
+    err.message = "Please retry your request again or contact us if the" +
+                  " problem persists";
+    next(err);
+  }
+
+  var reactionterm = new Reaction(decodeURIComponent(req.params.id));
+
+  reactionterm.find(db.connection, function(reaction) {
+    if(reaction === null) {
       var err = new Error();
-      err.status = 500;
-      err.error = "Unknown Server Error";
-      err.message = "Please retry your request again or contact us if the" +
-                    " problem persists";
+      err.status = 404;
+      err.error = "Reaction Not Found";
+      err.message = "The reaction that you were looking for could not be found.";
       next(err);
+    } else {
+      reaction.remove(db.connection, function (result) {
+        res.status(204);
+        res.json();
+      })
     }
-
-    findReaction(decodeURIComponent(req.params.id.toLowerCase()), db, function(result) {
-      res.status(204);
-      res.json();
-    });
-
-    db.close();
   });
+
+
 });
 
 
