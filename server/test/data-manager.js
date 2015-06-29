@@ -4,12 +4,17 @@ require('../models/data-manager.js');
 
 describe('Data Manager', function() {
     var db_connection;
+    var db_close;
 
     describe('Connection', function() {
       before(function(done) {
         dataManager(function(db) {
           db_connection = db;
-          done();
+          db_connection.connection.close(function (result) {
+              db_close = result;
+              done();
+          });
+
         });
       });
 
@@ -23,6 +28,14 @@ describe('Data Manager', function() {
         db_connection.should.be.an.instanceOf(Object);
         db_connection.connection.s.databaseName.should.eql(config.db);
       });
+
+
+      it('validating that db close works properly', function() {
+        should.equal(db_close, null);
+      });
+
+
+
 
     });
 

@@ -12,4 +12,11 @@ dataManager = function (callback) {
     callback(this);
   });
 
+  this.close = function(callback) {
+      this.connection.close(true, function (err, db) {
+          this.connection = {};
+          callback();
+      });
+  }
+
 };
