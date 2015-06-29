@@ -13,10 +13,10 @@ dataManager = function (callback) {
   });
 
   this.close = function(callback) {
-      this.connection.close(true, function (err, db) {
+      this.connection.close(true, function () {
           this.connection = {};
           callback();
       });
-  }
+  };
 
 };
