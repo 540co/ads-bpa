@@ -145,7 +145,7 @@ router.post('/:id/definitions', function(req, res, next) {
       // Update reaction with new definition
       var updateReaction = function(reaction, reaction_document, db, callback) {
         var collection = db.collection('reactions');
-        collection.update({reaction:reaction}, {$set: reaction_document}, {}, function(err, result) {
+        collection.update({reaction:reaction.toLowerCase()}, {$set: reaction_document}, {}, function(err, result) {
           if (err) {
               var err = new Error();
               err.status = 500;
