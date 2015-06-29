@@ -9,7 +9,7 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var mongo_url = config.mongo + config.db;
 
-require('../models/search.js');
+require('../models/searches.js');
 require('../models/response.js');
 
 // TO DO: apis.json file
