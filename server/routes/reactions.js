@@ -12,8 +12,6 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var mongo_url = config.mongo + config.db;
 
-var db = {};
-
 require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
@@ -21,90 +19,42 @@ require('../models/votes.js');
 // GET list of reactions
 router.get('/', function(req, res, next) {
 
-  var startTime = new Date().getTime();
+  var response = new Response();
 
-  var response = {};
-  response.meta = {};
-  response.data = [];
+  if (!req.query.limit) {response.meta.limit = 25;} else {response.meta.limit = parseInt(req.query.limit);}
 
-  if (!req.query.limit) {req.query.limit = 25;} else {req.query.limit = parseInt(req.query.limit);}
-
-  if (req.query.limit < 1) {
-    req.query.limit = 1;
+  if (response.meta.limit < 1) {
+    response.meta.limit = 1;
   }
 
-  if (req.query.limit > 200) {
-    req.query.limit = 200;
+  if (response.meta.limit > 200) {
+    response.meta.limit = 200;
   }
 
-  if (!req.query.offset) {req.query.offset = 0;} else {req.query.offset = parseInt(req.query.offset);}
+  if (!req.query.offset) {
+    response.meta.offset = 0;
+  } else {
+    response.meta.offset = parseInt(req.query.offset);
+  }
 
-  var findAll = function(db, callback) {
+  async.series([
+      // Get count from cursor
+      function(callback){
+        Reaction.getCount(db.connection, function (count) {
+          response.meta.total_count = count;
+          callback();
+        });
+      },
+      function(callback){
+        Reaction.getList(db.connection, response.meta.limit, response.meta.offset, function (data) {
+          response.data = data;
+          callback();
+        });
+      }
 
-    var collection = db.collection('reactions');
-
-    var cursor = collection.find({ });
-
-    async.series([
-
-        // Get count from cursor
-        function(callback){
-          cursor.count(function(err, count) {
-            response.meta.limit = req.query.limit;
-            response.meta.offset = req.query.offset;
-            response.meta.total_count = count;
-
-          });
-          callback(null);
-        },
-
-        // Get results from curor
-        function(callback){
-          cursor.limit(req.query.limit);
-          cursor.skip(req.query.offset);
-
-          cursor.toArray(function(err, result) {
-            response.data = result;
-            callback(null);
-          });
-        }
-
-      ], function(err){
-
-        db.close();
-
-        var endTime;
-        if (!response.data) {
-          endTime = new Date().getTime();
-          response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
-
-          res.status(404);
-          res.json(response);
-
-        } else {
-
-         // ... then remove the _id keys from the results and send response back
-          _.forEach(response.data, function(v, k) {
-            delete response.data[k]._id;
-          });
-
-          endTime = new Date().getTime();
-          response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
-
-          res.json(response);
-
-        }
-
-
-
-    });
-
-  };
-
-  MongoClient.connect(mongo_url, function(err, db) {
-    findAll(db, function() {
-
-    });
+  ], function () {
+    response.calculateExecutionTime();
+    res.json(response);
   });
 
 });
@@ -471,41 +421,31 @@ if(!err) {
 
 // GET reaction defintion
 router.get('/:id', function(req, res, next) {
-  MongoClient.connect(mongo_url, function(err, db) {
 
-    // Tries to find reaction in collection (returns the record if found)
-    var findReaction = function(term, db, callback) {
-      var collection = db.collection('reactions');
-      collection.findOne({'reaction': term.toLowerCase()}, function(err, reaction) {
+  if(req.params.id === null || typeof req.params.id === "object") {
+    var err = new Error();
+    err.status = 500;
+    err.error = "Unknown Server Error";
+    err.message = "Please retry your request again or contact us if the" +
+                  " problem persists";
+    next(err);
+  }
 
-        callback(reaction);
-      });
-    };
+  var reactionterm = new Reaction(decodeURIComponent(req.params.id));
 
-    if(req.params.id === null || typeof req.params.id === "object") {
+  reactionterm.find(db.connection, function(reaction) {
+    if(reaction === null) {
       var err = new Error();
-      err.status = 500;
-      err.error = "Unknown Server Error";
-      err.message = "Please retry your request again or contact us if the" +
-                    " problem persists";
+      err.status = 404;
+      err.error = "Reaction Not Found";
+      err.message = "The reaction that you were looking for could not be found.";
       next(err);
+    } else {
+      res.json(reaction);
     }
-
-    findReaction(decodeURIComponent(req.params.id.toLowerCase()), db, function(result) {
-      if(result === null) {
-        var err = new Error();
-        err.status = 404;
-        err.error = "Reaction Not Found";
-        err.message = "The reaction that you were looking for could not be found.";
-        db.close();
-        next(err);
-      } else {
-        delete result._id;
-        res.json(result);
-        db.close();
-      }
-    });
   });
+
+
 });
 
 

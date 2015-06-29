@@ -14,7 +14,7 @@ describe('Representations', function() {
   var definition;
 
   // This details the Definitions Representation
-  describe('Definition', function() {
+  describe('Definition (Model)', function() {
     beforeEach(function(done) {
         definition = helper.mockDefinition(
           "Test Definition for Death",
@@ -69,7 +69,7 @@ describe('Representations', function() {
 
 
   // This details the Reaction Representation
-  describe('Reaction', function() {
+  describe('Reaction (Model)', function() {
     var reaction;
 
     beforeEach(function(done) {
@@ -127,6 +127,7 @@ describe('Representations', function() {
 
       reaction.definitions.length.should.eql(length-1);
       reaction.definitionExists(definition).should.eql(false);
+
     });
 
     it('should return the most popular definition in the list', function() {
@@ -166,10 +167,111 @@ describe('Representations', function() {
       reaction.definitionExists(definition).should.eql(true);
     });
 
+
   });
 
-  // This details the Votes Representation
-  describe('Votes', function() {
+  describe('Reaction (getList)', function() {
+    var db;
+    var list;
+
+    beforeEach(function(done) {
+      dataManager(function(db_connection) {
+        db = db_connection;
+
+        Reaction.getList(db.connection,0,0,function (res) {
+          list = res;
+          done();
+        });
+
+      });
+    });
+
+    it('verify that an array of results is returned', function() {
+      list.should.be.an.instanceOf(Array);
+    });
+
+  });
+
+  describe('Reaction (getCount)', function() {
+    var db;
+    var count;
+
+    beforeEach(function(done) {
+      dataManager(function(db_connection) {
+        db = db_connection;
+
+        Searches.getCount(db.connection,function (res) {
+          count = res;
+          done();
+        });
+
+      });
+    });
+
+    it('verify count is a number', function() {
+        count.should.be.a.Number();
+    });
+
+    it('verify count is greater than -1', function() {
+        count.should.be.greaterThan(-1);
+    });
+
+  });
+
+  describe('Reaction (find reaction that exists)', function() {
+
+    var reaction;
+
+    before(function(done) {
+
+      dataManager(function(db_connection) {
+        db = db_connection;
+
+        reaction = new Reaction("pneumonia");
+
+        reaction.find(db.connection, function (res) {
+          reaction = res;
+          done();
+        });
+
+      });
+
+    });
+
+    it('valid reaction object', function() {
+      reaction.should.have.property("reaction");
+      reaction.should.have.property("definitions");
+    });
+
+  });
+
+  describe('Reaction (find reaction that DOES NOT exist)', function() {
+
+    var reaction = null;
+
+    before(function(done) {
+
+      dataManager(function(db_connection) {
+        db = db_connection;
+
+        reaction = new Reaction("xxx");
+
+        reaction.find(db.connection, function (res) {
+          reaction = res;
+          done();
+        });
+
+      });
+
+    });
+
+    it('reaction should be null', function() {
+        should.equal(reaction, null);
+    });
+
+  });
+
+  describe('Votes (Model)', function() {
     var votes;
     beforeEach(function(done) {
       votes = helper.mockVotes(3,4);
@@ -209,8 +311,7 @@ describe('Representations', function() {
     });
   });
 
-  // Response model
-  describe('Response', function() {
+  describe('Response (Model)', function() {
     var response;
     beforeEach(function(done) {
       response = helper.mockResponse();
@@ -229,7 +330,6 @@ describe('Representations', function() {
 
   });
 
-  // Search Response model
   describe('Searches (getCount)', function() {
     var db;
     var count;

@@ -16,9 +16,8 @@ var mockDefinition = function(def, source, created_at, created_by) {
 
 // This function creates a mocked reactions instance for testing purposes
 var mockReaction = function() {
-  var reaction = new Reaction();
+  var reaction = new Reaction("Death");
 
-  reaction.reaction = "Death";
   reaction.definitions = new Array();
   reaction.definitions.pop(mockDefinition(
                     "Test Definition for Death",

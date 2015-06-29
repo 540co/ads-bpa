@@ -32,7 +32,7 @@ async.series([
 // optional callback
 function(err, results){
 
-  console.log('Starting Node / Express...')
+  console.log('Starting Drug Reactions Explained [DRE] Server...')
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'jade');

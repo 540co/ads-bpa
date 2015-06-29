@@ -1,8 +1,10 @@
 var helper = require('./models-helper');
+var async = require('async');
+var _ = require('lodash');
 
-Reaction = function() {
+Reaction = function(reactionterm) {
 
-  this.reaction;
+  this.reaction = reactionterm.toLowerCase();
   this.definitions = [];
   this.created_at;
   this.created_by;
@@ -16,7 +18,7 @@ Reaction = function() {
     }
 
     var listOfKeys = ['reaction', 'definitions', 'created_at', 'created_by',
-                      'isValid', 'addDefinition', 'removeDefinition',
+                      'find', 'isValid', 'addDefinition', 'removeDefinition',
                       'popularDefinition', 'definitionExists'];
 
     if(helper.checkIndices(this, listOfKeys) === false) {
@@ -24,6 +26,27 @@ Reaction = function() {
     }
 
     return validFlag;
+  };
+
+
+  this.find = function (db_connection, callback) {
+    var collection = db_connection.collection('reactions');
+    reaction = this;
+
+    collection.findOne({'reaction': this.reaction}, function(err, res) {
+      if (err || !res) {
+        callback(null);
+      }
+
+      if (res) {
+        reaction.definitions = res.definitions;
+        reaction.created_at = res.created_at;
+        reaction.created_by = res.created_by;
+        callback(reaction);
+      }
+
+    });
+
   };
 
   this.addDefinition = function(definition) {
@@ -77,4 +100,31 @@ Reaction = function() {
 
     return existsFlag;
   };
+};
+
+Reaction.getList = function(db_connection, limit, offset, callback) {
+
+  var collection = db_connection.collection('reactions');
+  var cursor = collection.find({ }).sort({count:-1});
+
+  cursor.limit(limit);
+  cursor.skip(offset);
+
+  cursor.toArray(function(err, result) {
+    _.forEach(result, function (v,k) {
+      delete result[k]['_id'];
+    })
+    callback(result);
+  });
+
+};
+
+Reaction.getCount = function(db_connection, callback) {
+  var collection = db_connection.collection('reactions');
+  var cursor = collection.find({ }).sort({count:-1});
+
+  cursor.count(function(err, count) {
+    callback(count);
+  });
+
 };

@@ -15,9 +15,6 @@ require('../models/response.js');
 // TO DO: apis.json file
 router.post('/', function(req, res, next) {
 
-
-
-
   // ensure proper content type
   if (req.headers['content-type'] !== 'application/json') {
     var err = new Error();
@@ -40,7 +37,6 @@ router.post('/', function(req, res, next) {
       var searchterm = req.body.search;
 
       var searches = new Searches(searchterm);
-      console.log(searches);
 
       searches.incrementCount(db.connection, function (result) {
         response.data = result;
