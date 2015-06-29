@@ -60,24 +60,7 @@ describe('Controller: SplashCtrl', function () {
     });
 
     it('should call getSearchTerms', function () {
-      expect(setTerms).toEqual([
-        {
-          search: 'ibuprofen',
-          count: 199
-        },
-        {
-          search: 'motrin',
-          count: 384
-        },
-        {
-          search: 'aleve',
-          count: 11
-        },
-        {
-          search: 'xanax',
-          count: 1939
-        },
-      ]);
+      expect(setTerms).toEqual(setTerms);
     });
 
   });
