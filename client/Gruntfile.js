@@ -394,7 +394,7 @@ module.exports = function (grunt) {
     },
 
     lcovMerge: {
-      src: ['coverage/**/*.info', '../coverage/**/*.info']
+      src: ['coverage/**/*.info', '../server/coverage/**/*.info']
     }
   });
 
