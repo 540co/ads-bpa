@@ -195,7 +195,7 @@ router.post('/:id/definitions', function(req, res, next) {
                 // Create new definition
                 var newDefinition = new Definition();
                 newDefinition.definition = definition;
-                newDefinition.source = definition;
+                newDefinition.source = "custom";
                 newDefinition.created_at = new Date().getTime();
                 newDefinition.created_by = "DRE App";
 
