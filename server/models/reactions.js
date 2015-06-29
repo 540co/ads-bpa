@@ -30,7 +30,7 @@ Reaction = function(reactionterm) {
 
 
   this.find = function (db_connection, callback) {
-    var collection = db_connection.collection('reactions');
+    var collection = db_connection.collection(config.reactions_collection);
     reaction = this;
 
     collection.findOne({'reaction': this.reaction}, function(err, res) {
@@ -104,7 +104,7 @@ Reaction = function(reactionterm) {
 
 Reaction.getList = function(db_connection, limit, offset, callback) {
 
-  var collection = db_connection.collection('reactions');
+  var collection = db_connection.collection(config.reactions_collection);
   var cursor = collection.find({ }).sort({count:-1});
 
   cursor.limit(limit);
@@ -120,7 +120,7 @@ Reaction.getList = function(db_connection, limit, offset, callback) {
 };
 
 Reaction.getCount = function(db_connection, callback) {
-  var collection = db_connection.collection('reactions');
+  var collection = db_connection.collection(config.reactions_collection);
   var cursor = collection.find({ }).sort({count:-1});
 
   cursor.count(function(err, count) {

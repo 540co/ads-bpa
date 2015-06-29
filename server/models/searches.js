@@ -8,7 +8,7 @@ Searches = function(searchterm) {
   this.count = null;
 
   this.incrementCount = function (db, callback) {
-    var collection = db.collection('search');
+    var collection = db.collection(config.searches_collection);
 
     search = this;
 
@@ -33,7 +33,7 @@ Searches = function(searchterm) {
   }
 
   this.remove = function (db, callback) {
-    var collection = db.collection('search');
+    var collection = db.collection(config.searches_collection);
 
     collection.remove({search: this.search}, function(err, object) {
       callback(object.result)
@@ -45,7 +45,7 @@ Searches = function(searchterm) {
 
 
 Searches.getCount = function(db_connection, callback) {
-  var collection = db_connection.collection('search');
+  var collection = db_connection.collection(config.searches_collection);
   var cursor = collection.find({ }).sort({count:-1});
 
   cursor.count(function(err, count) {
@@ -56,7 +56,7 @@ Searches.getCount = function(db_connection, callback) {
 
 Searches.getList = function(db_connection, limit, offset, callback) {
 
-  var collection = db_connection.collection('search');
+  var collection = db_connection.collection(config.searches_collection);
   var cursor = collection.find({ }).sort({count:-1});
 
   cursor.limit(limit);

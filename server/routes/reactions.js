@@ -315,40 +315,6 @@ router.post('/', function(req, res, next) {
   };
 
   // Retrieves definition available from Wordnik API
-  var getDefinitionFromWordnik = function (callback) {
-    var url = "http://api.wordnik.com:80/v4/word.json/" + encodeURIComponent(reaction.reaction.toLowerCase()) + "/definitions?limit=200&includeRelated=true&useCanonical=false&includeTags=false&api_key=" + config.wordnikapi_key ;
-
-    request(url, function (error, response, body) {
-      if (!error && response.statusCode === 200) {
-        var deflist = JSON.parse(body);
-        if (deflist[0]) {
-          _.forEach(deflist, function(v,k) {
-
-            var definition = new Definition();
-
-            if (v.partOfSpeech === "noun") {
-              var dt = new Date();
-
-              definition.definition = v.text;
-              definition.source = 'wordnik.com';
-              definition.created_at = dt.getTime();
-              definition.created_by = "";
-              definition.votes = new Votes();
-
-              reaction.addDefinition(definition);
-            }
-
-          });
-
-        }
-       callback();
-
-      } else {
-        callback();
-      }
-    });
-
-  };
 
   // - Establish connection to mongo
   // - Check to see if reaction exists
