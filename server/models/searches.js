@@ -10,21 +10,23 @@ Searches = function(searchterm) {
   this.incrementCount = function (db, callback) {
     var collection = db.collection('search');
 
-    collection.findAndModify({search: this.search}, {}, {$inc: {count:1}}, {upsert:true}, function(err, searchDocument) {
+    search = this;
+
+    collection.findAndModify({search: search.search}, {}, {$inc: {count:1}}, {upsert:true}, function(err, searchDocument) {
 
       if (searchDocument.value === null ||
           searchDocument.value === null ||
          !searchDocument.value.count) {
 
-        this.Searches.count = 1;
+        search.count = 0;
 
       } else {
 
-        this.Searches.count = this.Searches.count + 1;
+        search.count = searchDocument.value.count;
 
       }
 
-      callback(this.Searches);
+      callback(search);
 
     });
 
@@ -40,7 +42,6 @@ Searches = function(searchterm) {
   }
 
 };
-
 
 
 Searches.getCount = function(db_connection, callback) {

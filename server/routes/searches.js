@@ -16,7 +16,7 @@ require('../models/response.js');
 router.post('/', function(req, res, next) {
 
 
-  var response = new Response();
+
 
   // ensure proper content type
   if (req.headers['content-type'] !== 'application/json') {
@@ -35,19 +35,19 @@ router.post('/', function(req, res, next) {
       next(err);
     } else {
 
+      var response = new Response();
+
       var searchterm = req.body.search;
 
       var searches = new Searches(searchterm);
       console.log(searches);
 
-      res.json(searches);
-
-      /*
-      search.incrementCount(db.connection, function (res) {
-        response.data = res;
+      searches.incrementCount(db.connection, function (result) {
+        response.data = result;
+        response.calculateExecutionTime();
         res.json(response);
       });
-      */
+
 
     }
 

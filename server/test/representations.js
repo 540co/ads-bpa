@@ -305,11 +305,11 @@ describe('Representations', function() {
       });
     });
 
-    it('Ensure a valid search object is returned with count 1', function() {
+    it('Ensure a valid search object is returned with count 0', function() {
       increment_result.should.be.an.instanceOf(Object);
       increment_result.should.have.property("search");
       increment_result.should.have.property("count");
-      increment_result.count.should.be.exactly(1);
+      increment_result.count.should.be.exactly(0);
     });
 
     it('Ensure [testsearchterm] search term is deleted', function() {
