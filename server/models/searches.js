@@ -2,6 +2,8 @@ var helper = require('./models-helper');
 var async = require('async');
 var _ = require('lodash');
 
+var config = require('../config');
+
 Searches = function(searchterm) {
 
   this.search = searchterm.toLowerCase();
@@ -30,16 +32,16 @@ Searches = function(searchterm) {
 
     });
 
-  }
+  };
 
   this.remove = function (db, callback) {
     var collection = db.collection(config.searches_collection);
 
     collection.remove({search: this.search}, function(err, object) {
-      callback(object.result)
+      callback(object.result);
     });
 
-  }
+  };
 
 };
 
@@ -63,9 +65,11 @@ Searches.getList = function(db_connection, limit, offset, callback) {
   cursor.skip(offset);
 
   cursor.toArray(function(err, result) {
+
     _.forEach(result, function (v,k) {
       delete result[k]['_id'];
-    })
+    });
+
     callback(result);
   });
 

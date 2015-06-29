@@ -1,9 +1,11 @@
 var should = require('should');
 
+var config = require('../config');
+
 require('../models/service-manager.js');
 
-describe('Service Manager', function() {
 
+describe('Service Manager', function() {
 
 
     describe('Overall', function() {
@@ -11,7 +13,6 @@ describe('Service Manager', function() {
         serviceManager.should.be.an.instanceOf(Object);
       });
     });
-
 
 
     describe('Wordnik API', function() {

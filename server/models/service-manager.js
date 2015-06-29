@@ -1,8 +1,9 @@
-var config = require('../config');
 var request = require('request');
 var _ = require('lodash');
 var async = require('async');
 var xml2js = require('xml2js');
+
+var config = require('../config');
 
 serviceManager = {};
 
@@ -52,11 +53,7 @@ serviceManager.getDefinitionsFromWordnikApi = function (term, api_key, callback)
 
 serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callback) {
 
-
-
-
     var url = "http://www.dictionaryapi.com/api/v1/references/medical/xml/" + encodeURIComponent(term.toLowerCase()) + "?key=" + api_key;
-
 
     request(url, function (error, response, body) {
 
