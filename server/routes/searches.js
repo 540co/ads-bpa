@@ -15,7 +15,7 @@ require('../models/response.js');
 // TO DO: apis.json file
 router.post('/', function(req, res, next) {
 
-  var startTime = new Date().getTime();
+
   var response = new Response();
 
   // ensure proper content type
@@ -35,40 +35,19 @@ router.post('/', function(req, res, next) {
       next(err);
     } else {
 
-      var search = new Search();
+      var searchterm = req.body.search;
 
-      search.search = req.body.search;
+      var searches = new Searches(searchterm);
+      console.log(searches);
 
-      var incrementCount = function(search, db, callback) {
-        var collection = db.collection('search');
-        collection.findAndModify({search: search.search.toLowerCase()}, {}, {$inc: {count:1}}, {upsert:true}, function(err, object) {
-          callback(object)
-        });
-      };
+      res.json(searches);
 
-      MongoClient.connect(mongo_url, function(err, db) {
-        incrementCount(search, db, function(searchDocument) {
-          var endTime = new Date().getTime();
-          response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
-
-          // The find and upsert capability starts the first count at 0, so
-          // response is incremented by 1 before responding to API consumer
-          if (searchDocument === null ||
-              searchDocument.value === null ||
-             !searchDocument.value.count) {
-            response.data.search = search.search;
-            response.data.count = 1;
-
-          } else {
-            response.data.search = search.search;
-            response.data.count = searchDocument.value.count + 1;
-          }
-
-          db.close();
-          res.json(response);
-
-        });
+      /*
+      search.incrementCount(db.connection, function (res) {
+        response.data = res;
+        res.json(response);
       });
+      */
 
     }
 
@@ -78,92 +57,43 @@ router.post('/', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
 
-    var response = new Response();
-    var startTime = new Date().getTime();
+  var response = new Response();
 
-    if (!req.query.limit) {req.query.limit = 25;} else {req.query.limit = parseInt(req.query.limit);}
+  if (!req.query.limit) {response.meta.limit = 25;} else {response.meta.limit = parseInt(req.query.limit);}
 
-    if (req.query.limit < 1) {
-      req.query.limit = 1;
-    }
+  if (response.meta.limit < 1) {
+    response.meta.limit = 1;
+  }
 
-    if (req.query.limit > 200) {
-      req.query.limit = 200;
-    }
+  if (response.meta.limit > 200) {
+    response.meta.limit = 200;
+  }
 
-    if (!req.query.offset) {
-      req.query.offset = 0;
-    } else {
-      req.query.offset = parseInt(req.query.offset);
-    }
+  if (!req.query.offset) {
+    response.meta.offset = 0;
+  } else {
+    response.meta.offset = parseInt(req.query.offset);
+  }
 
-    var findAll = function(db, callback) {
+  async.series([
+      // Get count from cursor
+      function(callback){
+        Searches.getCount(db.connection, function (count) {
+          response.meta.total_count = count;
+          callback();
+        });
+      },
+      function(callback){
+        Searches.getList(db.connection, response.meta.limit, response.meta.offset, function (data) {
+          response.data = data;
+          callback();
+        });
+      }
 
-      var collection = db.collection('search');
-
-      var cursor = collection.find({ }).sort({count:-1});
-
-      async.series([
-
-          // Get count from cursor
-          function(callback){
-            cursor.count(function(err, count) {
-              response.meta.limit = req.query.limit;
-              response.meta.offset = req.query.offset;
-              response.meta.total_count = count;
-
-            });
-            callback(null);
-          },
-
-          // Get results from curor
-          function(callback){
-            cursor.limit(req.query.limit);
-            cursor.skip(req.query.offset);
-
-            cursor.toArray(function(err, result) {
-              response.data = result;
-              callback(null);
-            });
-          }
-
-        ], function(err){
-
-          db.close();
-
-          if (!response.data) {
-            var endTime = new Date().getTime();
-            response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
-
-            res.status(404);
-            res.json(response);
-            db.close();
-
-          } else {
-
-           // ... then remove the _id keys from the results and send response back
-            _.forEach(response.data, function(v, k) {
-              delete response.data[k]._id;
-            })
-
-            var endTime = new Date().getTime();
-            response.meta.execution_time = String ((endTime - startTime) / 1000) + 's'  ;
-
-            res.json(response);
-            db.close();
-
-          }
-
-      });
-
-    }
-
-    MongoClient.connect(mongo_url, function(err, db) {
-      findAll(db, function() {
-
-
-      });
-    });
+  ], function () {
+    response.calculateExecutionTime();
+    res.json(response);
+  });
 
 });
 

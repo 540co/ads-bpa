@@ -45,7 +45,15 @@ var mockVotes = function(yesVotes, noVotes) {
   return votes;
 };
 
+// This function creates a mock response for testing purposes
+var mockResponse = function() {
+  var response = new Response();
+  response.calculateExecutionTime();
+  return response;
+}
+
 //Exports to make functions available in main.js
 exports.mockDefinition = mockDefinition;
 exports.mockReaction = mockReaction;
 exports.mockVotes = mockVotes;
+exports.mockResponse = mockResponse;
