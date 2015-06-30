@@ -5,7 +5,6 @@ var mockDefinition = function(def, source, created_at, created_by) {
   definition.definition = def;
   definition.source = source;
   definition.created_at = created_at;
-  definition.created_by = created_by;
   definition.votes = mockVotes(
     Math.floor(Math.random()*10),
     Math.floor(Math.random()*10));
@@ -16,9 +15,8 @@ var mockDefinition = function(def, source, created_at, created_by) {
 
 // This function creates a mocked reactions instance for testing purposes
 var mockReaction = function() {
-  var reaction = new Reaction();
+  var reaction = new Reaction("Death");
 
-  reaction.reaction = "Death";
   reaction.definitions = new Array();
   reaction.definitions.pop(mockDefinition(
                     "Test Definition for Death",
@@ -45,7 +43,15 @@ var mockVotes = function(yesVotes, noVotes) {
   return votes;
 };
 
+// This function creates a mock response for testing purposes
+var mockResponse = function() {
+  var response = new Response();
+  response.calculateExecutionTime();
+  return response;
+}
+
 //Exports to make functions available in main.js
 exports.mockDefinition = mockDefinition;
 exports.mockReaction = mockReaction;
 exports.mockVotes = mockVotes;
+exports.mockResponse = mockResponse;

@@ -1,12 +1,44 @@
-# dre
+# Client
 
-This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
-version 0.11.1.
+The below instructions only describe testing and serving the client application folder. To build and install the entire application please refer to the [Install Guide](../INSTALL.md) located in the root folder.
 
-## Build & development
 
-Run `grunt` for building and `grunt serve` for preview.
+## Install /client folder
 
-## Testing
+> To configure for local deployment, edit the `config.js` file.
 
-Running `grunt test` will run the unit tests with karma.
+To install node modules:
+
+```
+npm install
+```
+
+> This will not install the /server node dependencies since the install at this point is focused on the client layer
+
+
+To install bower components:
+
+```
+bower install
+```
+
+
+To start server:
+
+```
+grunt serve
+```
+
+To run tests using Karma:
+
+```
+grunt test
+```
+
+## Routes
+
+Menu
+
+```
+http://localhost:9000
+```
