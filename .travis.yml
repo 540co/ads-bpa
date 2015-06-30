@@ -12,7 +12,10 @@ cache:
   - client/node_modules
   - client/bower_components
   - server/node_modules
+services:
+  - mongodb
 before_script:
+- sleep 15
 - npm install -g bower
 - npm install -g grunt-cli
 - npm install -g mocha
