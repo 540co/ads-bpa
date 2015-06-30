@@ -22,20 +22,6 @@ angular
             return angular.extend(commonParams, custom);
         };
 
-        var postParams = function (custom) {
-          var commonParams = {
-              method: 'POST',
-              responseType: 'json',
-              cache: true,
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'
-              }
-          };
-
-          return angular.extend(commonParams, custom);
-        };
-
         var catalogEndpoint = function (catalog, resource) {
             var reactionsApiUrl = config.reactionUrl;
 
