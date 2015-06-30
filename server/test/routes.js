@@ -124,13 +124,13 @@ describe('API Routes', function(){
 
   });
 
-  describe('GET /reactions (list) - offset = -1', function(){
+  describe('GET /reactions (list) - offset = -999', function(){
 
-    it('respond with HTTP STATUS CODE 200', function(done){
+    it('respond with HTTP STATUS CODE 404', function(done){
       request(app)
-        .get(baseUrl + '/reactions?offset=-1')
+        .get(baseUrl + '/reactions?offset=-999')
         .set('Accept', 'application/json')
-        .expect(200)
+        .expect(404)
         .end(function(err, res){
           if (err) return done(err);
           done()
@@ -506,6 +506,21 @@ describe('API Routes', function(){
         .get(baseUrl + '/searches?limit=-999')
         .set('Accept', 'application/json')
         .expect(200)
+        .end(function(err, res){
+          if (err) return done(err);
+          done()
+        });
+    })
+
+  });
+
+  describe('GET /searches (list) - offset < 1', function(){
+
+    it('respond with HTTP STATUS CODE 404', function(done){
+      request(app)
+        .get(baseUrl + '/searches?offset=-999')
+        .set('Accept', 'application/json')
+        .expect(404)
         .end(function(err, res){
           if (err) return done(err);
           done()

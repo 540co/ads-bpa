@@ -40,30 +40,42 @@ router.get('/', function(req, res, next) {
     response.meta.offset = parseInt(req.query.offset);
   }
 
-  async.series([
-      // Get count from cursor
-      function(callback){
-        Reaction.getCount(db.connection, function (count) {
-          response.meta.total_count = count;
-          callback();
-        });
-      },
-      function(callback){
-        Reaction.getList(db.connection, response.meta.limit, response.meta.offset, function (data) {
-          response.data = data;
-          callback();
-        });
-      }
+  if(response.meta.offset < 0) {
+    var err = new Error();
+    err.status = 404;
+    err.error = "No reactions can be found";
+    err.message = "Bad offset query parameter - offset must be > 0";
+    next(err);
 
-  ], function () {
-    response.calculateExecutionTime();
-    res.json(response);
-  });
+  } else {
+
+    async.series([
+        // Get count from cursor
+        function(callback){
+          Reaction.getCount(db.connection, function (count) {
+            response.meta.total_count = count;
+            callback();
+          });
+        },
+        function(callback){
+          Reaction.getList(db.connection, response.meta.limit, response.meta.offset, function (data) {
+            response.data = data;
+            callback();
+          });
+        }
+
+    ], function () {
+      response.calculateExecutionTime();
+      res.json(response);
+    });
+
+  }
 
 });
 
 // POST definition to reaction
 router.post('/:id/definitions', function(req, res, next) {
+  var response = new Response();
 
   var id = req.params.id;
 
@@ -112,7 +124,9 @@ router.post('/:id/definitions', function(req, res, next) {
             reactionterm.addDefinition(def);
 
             reactionterm.upsert(db.connection, function (result) {
-              res.json(result);
+              response.data = result;
+              response.calculateExecutionTime();
+              res.json(response);
             });
           }
 
@@ -122,14 +136,12 @@ router.post('/:id/definitions', function(req, res, next) {
       });
 
   }
-
-}
-
-});
-
+}});
 
 // POST new or update reaction definition
 router.post('/', function(req, res, next) {
+
+  var response = new Response();
 
   if(Object.keys(req.body).length !== 1 ||
      req.body.reaction === null ||
@@ -167,7 +179,9 @@ router.post('/', function(req, res, next) {
         ],
         function(err, results){
           reactionterm.upsert(db.connection, function (result) {
-            res.json(result);
+            response.data = result;
+            response.calculateExecutionTime();
+            res.json(response);
           })
         });
 
@@ -186,6 +200,7 @@ router.post('/', function(req, res, next) {
 
 // GET reaction defintion
 router.get('/:id', function(req, res, next) {
+  var response = new Response();
 
   var reactionterm = new Reaction(decodeURIComponent(req.params.id));
 
@@ -197,17 +212,20 @@ router.get('/:id', function(req, res, next) {
       err.message = "The reaction that you were looking for could not be found.";
       next(err);
     } else {
+      response.data = reaction;
+      response.calculateExecutionTime();
+      res.json(response);
 
-      res.json(reaction);
     }
   });
 
 
 });
 
-
 // PUT Reaction Definition Vote Up / Down
 router.put('/:id/definitions/:index', function(req, res, next) {
+
+  var response = new Response();
 
   var id = req.params.id;
   var definitionIndex = parseInt(req.params.index);
@@ -261,7 +279,9 @@ router.put('/:id/definitions/:index', function(req, res, next) {
               reactionterm.vote(definitionIndex, vote);
 
               reactionterm.upsert(db.connection, function (result) {
-                res.json(result);
+                response.data = result;
+                response.calculateExecutionTime();
+                res.json(response);
               })
 
             }
@@ -299,6 +319,5 @@ router.delete('/:id', function(req, res, next) {
 
 
 });
-
 
 module.exports = router;

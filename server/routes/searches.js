@@ -71,25 +71,36 @@ router.get('/', function(req, res, next) {
     response.meta.offset = parseInt(req.query.offset);
   }
 
-  async.series([
-      // Get count from cursor
-      function(callback){
-        Searches.getCount(db.connection, function (count) {
-          response.meta.total_count = count;
-          callback();
-        });
-      },
-      function(callback){
-        Searches.getList(db.connection, response.meta.limit, response.meta.offset, function (data) {
-          response.data = data;
-          callback();
-        });
-      }
+  if(response.meta.offset < 0) {
+    var err = new Error();
+    err.status = 404;
+    err.error = "No searches can be found";
+    err.message = "Bad offset query parameter - offset must be > 0";
+    next(err);
 
-  ], function () {
-    response.calculateExecutionTime();
-    res.json(response);
-  });
+  } else {
+
+    async.series([
+        // Get count from cursor
+        function(callback){
+          Searches.getCount(db.connection, function (count) {
+            response.meta.total_count = count;
+            callback();
+          });
+        },
+        function(callback){
+          Searches.getList(db.connection, response.meta.limit, response.meta.offset, function (data) {
+            response.data = data;
+            callback();
+          });
+        }
+
+    ], function () {
+      response.calculateExecutionTime();
+      res.json(response);
+    });
+
+  }
 
 });
 
