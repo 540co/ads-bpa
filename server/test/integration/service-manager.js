@@ -1,8 +1,8 @@
 var should = require('should');
 
-var config = require('../config');
+var config = require('../../config');
 
-require('../models/service-manager.js');
+require('../../models/service-manager.js');
 
 
 describe('Service Manager', function() {
