@@ -6,7 +6,7 @@ describe('Controller: SplashCtrl', function () {
   beforeEach(module('dreApp'));
 
   var AboutCtrl,
-    $scope, service, $controller, setTerms;
+    $scope, service, $controller, setTerms, path;
 
     var mockTerms = [
       {
@@ -28,10 +28,10 @@ describe('Controller: SplashCtrl', function () {
     ];
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($rootScope, $controller, $q, DashboardService) {
+  beforeEach(inject(function ($rootScope, $controller, $q, DashboardService, $location) {
     $scope = $rootScope.$new();
     service = DashboardService;
-
+    $location = $location;
     $controller('SplashCtrl', {
       $scope: $scope,
       DashboardService: service
@@ -55,7 +55,7 @@ describe('Controller: SplashCtrl', function () {
       }));
 
       it('should call getSearchTerms and set to $scope.commonSearchTerms', function () {
-        console.log(setTerms);
+        //console.log(setTerms);
         expect($scope.commonSearchTerms).toEqual(setTerms);
       });
     });
@@ -67,7 +67,7 @@ describe('Controller: SplashCtrl', function () {
       }));
 
       xit('should call getSearchTerms and throw error', function () {
-        console.log(setTerms);
+        //console.log(setTerms);
           expect(function() {
             service.getSearchTerms();
           }).toThrowError('failed');
@@ -83,14 +83,9 @@ describe('Controller: SplashCtrl', function () {
     });
 
     beforeEach(inject (function($location) {
-      spyOn($location, 'path').and.returnValue('/client_id/');
+      spyOn($location, 'path').and.returnValue('/keyword/');
+      $scope.search('ibuprofen');
     }));
-
-    it('should have function named $scope.search()', function () {
-      //expect($scope.search('test')).toBe('test');
-      //expect($scope.search('test')).toHaveBeenCalledWith('test');
-      //expect($scope.search('test')).toHaveBeenCalled();
-    });
 
   });
 

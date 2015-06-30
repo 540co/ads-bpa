@@ -15,43 +15,159 @@ describe('Service: DashboardService', function () {
   }));
 
   describe('Method: Get Top Symptoms from DashboardService', function() {
-    it('should return array of items ', function() {
+    it('should return array of items', function() {
       expect(DashboardService.getSymptoms()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getSymptoms('ibuprofen')).toBeDefined();
+    });
+
+    beforeEach(inject (function($q) {
+      var termsDeferred = $q.defer();
+      termsDeferred.resolve('ibuprofen');
+      spyOn(DashboardService, 'getSymptoms').and.returnValue(termsDeferred.promise);
+    }));
+
+  });
+
+  describe('Method: Get Symptom Count from DashboardService', function() {
+    it('should return array of items', function() {
+      expect(DashboardService.getSymptomCount()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getSymptomCount('ibuprofen')).toBeDefined();
     });
   });
 
   describe('Method: Get Top Manufacturers from DashboardService', function() {
-    it('should return array of items ', function() {
+    it('should return array of items', function() {
       expect(DashboardService.getManufacturers()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getManufacturers('ibuprofen')).toBeDefined();
     });
   });
 
   describe('Method: Get Top Brands from DashboardService', function() {
-    it('should return array of items ', function() {
+    it('should return array of items', function() {
       expect(DashboardService.getBrands()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getBrands('ibuprofen')).toBeDefined();
     });
   });
 
   describe('Method: Get Severity Counts from DashboardService', function() {
-    it('should return array of items ', function() {
+    it('should return array of items', function() {
       expect(DashboardService.getSeverity()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getSeverity('ibuprofen')).toBeDefined();
     });
   });
 
   describe('Method: Get Gender Counts from DashboardService', function() {
-    it('should return array of items ', function() {
+    it('should return array of items', function() {
       expect(DashboardService.getGenders()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getGenders('ibuprofen')).toBeDefined();
     });
   });
 
   describe('Method: Get Top Countries from DashboardService', function() {
-    it('should return array of items ', function() {
+    it('should return array of items', function() {
       expect(DashboardService.getCountries()).toBeDefined();
     });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getCountries('ibuprofen')).toBeDefined();
+    });
   });
+
   describe('Method: Get All Events from DashboardService', function() {
-    it('should return array of items ', function() {
+    it('should return array of items', function() {
       expect(DashboardService.getEvents()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getEvents('ibuprofen')).toBeDefined();
+    });
+  });
+
+  describe('Method: Get Symptom Definitions from DashboardService', function() {
+    it('should return array of items', function() {
+      expect(DashboardService.getSymptomDefinitions()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getSymptomDefinitions('ibuprofen')).toBeDefined();
+    });
+  });
+
+  describe('Method: Post New Symptom Definition from DashboardService', function() {
+    it('should return array of items', function() {
+      expect(DashboardService.postSymptomDefinitions()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.postSymptomDefinitions('ibuprofen')).toBeDefined();
+    });
+  });
+
+  describe('Method: Post New Definition from DashboardService', function() {
+    it('should return array of items', function() {
+      expect(DashboardService.postNewDefinition()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.postNewDefinition('ibuprofen')).toBeDefined();
+    });
+  });
+
+  describe('Method: Get Most Searched Terms from DashboardService', function() {
+    it('should return array of items', function() {
+      expect(DashboardService.getSearchTerms()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getSearchTerms('ibuprofen')).toBeDefined();
+    });
+  });
+
+  describe('Method: Get Most Searched Terms from DashboardService', function() {
+    it('should return array of items', function() {
+      expect(DashboardService.getSearchTerms()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.getSearchTerms('ibuprofen')).toBeDefined();
+    });
+  });
+
+  describe('Method: Post Searched Term from DashboardService', function() {
+    it('should return array of items', function() {
+      expect(DashboardService.postSearchTerm()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.postSearchTerm('ibuprofen')).toBeDefined();
+    });
+  });
+
+  describe('Method: Put Definition Vote from DashboardService', function() {
+    it('should return array of items', function() {
+      expect(DashboardService.putDefinitionVote()).toBeDefined();
+    });
+
+    it('should return array of items for ibuprofen', function() {
+      expect(DashboardService.putDefinitionVote('ibuprofen')).toBeDefined();
     });
   });
 
