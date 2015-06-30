@@ -25,7 +25,6 @@ serviceManager.getDefinitionsFromWordnikApi = function (term, api_key, callback)
               definition.definition = v.text;
               definition.source = 'wordnik.com';
               definition.created_at = dt.getTime();
-              definition.created_by = "";
               definition.votes = new Votes();
               definitions.push(definition);
             }
@@ -87,7 +86,6 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
                             definition.definition = v.sens[0].dt[0]['_'];
                             definition.source = 'dictionaryapi.com';
                             definition.created_at = dt.getTime();
-                            definition.created_by = "";
                             definition.votes = new Votes();
                             definitions.push(definition);
 
@@ -103,7 +101,6 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
                             definition.definition = v.sens[0].dt[0];
                             definition.source = 'dictionaryapi.com';
                             definition.created_at = dt.getTime();
-                            definition.created_by = "";
                             definition.votes = new Votes();
                             definitions.push(definition);
 
@@ -123,10 +120,7 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
                         definition.definition = v.def[0].sensb[0].sens[0].dt;
                         definition.source = 'dictionaryapi.com';
                         definition.created_at = dt.getTime();
-                        definition.created_by = "";
                         definition.votes = new Votes();
-                        console.log(term + ' PATH 3');
-                        throw('******found******');
                         definitions.push(definition);
 
                       }

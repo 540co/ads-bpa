@@ -39,7 +39,7 @@ var postReactions = function (reactionmeddrapt, callback) {
 
     request({method: 'POST', uri: url, json: reactionbody}, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        console.log('['+ response.statusCode +'] ' + body.reaction + ' succesffully added to reaction directory (' + body.definitions.length + ' definitions found)');
+        console.log('['+ response.statusCode +'] ' + body.data.reaction + ' succesffully added to reaction directory (' + body.data.definitions.length + ' definitions found)');
       }
 
       else if (!error && (response.statusCode == 400 || response.statusCode == 422)) {
