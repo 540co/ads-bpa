@@ -608,33 +608,10 @@ describe('ADMIN Routes', function(){
         .expect(200)
         .end(function(err, res){
           if (err) return done(err);
-          done()
+          done();
         });
     })
   });
 
-  describe('GET /admin/reactions', function(){
-    it('respond with HTTP STATUS CODE 200', function(done){
-      request(app)
-        .get(adminUrl + '/reactions')
-        .expect(200)
-        .end(function(err, res){
-          if (err) return done(err);
-          done()
-        });
-    })
-  });
-
-  describe('GET /admin/searches', function(){
-    it('respond with HTTP STATUS CODE 200', function(done){
-      request(app)
-        .get(adminUrl + '/searches')
-        .expect(200)
-        .end(function(err, res){
-          if (err) return done(err);
-          done()
-        });
-    })
-  });
 
 });
