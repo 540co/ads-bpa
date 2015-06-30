@@ -1,8 +1,10 @@
 # Server
 
-## Install
+The below instructions only describe testing and serving the server application folder. To build and install the entire application please refer to the [Install Guide](../INSTALL.md) located in the root folder.
 
-> To configure for deployment, edit the `config.js` file.
+## Install /server folder
+
+> To configure for local deployment, edit the `config.js` file.
 
 To install node modules:
 
@@ -31,30 +33,4 @@ Menu
 
 ```
 http://localhost:3000
-```
-
-Client
-
-```
-http://localhost:3000/client
-```
-
-
-Server
-
-```
-http://localhost:3000/server
-```
-
-## Stubbed Endpoints
-
-List of reactions we have definitions
-```
-./server/reaction
-```
-
-Get definition
-
-```
-./server/reaction/:field
 ```

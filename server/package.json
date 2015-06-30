@@ -16,12 +16,14 @@
     "http-status": "^0.2.0",
     "jade": "^1.9.2",
     "lodash": "^3.9.3",
+    "mocha": "^2.2.5",
     "mongodb": "^2.0.34",
     "morgan": "~1.5.3",
     "request": "^2.58.0",
     "serve-favicon": "~2.2.1",
     "should": "^7.0.1",
     "superagent": "^1.2.0",
+    "supertest": "^1.0.1",
     "xml2js": "^0.4.9"
   }
 }

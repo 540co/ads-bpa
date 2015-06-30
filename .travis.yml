@@ -12,6 +12,8 @@ cache:
   - client/node_modules
   - client/bower_components
   - server/node_modules
+services:
+  - mongodb
 before_script:
 - npm install -g bower
 - npm install -g grunt-cli

@@ -6,8 +6,6 @@ Definition = function() {
   this.source;
   this.votes = new Votes();
   this.created_at;
-  this.created_by;
-
 
   this.isValid = function() {
     var validFlag = true;
@@ -18,7 +16,7 @@ Definition = function() {
       validFlag = false;
     }
 
-    var listOfKeys = ['definition', 'source', 'votes', 'created_by',
+    var listOfKeys = ['definition', 'source', 'votes',
                       'created_at', 'isValid', 'matches'];
 
     if(helper.checkIndices(this, listOfKeys) === false) {
