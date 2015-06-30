@@ -26,8 +26,6 @@ angular.module('dreApp')
     };
 
     $scope.countdown();
-}]).controller('DefinitionModalCtrl', ['$scope', 'config', function ($scope, config) {
+}]).controller('DefinitionModalCtrl', function () {
 
-  console.log($scope.selectedDefinition);
-
-}]);
+});

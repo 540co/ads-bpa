@@ -84,4 +84,14 @@ describe('Method: Get Event Count by Date from openFDA', function() {
   });
 });
 
+describe('Method: Get Total Symptom Count from openFDA', function() {
+  it('openFDA.adverseEvents.eventCountByDate() should be a function', function() {
+    expect(angular.isFunction(openFDA.adverseEvents.symptomCount)).toBe(true);
+  });
+
+  it('should return array of items', function () {
+    expect(openFDA.adverseEvents.symptomCount()).toBeDefined();
+  });
+});
+
 });

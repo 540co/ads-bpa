@@ -32,60 +32,64 @@ describe('Controller: SplashCtrl', function () {
     $scope = $rootScope.$new();
     service = DashboardService;
 
-    //console.log(service);
-
     $controller('SplashCtrl', {
       $scope: $scope,
       DashboardService: service
     });
 
-    //$rootScope.apply();
-
   }));
 
   describe('Method: init', function() {
-
-    beforeEach(inject (function($q) {
-      $scope.init();
-      var termsDeferred = $q.defer();
-      termsDeferred.resolve(mockTerms);
-
-      console.log(termsDeferred.promise);
-      spyOn(service, 'getSearchTerms').and.returnValue(termsDeferred.promise);
-      setTerms = service.getSearchTerms();
-    }));
 
     it('should have function named $scope.init()', function () {
       expect(angular.isFunction($scope.init)).toBe(true);
     });
 
-    it('should call getSearchTerms', function () {
-      expect(setTerms).toEqual([
-        {
-          search: 'ibuprofen',
-          count: 199
-        },
-        {
-          search: 'motrin',
-          count: 384
-        },
-        {
-          search: 'aleve',
-          count: 11
-        },
-        {
-          search: 'xanax',
-          count: 1939
-        },
-      ]);
+    describe('Calls getSearchTerms successfully', function() {
+      beforeEach(inject (function($q) {
+        var termsDeferred = $q.defer();
+        termsDeferred.resolve(mockTerms);
+        spyOn(service, 'getSearchTerms').and.returnValue(termsDeferred.promise);
+
+        $scope.init();
+      }));
+
+      it('should call getSearchTerms and set to $scope.commonSearchTerms', function () {
+        console.log(setTerms);
+        expect($scope.commonSearchTerms).toEqual(setTerms);
+      });
     });
+
+    describe('Calls getSearchTerms returns an error', function() {
+      beforeEach(inject (function() {
+        spyOn(service, 'getSearchTerms').and.throwError('failed');
+        $scope.init();
+      }));
+
+      xit('should call getSearchTerms and throw error', function () {
+        console.log(setTerms);
+          expect(function() {
+            service.getSearchTerms();
+          }).toThrowError('failed');
+        });
+      });
 
   });
   //
   describe('Method: search', function() {
 
     it('should have function named $scope.search()', function () {
-      //expect(angular.isFunction($scope.search)).toBe(true);
+      expect(angular.isFunction($scope.search)).toBe(true);
+    });
+
+    beforeEach(inject (function($location) {
+      spyOn($location, 'path').and.returnValue('/client_id/');
+    }));
+
+    it('should have function named $scope.search()', function () {
+      //expect($scope.search('test')).toBe('test');
+      //expect($scope.search('test')).toHaveBeenCalledWith('test');
+      //expect($scope.search('test')).toHaveBeenCalled();
     });
 
   });
