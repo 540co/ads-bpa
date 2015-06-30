@@ -44,7 +44,7 @@ describe('Controller: SplashCtrl', function () {
     it('should have function named $scope.init()', function () {
       expect(angular.isFunction($scope.init)).toBe(true);
     });
-
+    
     describe('Calls getSearchTerms successfully', function() {
       beforeEach(inject (function($q) {
         var termsDeferred = $q.defer();
