@@ -79,7 +79,6 @@ router.post('/:id/definitions', function(req, res, next) {
 
   var id = req.params.id;
 
-  // ensure proper content type
   if (req.headers['content-type'] !== 'application/json') {
     var err = new Error();
     err.status = 400;
@@ -138,7 +137,7 @@ router.post('/:id/definitions', function(req, res, next) {
   }
 }});
 
-// POST new or update reaction definition
+// POST new reaction
 router.post('/', function(req, res, next) {
 
   var response = new Response();
