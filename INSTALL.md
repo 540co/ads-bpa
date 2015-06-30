@@ -58,8 +58,9 @@ It is responsible for:
         cd ../server
         npm install
 
-8. Start App
+8. Start mongo and then start the App
 
+        mongod --config /usr/local/etc/mongod.conf # You may need to modify path to mongod.conf
         npm start
 
 9. View App.  Default url is: http://localhost:3000
