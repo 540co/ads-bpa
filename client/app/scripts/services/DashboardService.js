@@ -94,19 +94,19 @@ angular
 
       function getSymptomDefinitions(drugKeyword) {
         return reactions.reactions.getSymptomDefinition(drugKeyword).then(function(data) {
-          return data.data.definitions;
+          return data.data.data.definitions;
         });
       }
 
       function postSymptomDefinitions(drugKeyword) {
         return reactions.reactions.postSymptomDefinition(drugKeyword).then(function(data) {
-          return data.data.definitions;
+          return data.data.data.definitions;
         });
       }
 
       function postNewDefinition(drugKeyword, definition) {
         return reactions.reactions.postNewDefinition(drugKeyword, definition).then(function(data) {
-          return data.data.definitions;
+          return data.data.data.definitions;
         });
       }
 
@@ -124,7 +124,7 @@ angular
 
       function putDefinitionVote(drugKeyword, vote, index) {
         return reactions.reactions.putDefinitionVote(drugKeyword, vote, index).then(function(data) {
-          return data.data.definitions;
+          return data.data.data.definitions;
         });
       }
 
