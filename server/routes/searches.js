@@ -1,13 +1,8 @@
 var config = require('../config');
-var fs = require('fs');
 var express = require('express');
 var async = require('async');
-var _ = require('lodash');
 
 var router = express.Router();
-
-var MongoClient = require('mongodb').MongoClient;
-var mongo_url = config.mongo + config.db;
 
 require('../models/searches.js');
 require('../models/response.js');
