@@ -1,16 +1,13 @@
 var request = require('request');
 var _ = require('lodash');
-var async = require('async');
 var xml2js = require('xml2js');
-
-var config = require('../config');
 
 serviceManager = {};
 
+// Fetch dictionary definitions from Wordnik API
 serviceManager.getDefinitionsFromWordnikApi = function (term, api_key, callback) {
 
     var url = "http://api.wordnik.com:80/v4/word.json/" + encodeURIComponent(term.toLowerCase()) + "/definitions?limit=200&includeRelated=true&useCanonical=false&includeTags=false&api_key=" + api_key;
-
     request(url, function (error, response, body) {
 
       var definitions = [];
@@ -41,6 +38,10 @@ serviceManager.getDefinitionsFromWordnikApi = function (term, api_key, callback)
 
       } else {
 
+        // TODO: Add some type of catch error from API and provide back a
+        // a different response - at this time there will simply be no
+        // dictionary records provided back to the reaction dictionary
+
         callback(definitions);
       }
 
@@ -48,7 +49,7 @@ serviceManager.getDefinitionsFromWordnikApi = function (term, api_key, callback)
 
 }
 
-
+// Fetch dictionary definitions from Dictionary API (Medical Dictionary)
 serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callback) {
 
     var url = "http://www.dictionaryapi.com/api/v1/references/medical/xml/" + encodeURIComponent(term.toLowerCase()) + "?key=" + api_key;
@@ -57,7 +58,8 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
 
       var definitions = [];
 
-      if (!error && response.statusCode === 200) {
+      if ((!error && response.statusCode === 200) &&
+        body !== "Invalid API key or reference name provided.") {
 
         var parser = new xml2js.Parser({ignoreAttrs: false});
 
@@ -67,7 +69,7 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
 
           _.forEach(result.entry_list.entry, function(v,k) {
 
-            if (v['$'].id === reaction.reaction.toLowerCase()) {
+            if (v['$'].id === encodeURIComponent(term.toLowerCase())) {
 
                 if (v.def) {
 
@@ -87,7 +89,6 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
                             definition.created_at = dt.getTime();
                             definition.created_by = "";
                             definition.votes = new Votes();
-
                             definitions.push(definition);
 
                           }
@@ -104,7 +105,6 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
                             definition.created_at = dt.getTime();
                             definition.created_by = "";
                             definition.votes = new Votes();
-
                             definitions.push(definition);
 
                           }
@@ -125,7 +125,8 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
                         definition.created_at = dt.getTime();
                         definition.created_by = "";
                         definition.votes = new Votes();
-
+                        console.log(term + ' PATH 3');
+                        throw('******found******');
                         definitions.push(definition);
 
                       }
@@ -143,8 +144,14 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
           callback(definitions);
 
       } else {
+
+        // TODO: Add some type of catch error from API and provide back a
+        // a different response - at this time there will simply be no
+        // dictionary records provided back to the reaction dictionary
+
         callback(definitions);
-      }
+      };
+
     });
 
 

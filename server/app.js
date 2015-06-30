@@ -20,6 +20,8 @@ db = {};
 
 require('./models/data-manager.js');
 
+// Starting services / connections that must be done prior
+// to start of Node
 async.series([
     function(callback){
       console.log('Connecting to MongoDB...');
@@ -29,7 +31,8 @@ async.series([
       });
     }
 ],
-// optional callback
+
+// Start node listening for incoming requests
 function(err, results){
 
   console.log('Starting Drug Reactions Explained [DRE] Server...')

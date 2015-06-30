@@ -76,7 +76,6 @@ router.post('/:id/definitions', function(req, res, next) {
     next(err);
   } else {
 
-    // ensure body has vote key value
     if (!req.body.definition) {
       var err = new Error();
       err.status = 400;
@@ -100,7 +99,7 @@ router.post('/:id/definitions', function(req, res, next) {
         } else {
           if (reactionterm.definitionExists(definition)) {
             var err = new Error();
-            err.status = 400;
+            err.status = 422;
             err.error = "Duplicate Definition Exists";
             err.message = "Duplicate Definition Exists";
             next(err);
@@ -111,7 +110,7 @@ router.post('/:id/definitions', function(req, res, next) {
             def.created_at = new Date().getTime();
 
             reactionterm.addDefinition(def);
-      
+
             reactionterm.upsert(db.connection, function (result) {
               res.json(result);
             });
@@ -143,59 +142,50 @@ router.post('/', function(req, res, next) {
                   " the 'reaction' attribute could not be found, or the" +
                   " 'reaction' attribute wasn't properly formatted.";
     next(err);
+  } else {
+
+    var reactionterm = new Reaction(req.body.reaction);
+
+    reactionterm.find(db.connection, function(result) {
+
+      if (!result) {
+        async.series([
+
+          function(callback){
+            serviceManager.getDefinitionsFromDictionaryApi(reactionterm.reaction, config.dictionaryapi_key, function (result) {
+              reactionterm.addDefinition(result);
+              callback();
+            });
+          },
+          function(callback){
+            serviceManager.getDefinitionsFromWordnikApi(reactionterm.reaction, config.wordnikapi_key, function (result) {
+              reactionterm.addDefinition(result);
+              callback();
+            });
+          }
+
+        ],
+        function(err, results){
+          reactionterm.upsert(db.connection, function (result) {
+            res.json(result);
+          })
+        });
+
+      } else {
+        var err = new Error();
+        err.status = 422;
+        err.error = "Duplicate Reaction";
+        err.message = "The reaction that you are trying to create already exists" +
+                      " and cannot be created again.";
+        next(err);
+      }
+    });
+
   }
-
-
-  var reactionterm = new Reaction(req.body.reaction);
-
-  reactionterm.find(db.connection, function(result) {
-
-    if (!result) {
-      async.series([
-
-        function(callback){
-          serviceManager.getDefinitionsFromDictionaryApi(reactionterm.reaction, config.dictionaryapi_key, function (result) {
-            reactionterm.addDefinition(result);
-            callback();
-          });
-        },
-        function(callback){
-          serviceManager.getDefinitionsFromWordnikApi(reactionterm.reaction, config.wordnikapi_key, function (result) {
-            reactionterm.addDefinition(result);
-            callback();
-          });
-        }
-
-      ],
-      function(err, results){
-        reactionterm.upsert(db.connection, function (result) {
-          res.json(result);
-        })
-      });
-
-    } else {
-      var err = new Error();
-      err.status = 422;
-      err.error = "Duplicate Reaction";
-      err.message = "The reaction that you are trying to create already exists" +
-                    " and cannot be created again.";
-      next(err);
-    }
-  });
-
 });
 
 // GET reaction defintion
 router.get('/:id', function(req, res, next) {
-
-  if(req.params.id === null || typeof req.params.id === "object") {
-    var err = new Error();
-    err.status = 500;
-    err.error = "Unknown Server Error";
-    err.message = "Please retry your request again or contact us if the" +
-                  " problem persists";
-    next(err);
-  }
 
   var reactionterm = new Reaction(decodeURIComponent(req.params.id));
 
@@ -289,15 +279,6 @@ router.put('/:id/definitions/:index', function(req, res, next) {
 
 // DELETE Reaction
 router.delete('/:id', function(req, res, next) {
-
-  if(req.params.id === null || typeof req.params.id === "object") {
-    var err = new Error();
-    err.status = 500;
-    err.error = "Unknown Server Error";
-    err.message = "Please retry your request again or contact us if the" +
-                  " problem persists";
-    next(err);
-  }
 
   var reactionterm = new Reaction(decodeURIComponent(req.params.id));
 
