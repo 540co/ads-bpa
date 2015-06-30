@@ -6,13 +6,31 @@ describe('Service: DashboardService', function () {
   beforeEach(module('dreApp'));
 
   var DashboardService,
-    httpBackend;
+    httpBackend, $q, $timeout, $rootScope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function (_DashboardService_, $httpBackend) {
+  beforeEach(inject(function (_DashboardService_, $httpBackend, _$q_, _$timeout_, _$rootScope_) {
     DashboardService = _DashboardService_;
     httpBackend = $httpBackend;
+    $q = _$q_;
+    $timeout = _$timeout_;
+    $rootScope = _$rootScope_;
   }));
+
+  it('Demonstrates async testing', function(done) {
+    var deferred = $q.defer();
+
+    $timeout(function() {
+      deferred.resolve('I told you I would come!');
+    }, 1000);
+
+    deferred.promise.then(function(value) {
+      expect(value).toBe('I told you I would come!');
+    })
+    .finally(done);
+
+    $timeout.flush();
+  });
 
   describe('Method: Get Top Symptoms from DashboardService', function() {
     it('should return array of items', function() {
@@ -39,6 +57,46 @@ describe('Service: DashboardService', function () {
     it('should return array of items for ibuprofen', function() {
       expect(DashboardService.getSymptomCount('ibuprofen')).toBeDefined();
     });
+
+    var fakeSymptomCount = {
+      config: {
+        test: 'test'
+      },
+      data: {
+        meta: {
+          results: {
+            limit: 1,
+            skip: 0,
+            total: 1234456
+          }
+        },
+        results: [
+            {
+              test: 'test'
+            }
+          ]
+      },
+      headers: {
+        test: 'test'
+      },
+      status: 200,
+      statusText: 'OK'
+    };
+    var termsDeferred;
+    beforeEach(inject (function($q) {
+      termsDeferred = $q.defer();
+      termsDeferred.resolve(fakeSymptomCount);
+      //spyOn(DashboardService, 'getSymptomCount').and.returnValue(termsDeferred.promise);
+      spyOn(DashboardService, 'getSymptomCount').and.returnValue(termsDeferred.promise);
+      //$rootScope.$apply();
+      DashboardService.getSymptomCount('ibuprofen');
+    }));
+
+    it('should return an object', function() {
+      console.log(termsDeferred.promise);
+      expect(DashboardService.getSymptomCount).toHaveBeenCalled();
+    });
+
   });
 
   describe('Method: Get Top Manufacturers from DashboardService', function() {

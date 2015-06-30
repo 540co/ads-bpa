@@ -32,6 +32,14 @@ describe('Controller: MainCtrl', function () {
     it('should have function named $scope.getResults(keyword)', function () {
       expect(angular.isFunction(scope.getResults)).toBe(true);
     });
+
+    beforeEach(function() {
+      scope.getResults();
+    });
+
+    it('$scope.showFilter should initially set to false', function () {
+      expect(scope.showFilter).toBe(true);
+    });
   });
 
   describe('Method: $scope.search', function() {
@@ -44,6 +52,14 @@ describe('Controller: MainCtrl', function () {
     it('should have function named $scope.openConfirm(reaction, symptomIndex)', function () {
       expect(angular.isFunction(scope.openConfirm)).toBe(true);
     });
+
+    beforeEach(function() {
+      scope.openConfirm();
+    });
+
+    // it('$scope.showFilter should initially set to false', function () {
+    //   expect(scope.showFilter).toBe(true);
+    // });
   });
 
   describe('Method: $scope.showErrorModal', function() {
@@ -56,6 +72,9 @@ describe('Controller: MainCtrl', function () {
     it('should have function named $scope.vote(keyword, vote, definitionIndex, symptomIndex)', function () {
       expect(angular.isFunction(scope.vote)).toBe(true);
     });
-  });
 
+    beforeEach(function() {
+      scope.vote();
+    });
+  });
 });

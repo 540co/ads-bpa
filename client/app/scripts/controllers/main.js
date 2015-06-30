@@ -81,12 +81,7 @@ angular.module('dreApp')
         backdrop: 'static',
         keyboard: false,
         templateUrl: 'myModalContent.html',
-        controller: 'ModalInstanceCtrl',
-        resolve: {
-          items: function () {
-            return $scope.items;
-          }
-        }
+        controller: 'ModalInstanceCtrl'
       });
     };
 
