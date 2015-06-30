@@ -15,7 +15,6 @@ cache:
 services:
   - mongodb
 before_script:
-- sleep 15
 - npm install -g bower
 - npm install -g grunt-cli
 - npm install -g mocha
