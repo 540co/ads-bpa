@@ -2,8 +2,13 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "DRE Reactions Definition Lookup / Searches API"
+    "title": "Drug Reactions Explained [DRE] APIs",
+    "description": "The following APIs support the DRE application. At this time there is no authorization (apikey, etc) is required to consume the APIs.",
+    "contact": {
+      "email" : "dre@540.co"
+    }
   },
+
   "host": "",
   "basePath": "/api",
   "schemes": [
