@@ -19,7 +19,9 @@ require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
 
-// GET list of reactions
+/**
+* Fetch list of reaction definitions currently available in DRE dictionary
+*/
 router.get('/', function(req, res, next) {
 
   var response = new Response();
@@ -50,7 +52,6 @@ router.get('/', function(req, res, next) {
   } else {
 
     async.series([
-        // Get count from cursor
         function(callback){
           Reaction.getCount(db.connection, function (count) {
             response.meta.total_count = count;
@@ -73,7 +74,10 @@ router.get('/', function(req, res, next) {
 
 });
 
-// POST definition to reaction
+
+/**
+* Add a definition to a pre-existing reaction in the DRE dictionary
+*/
 router.post('/:id/definitions', function(req, res, next) {
   var response = new Response();
 
@@ -137,7 +141,9 @@ router.post('/:id/definitions', function(req, res, next) {
   }
 }});
 
-// POST new reaction
+/**
+* Add a new reaction to the DRE dictionary
+*/
 router.post('/', function(req, res, next) {
 
   var response = new Response();
@@ -197,7 +203,9 @@ router.post('/', function(req, res, next) {
   }
 });
 
-// GET reaction defintion
+/**
+* Fetch definition of a reaction stored within the DRE dictionary
+*/
 router.get('/:id', function(req, res, next) {
   var response = new Response();
 
@@ -221,7 +229,9 @@ router.get('/:id', function(req, res, next) {
 
 });
 
-// PUT Reaction Definition Vote Up / Down
+/**
+* Increment the vote up / down for a specific reaction definition
+*/
 router.put('/:id/definitions/:index', function(req, res, next) {
 
   var response = new Response();
@@ -296,7 +306,9 @@ router.put('/:id/definitions/:index', function(req, res, next) {
 
 });
 
-// DELETE Reaction
+/**
+* Remove a reaction and associated definitions from DRE dictionary
+*/
 router.delete('/:id', function(req, res, next) {
 
   var reactionterm = new Reaction(decodeURIComponent(req.params.id));
