@@ -1,19 +1,10 @@
 var config = require('../config');
 var express = require('express');
-var _ = require('lodash');
-var request = require('request');
-var fs = require('fs');
-var xml2js = require('xml2js');
-var async = require('async');
-
 var async = require('async');
 
 require('../models/service-manager.js');
 
 var router = express.Router();
-
-var MongoClient = require('mongodb').MongoClient;
-var mongo_url = config.mongo + config.db;
 
 require('../models/reactions.js');
 require('../models/definition.js');
@@ -187,7 +178,7 @@ router.post('/', function(req, res, next) {
             response.data = result;
             response.calculateExecutionTime();
             res.json(response);
-          })
+          });
         });
 
       } else {
@@ -236,7 +227,6 @@ router.put('/:id/definitions/:index', function(req, res, next) {
 
   var response = new Response();
 
-  var id = req.params.id;
   var definitionIndex = parseInt(req.params.index);
 
   // ensure proper content type
@@ -291,7 +281,7 @@ router.put('/:id/definitions/:index', function(req, res, next) {
                 response.data = result;
                 response.calculateExecutionTime();
                 res.json(response);
-              })
+              });
 
             }
 
@@ -299,9 +289,9 @@ router.put('/:id/definitions/:index', function(req, res, next) {
         });
 
       }
-    };
+    }
 
-  };
+  }
 
 
 });
@@ -321,10 +311,10 @@ router.delete('/:id', function(req, res, next) {
       err.message = "The reaction that you were looking for could not be found.";
       next(err);
     } else {
-      reaction.remove(db.connection, function (result) {
+      reaction.remove(db.connection, function () {
         res.status(204);
         res.json();
-      })
+      });
     }
   });
 
