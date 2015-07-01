@@ -1,7 +1,4 @@
-var helper = require('./models-helper');
-var async = require('async');
 var _ = require('lodash');
-
 var config = require('../config');
 
 Searches = function(searchterm) {
