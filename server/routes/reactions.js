@@ -74,63 +74,72 @@ router.post('/:id/definitions', function(req, res, next) {
 
   var id = req.params.id;
 
-  if (req.headers['content-type'].indexOf("application/json") < 0) {
-    var err = new Error();
-    err.status = 400;
-    err.error = "Invalid content type";
-    err.message = "Valid content type is 'application/json'";
-    next(err);
-  } else {
-
-    if (!req.body.definition) {
+  if (req.headers['content-type']) {
+    if(req.headers['content-type'].indexOf("application/json") < 0) {
       var err = new Error();
       err.status = 400;
-      err.error = "Definition attribute not found in body";
-      err.message = "A definition value must be passed in body (ex. {'definition':'lorem ipsum'})";
+      err.error = "Invalid content type";
+      err.message = "Valid content type is 'application/json'";
       next(err);
     } else {
 
-      var definition = req.body.definition;
+      if (!req.body.definition) {
+        var err = new Error();
+        err.status = 400;
+        err.error = "Definition attribute not found in body";
+        err.message = "A definition value must be passed in body (ex. {'definition':'lorem ipsum'})";
+        next(err);
+      } else {
 
-      var reactionterm = new Reaction(req.params.id);
+        var definition = req.body.definition;
 
-      reactionterm.find(db.connection, function(result) {
+        var reactionterm = new Reaction(req.params.id);
 
-        if (!result) {
-          var err = new Error();
-          err.status = 404;
-          err.error = "Reaction cannot be found";
-          err.message = "Reaction cannot be found";
-          next(err);
-        } else {
-          if (reactionterm.definitionExists(definition)) {
+        reactionterm.find(db.connection, function(result) {
+
+          if (!result) {
             var err = new Error();
-            err.status = 422;
-            err.error = "Duplicate Definition Exists";
-            err.message = "Duplicate Definition Exists";
+            err.status = 404;
+            err.error = "Reaction cannot be found";
+            err.message = "Reaction cannot be found";
             next(err);
           } else {
-            var def = new Definition();
-            def.definition = definition;
-            def.source = 'dre_app';
-            def.created_at = new Date().getTime();
+            if (reactionterm.definitionExists(definition)) {
+              var err = new Error();
+              err.status = 422;
+              err.error = "Duplicate Definition Exists";
+              err.message = "Duplicate Definition Exists";
+              next(err);
+            } else {
+              var def = new Definition();
+              def.definition = definition;
+              def.source = 'dre_app';
+              def.created_at = new Date().getTime();
 
-            reactionterm.addDefinition(def);
+              reactionterm.addDefinition(def);
 
-            reactionterm.upsert(db.connection, function (result) {
-              response.data = result;
-              response.calculateExecutionTime();
-              res.json(response);
-            });
+              reactionterm.upsert(db.connection, function (result) {
+                response.data = result;
+                response.calculateExecutionTime();
+                res.json(response);
+              });
+            }
+
+
           }
 
+        });
 
-        }
-
-      });
-
+    }
+    }
+  } else {
+    var err = new Error();
+    err.status = 400;
+    err.error = "Content type not set";
+    err.message = "Valid content type is 'application/json'";
+    next(err);
   }
-}});
+});
 
 /**
 * Add a new reaction to the DRE dictionary
@@ -139,59 +148,76 @@ router.post('/', function(req, res, next) {
 
   var response = new Response();
 
-  if(Object.keys(req.body).length !== 1 ||
-     req.body.reaction === null ||
-     req.headers['content-type'].indexOf("application/json") < 0 ||
-     typeof req.body.reaction !== "string") {
-    var err = new Error();
-    err.status = 400;
-    err.error = "Invalid Request Body";
-    err.message = "Either the incorrect number of attributes were provided or" +
-                  " the 'reaction' attribute could not be found, or the" +
-                  " 'reaction' attribute wasn't properly formatted.";
-    next(err);
-  } else {
+  if (req.headers['content-type']) {
+    if(req.headers['content-type'].indexOf("application/json") < 0) {
+      var err = new Error();
+      err.status = 400;
+      err.error = "Invalid content type";
+      err.message = "Valid content type is 'application/json'";
+      next(err);
+    } else {
 
-    var reactionterm = new Reaction(req.body.reaction);
+      if(Object.keys(req.body).length !== 1 ||
+         req.body.reaction === null ||
+         req.headers['content-type'].indexOf("application/json") < 0 ||
+         typeof req.body.reaction !== "string") {
+        var err = new Error();
+        err.status = 400;
+        err.error = "Invalid Request Body";
+        err.message = "Either the incorrect number of attributes were provided or" +
+                      " the 'reaction' attribute could not be found, or the" +
+                      " 'reaction' attribute wasn't properly formatted.";
+        next(err);
+      } else {
 
-    reactionterm.find(db.connection, function(result) {
+        var reactionterm = new Reaction(req.body.reaction);
 
-      if (!result) {
-        async.series([
+        reactionterm.find(db.connection, function(result) {
 
-          function(callback){
-            serviceManager.getDefinitionsFromDictionaryApi(reactionterm.reaction, config.dictionaryapi_key, function (result) {
-              reactionterm.addDefinition(result);
-              callback();
+          if (!result) {
+            async.series([
+
+              function(callback){
+                serviceManager.getDefinitionsFromDictionaryApi(reactionterm.reaction, config.dictionaryapi_key, function (result) {
+                  reactionterm.addDefinition(result);
+                  callback();
+                });
+              },
+              function(callback){
+                serviceManager.getDefinitionsFromWordnikApi(reactionterm.reaction, config.wordnikapi_key, function (result) {
+                  reactionterm.addDefinition(result);
+                  callback();
+                });
+              }
+
+            ],
+            function(err, results){
+              reactionterm.upsert(db.connection, function (result) {
+                response.data = result;
+                response.calculateExecutionTime();
+                res.json(response);
+              });
             });
-          },
-          function(callback){
-            serviceManager.getDefinitionsFromWordnikApi(reactionterm.reaction, config.wordnikapi_key, function (result) {
-              reactionterm.addDefinition(result);
-              callback();
-            });
+
+          } else {
+            var err = new Error();
+            err.status = 422;
+            err.error = "Duplicate Reaction";
+            err.message = "The reaction that you are trying to create already exists" +
+                          " and cannot be created again.";
+            next(err);
           }
-
-        ],
-        function(err, results){
-          reactionterm.upsert(db.connection, function (result) {
-            response.data = result;
-            response.calculateExecutionTime();
-            res.json(response);
-          });
         });
 
-      } else {
-        var err = new Error();
-        err.status = 422;
-        err.error = "Duplicate Reaction";
-        err.message = "The reaction that you are trying to create already exists" +
-                      " and cannot be created again.";
-        next(err);
       }
-    });
-
-  }
+      }
+    } else {
+      var err = new Error();
+      err.status = 400;
+      err.error = "Content type not set";
+      err.message = "Valid content type is 'application/json'";
+      next(err);
+    }
 });
 
 /**
@@ -227,72 +253,89 @@ router.put('/:id/definitions/:index', function(req, res, next) {
 
   var response = new Response();
 
-  var definitionIndex = parseInt(req.params.index);
+  if (req.headers['content-type']) {
+   if(req.headers['content-type'].indexOf("application/json") < 0) {
+     var err = new Error();
+     err.status = 400;
+     err.error = "Invalid content type";
+     err.message = "Valid content type is 'application/json'";
+     next(err);
+   } else {
 
-  // ensure proper content type
-  if (req.headers['content-type'].indexOf("application/json") < 0) {
-    var err = new Error();
-    err.status = 400;
-    err.error = "Invalid content type";
-    err.message = "Valid content type is 'application/json'";
-    next(err);
-  } else {
+      var definitionIndex = parseInt(req.params.index);
 
-    // ensure body has vote key value
-    if (!req.body.vote) {
-      var err = new Error();
-      err.status = 400;
-      err.error = "Vote attribute not found in body";
-      err.message = "A vote attribute must be passed in body (ex. {'vote':'up'}) - valid values are 'up' or 'down'";
-      next(err);
-    } else {
-
-      var vote = req.body.vote.toLowerCase();
-      var reactionterm = new Reaction(decodeURIComponent(req.params.id));
-
-      // ensure valid value for vote (up | down)
-      if (!(vote === 'up' || vote === 'down')) {
+      // ensure proper content type
+      if (req.headers['content-type'].indexOf("application/json") < 0) {
         var err = new Error();
         err.status = 400;
-        err.error = "Vote attribute '" + vote  + "' not valid";
-        err.message = "A vote attribute must be passed in body (ex. {'vote':'up'}) - valid values are 'up' or 'down'";
+        err.error = "Invalid content type";
+        err.message = "Valid content type is 'application/json'";
         next(err);
       } else {
 
-        reactionterm.find(db.connection, function(reaction) {
-          if(reaction === null) {
+        // ensure body has vote key value
+        if (!req.body.vote) {
+          var err = new Error();
+          err.status = 400;
+          err.error = "Vote attribute not found in body";
+          err.message = "A vote attribute must be passed in body (ex. {'vote':'up'}) - valid values are 'up' or 'down'";
+          next(err);
+        } else {
+
+          var vote = req.body.vote.toLowerCase();
+          var reactionterm = new Reaction(decodeURIComponent(req.params.id));
+
+          // ensure valid value for vote (up | down)
+          if (!(vote === 'up' || vote === 'down')) {
             var err = new Error();
-            err.status = 404;
-            err.error = "Reaction Not Found";
-            err.message = "The reaction that you were looking for could not be found.";
+            err.status = 400;
+            err.error = "Vote attribute '" + vote  + "' not valid";
+            err.message = "A vote attribute must be passed in body (ex. {'vote':'up'}) - valid values are 'up' or 'down'";
             next(err);
           } else {
-            if (!reactionterm.definitionIndexExists(definitionIndex)) {
-              var err = new Error();
-              err.status = 404;
-              err.error = "Definition at that index does not exist";
-              err.message = "The definition at that index does not exist";
-              next(err);
-            } else {
 
-              reactionterm.vote(definitionIndex, vote);
+            reactionterm.find(db.connection, function(reaction) {
+              if(reaction === null) {
+                var err = new Error();
+                err.status = 404;
+                err.error = "Reaction Not Found";
+                err.message = "The reaction that you were looking for could not be found.";
+                next(err);
+              } else {
+                if (!reactionterm.definitionIndexExists(definitionIndex)) {
+                  var err = new Error();
+                  err.status = 404;
+                  err.error = "Definition at that index does not exist";
+                  err.message = "The definition at that index does not exist";
+                  next(err);
+                } else {
 
-              reactionterm.upsert(db.connection, function (result) {
-                response.data = result;
-                response.calculateExecutionTime();
-                res.json(response);
-              });
+                  reactionterm.vote(definitionIndex, vote);
 
-            }
+                  reactionterm.upsert(db.connection, function (result) {
+                    response.data = result;
+                    response.calculateExecutionTime();
+                    res.json(response);
+                  });
+
+                }
+
+              }
+            });
 
           }
-        });
+        }
 
       }
     }
 
-  }
-
+    } else {
+      var err = new Error();
+      err.status = 400;
+      err.error = "Content type not set";
+      err.message = "Valid content type is 'application/json'";
+      next(err);
+    }
 
 });
 
