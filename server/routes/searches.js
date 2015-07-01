@@ -12,39 +12,55 @@ require('../models/response.js');
 */
 router.post('/', function(req, res, next) {
 
-  // ensure proper content type
-  if (req.headers['content-type'].indexOf("application/json") < 0) {
-    var err = new Error();
-    err.status = 400;
-    err.error = "Invalid content type";
-    err.message = "Valid content type is 'application/json'";
-    next(err);
-  } else {
-
-    if (!req.body.search) {
+  if (req.headers['content-type']) {
+    if(req.headers['content-type'].indexOf("application/json") < 0) {
       var err = new Error();
       err.status = 400;
-      err.error = "A search attribute was not found in the body";
-      err.message = "A search key/value must be passed in body (ex. {'search':'ibuprofen'})";
+      err.error = "Invalid content type";
+      err.message = "Valid content type is 'application/json'";
       next(err);
     } else {
 
-      var response = new Response();
+      if (req.headers['content-type'].indexOf("application/json") < 0) {
+        var err = new Error();
+        err.status = 400;
+        err.error = "Invalid content type";
+        err.message = "Valid content type is 'application/json'";
+        next(err);
+      } else {
 
-      var searchterm = req.body.search;
+        if (!req.body.search) {
+          var err = new Error();
+          err.status = 400;
+          err.error = "A search attribute was not found in the body";
+          err.message = "A search key/value must be passed in body (ex. {'search':'ibuprofen'})";
+          next(err);
+        } else {
 
-      var searches = new Searches(searchterm);
+          var response = new Response();
 
-      searches.incrementCount(db.connection, function (result) {
-        response.data = result;
-        response.calculateExecutionTime();
-        res.json(response);
-      });
+          var searchterm = req.body.search;
+
+          var searches = new Searches(searchterm);
+
+          searches.incrementCount(db.connection, function (result) {
+            response.data = result;
+            response.calculateExecutionTime();
+            res.json(response);
+          });
 
 
+        }
+
+      }
+      }
+    } else {
+      var err = new Error();
+      err.status = 400;
+      err.error = "Content type not set";
+      err.message = "Valid content type is 'application/json'";
+      next(err);
     }
-
-  }
 
 });
 
