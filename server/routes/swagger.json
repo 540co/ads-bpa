@@ -2,13 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Drug Reactions Explained [DRE] APIs",
-    "description": "The following APIs support the DRE application. At this time there is no authorization (apikey, etc) is required to consume the APIs.",
-    "contact": {
-      "email" : "dre@540.co"
-    }
+    "description": ""
   },
-
   "host": "",
   "basePath": "/api",
   "schemes": [
@@ -46,13 +41,61 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "required": [
+                "meta",
+                "data"
+              ],
+              "title": " ",
+              "properties": {
+                "meta": {
+                  "description": "Object container for request metadata",
+                  "required": [
+                    "total_count",
+                    "execution_time"
+                  ],
+                  "title": "Meta",
+                  "properties": {
+                    "limit": {
+                      "description": "The limit used when making the request based upon what was passed in or defaults",
+                      "type": "String"
+                    },
+                    "offset": {
+                      "description": "The offset used when making the request based upon what was passed in or defaults",
+                      "type": "String"
+                    },
+                    "total_count": {
+                      "description": "The total count of reactions available",
+                      "type": "integer"
+                    },
+                    "execution_time": {
+                      "description": "Amount of time to make the request",
+                      "type": "String"
+                    }
+                  }
+                },
+                "data": {
+                  "description": "Object container for response data",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Reaction"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid header (requires application/json)"
           },
           "404": {
             "description": "Reactions not found (will occur it an offset < 0 is provided)"
+          },
+          "[all errors]": {
+            "description": "All errors",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         },
         "tags": [
@@ -75,10 +118,42 @@
         ],
         "responses": {
           "200": {
-            "description": "OK - definition has been successfully created (will return the reaction definitions found for the reaction term)"
+            "description": "OK - definition has been successfully created (will return the reaction definitions found for the reaction term)",
+            "schema": {
+              "required": [
+                "meta",
+                "data"
+              ],
+              "title": " ",
+              "properties": {
+                "meta": {
+                  "description": "Object container for request metadata",
+                  "required": [
+                    "execution_time"
+                  ],
+                  "title": "Meta",
+                  "properties": {
+                    "execution_time": {
+                      "description": "Amount of time to make the request",
+                      "type": "String"
+                    }
+                  }
+                },
+                "data": {
+                  "description": "Object container for response data",
+                  "$ref": "#/definitions/Reaction"
+                }
+              }
+            }
           },
           "400": {
             "description": "Duplicate - definition already exists"
+          },
+          "[all errors]": {
+            "description": "All errors",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         },
         "tags": [
@@ -104,13 +179,45 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "required": [
+                "meta",
+                "data"
+              ],
+              "title": " ",
+              "properties": {
+                "meta": {
+                  "description": "Object container for request metadata",
+                  "required": [
+                    "execution_time"
+                  ],
+                  "title": "Meta",
+                  "properties": {
+                    "execution_time": {
+                      "description": "Amount of time to make the request",
+                      "type": "String"
+                    }
+                  }
+                },
+                "data": {
+                  "$ref": "#/definitions/Reaction",
+                  "description": "Object container for response data"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid header (requires application/json)"
           },
           "404": {
             "description": "Reaction term definitions not found"
+          },
+          "[all errors]": {
+            "description": "All errors",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         },
         "tags": [
@@ -138,6 +245,12 @@
           },
           "400": {
             "description": "Invalid header (requires application/json)"
+          },
+          "[all errors]": {
+            "description": "All errors",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         },
         "tags": [
@@ -169,14 +282,45 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK (will return the updated reaction with all definitions)",
+            "schema": {
+              "required": [
+                "meta",
+                "data"
+              ],
+              "title": " ",
+              "properties": {
+                "meta": {
+                  "description": "Object container for request metadata",
+                  "required": [
+                    "execution_time"
+                  ],
+                  "title": "Meta",
+                  "properties": {
+                    "execution_time": {
+                      "description": "Amount of time to make the request",
+                      "type": "String"
+                    }
+                  }
+                },
+                "data": {
+                  "$ref": "#/definitions/Reaction",
+                  "description": "Object container for response data"
+                }
+              }
+            }
           },
-          "description": "OK (will return the updated reaction with all definitions)",
           "400": {
             "description": "bad request (missing attributes, bad content-type)"
           },
           "422": {
             "description": "duplicate definition provide (no definition will be added)"
+          },
+          "[all errors]": {
+            "description": "All errors",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         },
         "tags": [
@@ -215,13 +359,45 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "required": [
+                "meta",
+                "data"
+              ],
+              "title": " ",
+              "properties": {
+                "meta": {
+                  "description": "Object container for request metadata",
+                  "required": [
+                    "execution_time"
+                  ],
+                  "title": "Meta",
+                  "properties": {
+                    "execution_time": {
+                      "description": "Amount of time to make the request",
+                      "type": "String"
+                    }
+                  }
+                },
+                "data": {
+                  "$ref": "#/definitions/Reaction",
+                  "description": "Object container for response data"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad request (missing attributes, bad content-type)"
           },
           "404": {
             "description": "Reaction could not be found"
+          },
+          "[all errors]": {
+            "description": "All errors",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         },
         "tags": [
@@ -254,10 +430,58 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "required": [
+                "meta",
+                "data"
+              ],
+              "title": " ",
+              "properties": {
+                "meta": {
+                  "description": "Object container for request metadata",
+                  "required": [
+                    "total_count",
+                    "execution_time"
+                  ],
+                  "title": "Meta",
+                  "properties": {
+                    "limit": {
+                      "description": "The limit used when making the request based upon what was passed in or defaults",
+                      "type": "String"
+                    },
+                    "offset": {
+                      "description": "The offset used when making the request based upon what was passed in or defaults",
+                      "type": "String"
+                    },
+                    "total_count": {
+                      "description": "The total count of unique search terms that have been captured",
+                      "type": "integer"
+                    },
+                    "execution_time": {
+                      "description": "Amount of time to make the request",
+                      "type": "String"
+                    }
+                  }
+                },
+                "data": {
+                  "description": "Object container for response data",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Search"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "No results found (can occur when there is a bad offset)"
+          },
+          "[all errors]": {
+            "description": "All errors",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         },
         "tags": [
@@ -280,15 +504,143 @@
         ],
         "responses": {
           "200": {
-            "description": "OK - search term count was incremented"
+            "description": "OK - search term count was incremented",
+            "schema": {
+              "required": [
+                "meta",
+                "data"
+              ],
+              "title": " ",
+              "properties": {
+                "meta": {
+                  "description": "Object container for request metadata",
+                  "required": [
+                    "execution_time"
+                  ],
+                  "title": "Meta",
+                  "properties": {
+                    "execution_time": {
+                      "description": "Amount of time to make the request",
+                      "type": "String"
+                    }
+                  }
+                },
+                "data": {
+                  "description": "Object container for response data",
+                  "$ref": "#/definitions/Search"
+                }
+              }
+            }
           },
           "400": {
             "description": "bad request (missing attributes, bad content-type)"
+          },
+          "[all errors]": {
+            "description": "All errors",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         },
         "tags": [
           "searches"
         ]
+      }
+    }
+  },
+  "definitions": {
+    "Search": {
+      "required": [
+        "search",
+        "count"
+      ],
+      "properties": {
+        "search": {
+          "description": "The unique search term",
+          "type": "string"
+        },
+        "count": {
+          "description": "The total number of times that search term has been searched",
+          "type": "integer"
+        }
+      }
+    },
+    "Definition": {
+      "required": [
+        "definition",
+        "source",
+        "created_at",
+        "votes"
+      ],
+      "properties": {
+        "definition": {
+          "type": "string",
+          "description": "The definition text"
+        },
+        "source": {
+          "type": "string",
+          "description": "The source of the definition - at this time the list of values include wordnik.com, dictionaryapi.com or dre_app (when a user enters a definition via the DRE app)"
+        },
+        "created_at": {
+          "type": "integer",
+          "description": "Timestamp of when the definition was added to the reaction"
+        },
+        "votes": {
+          "$ref": "#/definitions/Votes"
+        }
+      }
+    },
+    "Votes": {
+      "required": [
+        "ups",
+        "downs"
+      ],
+      "properties": {
+        "ups": {
+          "type": "integer",
+          "description": "Count of up votes"
+        },
+        "downs": {
+          "type": "integer",
+          "description": "Count of down votes"
+        }
+      }
+    },
+    "Reaction": {
+      "required": [
+        "reaction",
+        "definitions",
+        "last_updated"
+      ],
+      "properties": {
+        "reaction": {
+          "type": "string",
+          "description": "The reaction term"
+        },
+        "definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Definition"
+          }
+        },
+        "last_updated": {
+          "type": "integer",
+          "description": "Timestamp of when the reaction record was last updated"
+        }
+      }
+    },
+    "Error": {
+      "required": [
+        "error",
+        "message"
+      ],
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
       }
     }
   }

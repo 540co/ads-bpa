@@ -8,17 +8,18 @@ html
 body
   div(class="container")
     h4 [DRE] Reactions
+      p
       small= ' ' + meta.total_count + ' reactions currently stored in lookup'
       p
       small note - this view is limited to 20,000 reactions - please use /reactions API to parse deeper results
       hr
       each reaction, reactionindex in data
         strong= reaction.reaction
-        small= ' created_at '+reaction.created_at
+        small= ' last updated '+reaction.last_updated_english+' (last_update: '+reaction.last_updated+')'
         p
           ul
             each definition, definitionindex in reaction.definitions
               li= definition.definition
-              small= definition.source+' | '+definition.votes.ups+' ups / '+definition.votes.downs+' downs votes' + ' | created_at ' + definition.created_at
-
+              small= 'source: ' +definition.source+' | '+definition.votes.ups+' ups / '+definition.votes.downs+' downs votes' + ' | created ' +definition.created_at_english+ ' (created_at: '+definition.created_at+')'
+              p
         hr
