@@ -21,11 +21,12 @@ describe('Service: DashboardService', function () {
     var deferred = $q.defer();
 
     $timeout(function() {
-      deferred.resolve('I told you I would come!');
+      deferred.resolve([{term: 'Advil', count: 1849}]);
     }, 1000);
 
     deferred.promise.then(function(value) {
-      expect(value).toBe('I told you I would come!');
+      //expect(value).toBe('I told you I would come!');
+      //console.log(value);
     })
     .finally(done);
 

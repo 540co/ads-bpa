@@ -44,8 +44,8 @@ describe('Controller: SplashCtrl', function () {
     it('should have function named $scope.init()', function () {
       expect(angular.isFunction($scope.init)).toBe(true);
     });
-    
-    describe('Calls getSearchTerms successfully', function() {
+
+    describe('Calls DashboardService.getSearchTerms() successfully', function() {
       beforeEach(inject (function($q) {
         var termsDeferred = $q.defer();
         termsDeferred.resolve(mockTerms);
@@ -55,8 +55,8 @@ describe('Controller: SplashCtrl', function () {
       }));
 
       it('should call getSearchTerms and set to $scope.commonSearchTerms', function () {
-        //console.log(setTerms);
-        expect($scope.commonSearchTerms).toEqual(setTerms);
+        $scope.$digest();
+        expect($scope.commonSearchTerms).toEqual(mockTerms);
       });
     });
 

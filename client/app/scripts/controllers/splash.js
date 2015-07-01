@@ -20,7 +20,4 @@ angular.module('dreApp')
         console.log(error);
       });
     };
-
-    //$scope.init();
-
   }]);

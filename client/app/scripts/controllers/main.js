@@ -24,7 +24,7 @@ angular.module('dreApp')
         $scope.searchTerm = params.q;
       }
       else
-        setDashboard();
+        $scope.setDashboard();
 
       $scope.showFilter = true;
       $scope.noResults = false;
@@ -37,13 +37,13 @@ angular.module('dreApp')
     $scope.getResults = function(keyword) {
       $scope.showFilter = true;
       $location.search({'q': keyword});
-      var countPromise = DashboardService.getSymptomCount(keyword);
+      //var countPromise = DashboardService.getSymptomCount(keyword);
 
       DashboardService.postSearchTerm(keyword);
 
-      $q.all([countPromise]).then(function (data) {
+      DashboardService.getSymptomCount(keyword).then(function (data) {
         if(data > 0)
-          setDashboard(keyword);
+          $scope.setDashboard(keyword);
         else
           $scope.noResults = true;
 
@@ -96,7 +96,7 @@ angular.module('dreApp')
       })
     };
 
-    function setDashboard(keyword) {
+    $scope.setDashboard = function(keyword) {
 
       $scope.noResults = false;
 
