@@ -6,14 +6,18 @@ var request = require('request');
 var router = express.Router();
 
 
-// View reaction definitions / votes currently stored in database
+/**
+* Menu Links
+*/
 router.get('/', function(req, res, next) {
 
   res.render('admin', config);
 
 });
 
-// View reaction definitions / votes currently stored in database
+/**
+* View reaction definitions / votes currently stored in database
+*/
 router.get('/reactions', function(req, res, next) {
 
   var url = config.schemes[0] + '://' + config.host + '/api/reactions?limit=20000';
@@ -29,7 +33,9 @@ router.get('/reactions', function(req, res, next) {
 
 });
 
-// View top searches (admin view)
+/**
+* View top searches
+*/
 router.get('/searches', function(req, res, next) {
 
   var url = config.schemes[0] + '://' + config.host + '/api/searches?limit=500';
