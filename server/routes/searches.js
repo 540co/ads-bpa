@@ -11,7 +11,7 @@ require('../models/response.js');
 router.post('/', function(req, res, next) {
 
   // ensure proper content type
-  if (req.headers['content-type'] !== 'application/json') {
+  if (req.headers['content-type'].indexOf("application/json") < 0) {
     var err = new Error();
     err.status = 400;
     err.error = "Invalid content type";
