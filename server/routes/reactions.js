@@ -79,7 +79,7 @@ router.post('/:id/definitions', function(req, res, next) {
 
   var id = req.params.id;
 
-  if (req.headers['content-type'] !== 'application/json') {
+  if (req.headers['content-type'].indexOf("application/json") < 0) {
     var err = new Error();
     err.status = 400;
     err.error = "Invalid content type";
@@ -144,7 +144,7 @@ router.post('/', function(req, res, next) {
 
   if(Object.keys(req.body).length !== 1 ||
      req.body.reaction === null ||
-     req.headers['content-type'] !== 'application/json' ||
+     req.headers['content-type'].indexOf("application/json") < 0 ||
      typeof req.body.reaction !== "string") {
     var err = new Error();
     err.status = 400;
@@ -230,7 +230,7 @@ router.put('/:id/definitions/:index', function(req, res, next) {
   var definitionIndex = parseInt(req.params.index);
 
   // ensure proper content type
-  if (req.headers['content-type'] !== 'application/json') {
+  if (req.headers['content-type'].indexOf("application/json") < 0) {
     var err = new Error();
     err.status = 400;
     err.error = "Invalid content type";
