@@ -1,25 +1,18 @@
 var config = require('../config');
 var express = require('express');
-var _ = require('lodash');
-var request = require('request');
-var fs = require('fs');
-var xml2js = require('xml2js');
-var async = require('async');
-
 var async = require('async');
 
 require('../models/service-manager.js');
 
 var router = express.Router();
 
-var MongoClient = require('mongodb').MongoClient;
-var mongo_url = config.mongo + config.db;
-
 require('../models/reactions.js');
 require('../models/definition.js');
 require('../models/votes.js');
 
-// GET list of reactions
+/**
+* Fetch list of reaction definitions currently available in DRE dictionary
+*/
 router.get('/', function(req, res, next) {
 
   var response = new Response();
@@ -50,7 +43,6 @@ router.get('/', function(req, res, next) {
   } else {
 
     async.series([
-        // Get count from cursor
         function(callback){
           Reaction.getCount(db.connection, function (count) {
             response.meta.total_count = count;
@@ -73,7 +65,10 @@ router.get('/', function(req, res, next) {
 
 });
 
-// POST definition to reaction
+
+/**
+* Add a definition to a pre-existing reaction in the DRE dictionary
+*/
 router.post('/:id/definitions', function(req, res, next) {
   var response = new Response();
 
@@ -137,7 +132,9 @@ router.post('/:id/definitions', function(req, res, next) {
   }
 }});
 
-// POST new reaction
+/**
+* Add a new reaction to the DRE dictionary
+*/
 router.post('/', function(req, res, next) {
 
   var response = new Response();
@@ -181,7 +178,7 @@ router.post('/', function(req, res, next) {
             response.data = result;
             response.calculateExecutionTime();
             res.json(response);
-          })
+          });
         });
 
       } else {
@@ -197,7 +194,9 @@ router.post('/', function(req, res, next) {
   }
 });
 
-// GET reaction defintion
+/**
+* Fetch definition of a reaction stored within the DRE dictionary
+*/
 router.get('/:id', function(req, res, next) {
   var response = new Response();
 
@@ -221,12 +220,13 @@ router.get('/:id', function(req, res, next) {
 
 });
 
-// PUT Reaction Definition Vote Up / Down
+/**
+* Increment the vote up / down for a specific reaction definition
+*/
 router.put('/:id/definitions/:index', function(req, res, next) {
 
   var response = new Response();
 
-  var id = req.params.id;
   var definitionIndex = parseInt(req.params.index);
 
   // ensure proper content type
@@ -281,7 +281,7 @@ router.put('/:id/definitions/:index', function(req, res, next) {
                 response.data = result;
                 response.calculateExecutionTime();
                 res.json(response);
-              })
+              });
 
             }
 
@@ -289,14 +289,16 @@ router.put('/:id/definitions/:index', function(req, res, next) {
         });
 
       }
-    };
+    }
 
-  };
+  }
 
 
 });
 
-// DELETE Reaction
+/**
+* Remove a reaction and associated definitions from DRE dictionary
+*/
 router.delete('/:id', function(req, res, next) {
 
   var reactionterm = new Reaction(decodeURIComponent(req.params.id));
@@ -309,10 +311,10 @@ router.delete('/:id', function(req, res, next) {
       err.message = "The reaction that you were looking for could not be found.";
       next(err);
     } else {
-      reaction.remove(db.connection, function (result) {
+      reaction.remove(db.connection, function () {
         res.status(204);
         res.json();
-      })
+      });
     }
   });
 

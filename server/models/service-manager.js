@@ -4,9 +4,12 @@ var xml2js = require('xml2js');
 
 serviceManager = {};
 
-// Fetch dictionary definitions from Wordnik API
+/**
+* Fetch dictionary definitions from Wordnik API
+*/
 serviceManager.getDefinitionsFromWordnikApi = function (term, api_key, callback) {
 
+    // TODO: Further investigate ability to use HTTPS in calls to API
     var url = "http://api.wordnik.com:80/v4/word.json/" + encodeURIComponent(term.toLowerCase()) + "/definitions?limit=200&includeRelated=true&useCanonical=false&includeTags=false&api_key=" + api_key;
     request(url, function (error, response, body) {
 
@@ -48,9 +51,12 @@ serviceManager.getDefinitionsFromWordnikApi = function (term, api_key, callback)
 
 }
 
-// Fetch dictionary definitions from Dictionary API (Medical Dictionary)
+/**
+* Fetch dictionary definitions from Dictionary API (Medical Dictionary)
+*/
 serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callback) {
 
+    // TODO: Further investigate ability to use HTTPS in calls to API
     var url = "http://www.dictionaryapi.com/api/v1/references/medical/xml/" + encodeURIComponent(term.toLowerCase()) + "?key=" + api_key;
 
     request(url, function (error, response, body) {
