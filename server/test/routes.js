@@ -152,6 +152,31 @@ var app = express();
 
     });
 
+    describe('GET /', function(){
+      it('responds with HTTP STATUS CODE 200', function(done){
+        request(app)
+          .get(baseUrl)
+          .set('Accept', 'application/json')
+          .expect(200)
+          .end(function(err, res){
+            if(err) return done(err);
+            done()
+          });
+      });
+    });
+
+    describe('GET /swagger', function(){
+      it('responds with HTTP STATUS CODE 200', function(done){
+        request(app)
+          .get(baseUrl + '/swagger')
+          .set('Accept', 'application/json')
+          .expect(200)
+          .end(function(err, res){
+            if(err) return done(err);
+            done()
+          });
+      });
+    });
 
     describe('GET /reactions (list) - no limit or offset', function(){
 
