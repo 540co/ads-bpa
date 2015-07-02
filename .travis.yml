@@ -2,9 +2,6 @@ sudo: false
 language: node_js
 node_js:
 - '0.12'
-addons:
-  code_climate:
-    secure: jip+JCdlbzITE8Um3gLvuhSpA8qu15xo89jKebppC8OHwT1W7rV0oCRJZILh0yEtY62iCo7LtMtPmWDrwb0vRweTiiQ9+Ik2hJrlYeylAWG+Dscr0cctxgXLwYKhkqSai0LFLnNAj2dpzRo8bJkGWEgU3KJaMy6fC3jsAOxYkgBDDDdMNMRPbaGZrN+30K45wZpix+iUaDkCz6jTHsmjRbIRT5c09vSa+ZtksZWv1gUGwaW7VxeP+c5/tzjAw3KZtN0CRtNf6KQnaa2pNUnEQPESrEaiwkN6B6GHneMbRKP+3jjP81hoW7AWoax8tg6r9hKCkX8Svk8oZQ7bTOBDy3g5c6IzZtqQZ9KkheaFpuyaX7dIFVpkmJcV2qVRGOVabZ1MgdhRI8KaJmGQFYE10DYQtrdVGezv0vOH7xRPyh8qV+/1qlnr4BuYh6UNELKJb3zJdtZM1ktqYxFr+bTmSp3jjOGfxQh+x506AwlEvI7bpMZ+9z4er4OJ6yWOtvWMhXVm2E1Bc9tIugOcl7bGCgh03V6mbyc4ij1FL5qQFGaBz9wPoK1h8zUZ0I2p8v1VnL9kIgpgNOQ9H0nB629K7BLytF5YFfBI8Wv7bo8LzXdcGIBOk9XqFswBq8EginqzVfpXAMalOhabM4NNF7kJ+WeDsURj0YWk27u7IOsh4EU=
 branches:
   only:
   - master
@@ -49,7 +46,7 @@ after_success:
 - sed -i -e 's/^SF:\.\/app\/\(.*\)$/SF:client\/app\/\1/g' ./coverage/lcov-merge.info
 - sed -i -e 's/^SF:.*\/server\/\(.*\)$/SF:server\/\1/g' ./coverage/lcov-merge.info
 - cd ..
-- codeclimate < ./client/coverage/lcov-merge.info
+- codeclimate-test-reporter < ./client/coverage/lcov-merge.info
 - curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST"
   https://dre.540.co/docker/deploy.php
 - curl -X POST -d "api_key=$DRE_DEPLOY_KEY" -d "branch=$TRAVIS_BRANCH" -d "pull_request=$TRAVIS_PULL_REQUEST"
