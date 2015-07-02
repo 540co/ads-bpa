@@ -24,113 +24,9 @@ var async = require('async');
 
 var app = express();
 
-db = {};
-
-require('../models/data-manager.js');
-
-// Starting services / connections that must be done prior
-// to start of Node
-console.log('---');
-console.log('# Starting Drug Reactions Explained [DRE] #');
-
-async.series([
-    function(connect_callback){
-      console.log('---');
-      console.log('Connecting to MongoDB ['+ config.mongo + config.db + ']');
-      dataManager(function(result) {
-        db = result;
-        connect_callback();
-      });
-    },
-    function(collection_callback){
-      console.log('---');
-      console.log('Confirm MongoDB collection [' + config.reactions_collection + '] exists');
-      db.ensureCollectionExists(config.reactions_collection, function (err, collection) {
-        if (err) {
-          console.log(err);
-          console.log('WARNING: validating / creating collection - but continuing');
-          collection_callback();
-        } else {
-          collection_callback();
-        }
-      });
-    },
-    function(collection_callback){
-      console.log('---');
-      console.log('Confirm MongoDB collection [' + config.searches_collection + '] exists');
-      db.ensureCollectionExists(config.searches_collection, function (err, collection) {
-        if (err) {
-          console.log(err);
-          console.log('WARNING: validating / creating collection - but continuing');
-          collection_callback();
-        } else {
-          collection_callback();
-        }
-      });
-    },
-    function(listen_callback){
-
-      console.log('---');
-      console.log('Starting app server listen');
-      console.log('---');
-      // view engine setup
-      app.set('views', path.join(__dirname, '../views'));
-      app.set('view engine', 'jade');
-
-      // uncomment after placing your favicon in /public
-      //app.use(favicon(__dirname + '/public/favicon.ico'));
-      app.use(logger('dev'));
-      app.use(bodyParser.json());
-      app.use(bodyParser.urlencoded({ extended: false }));
-      app.use(cookieParser());
-
-      app.use('/api', index);
-      app.use('/api/reactions', reactions);
-      app.use('/api/searches', searches);
-
-      app.use('/admin', admin);
-
-      app.use('/', express.static(__dirname + '/../client/dist'));
-      app.use('/public', express.static(__dirname + '/public'));
-      app.use('/apidocs', express.static(__dirname + '/swagger'));
 
 
-      // catch 404 and forward to error handler
-      app.use(function(req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
-      });
 
-      // error handlers
-
-      // development error handler
-      // will print stacktrace
-      if (app.get('env') === 'development') {
-        app.use(function(err, req, res, next) {
-          res.status(err.status || 500);
-          res.json({error: err.error, message: err.message, request_body: req.body});
-        });
-      }
-
-      // production error handler
-      // no stacktraces leaked to user
-      app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.json({error: err.error, message: err.message});
-      });
-
-      module.exports = app;
-
-      listen_callback();
-
-    }
-
-],
-
-// Start route tests
-
-function(err, results){
 
   // ------------
   // ROUTE TESTS
@@ -145,6 +41,117 @@ function(err, results){
   var baseUrl = '/api';
 
   describe('API Routes', function(){
+
+    before(function (done) {
+
+      db = {};
+
+      require('../models/data-manager.js');
+
+      // Starting services / connections that must be done prior
+      // to start of Node
+      console.log('---');
+      console.log('# Starting Drug Reactions Explained [DRE] #');
+
+      async.series([
+          function(connect_callback){
+            console.log('---');
+            console.log('Connecting to MongoDB ['+ config.mongo + config.db + ']');
+            dataManager(function(result) {
+              db = result;
+              connect_callback();
+            });
+          },
+          function(collection_callback){
+            console.log('---');
+            console.log('Confirm MongoDB collection [' + config.reactions_collection + '] exists');
+            db.ensureCollectionExists(config.reactions_collection, function (err, collection) {
+              if (err) {
+                console.log(err);
+                console.log('WARNING: validating / creating collection - but continuing');
+                collection_callback();
+              } else {
+                collection_callback();
+              }
+            });
+          },
+          function(collection_callback){
+            console.log('---');
+            console.log('Confirm MongoDB collection [' + config.searches_collection + '] exists');
+            db.ensureCollectionExists(config.searches_collection, function (err, collection) {
+              if (err) {
+                console.log(err);
+                console.log('WARNING: validating / creating collection - but continuing');
+                collection_callback();
+              } else {
+                collection_callback();
+              }
+            });
+          },
+          function(listen_callback){
+            console.log('---');
+            console.log('Starting app server listen');
+            console.log('---');
+            // view engine setup
+            app.set('views', path.join(__dirname, '../views'));
+            app.set('view engine', 'jade');
+
+            // uncomment after placing your favicon in /public
+            //app.use(favicon(__dirname + '/public/favicon.ico'));
+            app.use(logger('dev'));
+            app.use(bodyParser.json());
+            app.use(bodyParser.urlencoded({ extended: false }));
+            app.use(cookieParser());
+
+            app.use('/api', index);
+            app.use('/api/reactions', reactions);
+            app.use('/api/searches', searches);
+
+            app.use('/admin', admin);
+
+            app.use('/', express.static(__dirname + '/../client/dist'));
+            app.use('/public', express.static(__dirname + '/public'));
+            app.use('/apidocs', express.static(__dirname + '/swagger'));
+
+
+            // catch 404 and forward to error handler
+            app.use(function(req, res, next) {
+              var err = new Error('Not Found');
+              err.status = 404;
+              next(err);
+            });
+
+            // error handlers
+
+            // development error handler
+            // will print stacktrace
+            if (app.get('env') === 'development') {
+              app.use(function(err, req, res, next) {
+                res.status(err.status || 500);
+                res.json({error: err.error, message: err.message, request_body: req.body});
+              });
+            }
+
+            // production error handler
+            // no stacktraces leaked to user
+            app.use(function(err, req, res, next) {
+              res.status(err.status || 500);
+              res.json({error: err.error, message: err.message});
+            });
+
+            module.exports = app;
+
+            listen_callback();
+
+          }
+      ],
+        function(){
+          console.log('Starting tests');
+          done();
+        });
+
+    });
+
 
     describe('GET /reactions (list) - no limit or offset', function(){
 
@@ -644,16 +651,10 @@ function(err, results){
 
     });
 
-  });
-
-
-
-
-  var adminUrl = '/admin';
-
-  describe('ADMIN Routes', function(){
 
     describe('GET /admin', function(){
+      var adminUrl = '/admin';
+
       it('respond with HTTP STATUS CODE 200', function(done){
         request(app)
           .get(adminUrl)
@@ -665,7 +666,4 @@ function(err, results){
       })
     });
 
-
   });
-
-});
