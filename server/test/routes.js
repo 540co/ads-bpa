@@ -3,7 +3,7 @@
 // need to look at a cleaner way of using app.js without making
 // a copy of the contents
 // ------------
-var config = require('../config-sample');
+var config = require('../config');
 
 var express = require('express');
 var path = require('path');
