@@ -16,9 +16,6 @@ angular.module('dreApp')
           minutes = parseInt(timer / 60, 10);
           seconds = parseInt(timer % 60, 10);
 
-          minutes = minutes < 10 ? '0' + minutes : minutes;
-          seconds = seconds < 10 ? '0' + seconds : seconds;
-
           if (--timer < 0) {
             location.reload();
           }
@@ -26,8 +23,6 @@ angular.module('dreApp')
     };
 
     $scope.countdown();
-}]).controller('DefinitionModalCtrl', ['$scope', 'config', function ($scope, config) {
+}]).controller('DefinitionModalCtrl', function () {
 
-  console.log($scope.selectedDefinition);
-
-}]);
+});

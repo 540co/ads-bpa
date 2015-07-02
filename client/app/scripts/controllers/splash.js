@@ -10,7 +10,7 @@
 angular.module('dreApp')
   .controller('SplashCtrl', ['$scope', '$location', 'DashboardService', function ($scope, $location, DashboardService) {
     $scope.search = function (keyword) {
-      $location.path('search').search({'q': keyword});
+      $scope.path = $location.path('search').search({'q': keyword});
     };
 
     $scope.init = function () {
@@ -20,7 +20,4 @@ angular.module('dreApp')
         console.log(error);
       });
     };
-
-    //$scope.init();
-
   }]);
