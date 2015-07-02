@@ -19,14 +19,7 @@ var admin = require('../routes/admin');
 
 var fs = require('fs');
 var jade = require('jade');
-
-var async = require('async');
-
 var app = express();
-
-
-
-
 
   // ------------
   // ROUTE TESTS
@@ -293,6 +286,22 @@ var app = express();
           .set('Content-type', 'application/json')
           .send('{"reaction":"bogus"}')
           .expect(422)
+          .end(function(err, res){
+            if (err) return done(err);
+            done()
+          });
+      })
+
+    });
+
+    describe('POST /reactions (reaction = bogus) - Null body', function(){
+
+      it('respond with HTTP STATUS CODE 400', function(done){
+        request(app)
+          .post(baseUrl + '/reactions')
+          .set('Content-type', 'application/json')
+          .send('{"reaction":null}')
+          .expect(400)
           .end(function(err, res){
             if (err) return done(err);
             done()
@@ -688,6 +697,26 @@ var app = express();
             if (err) return done(err);
             done();
           });
+      })
+    });
+
+    describe('GET /admin/reactions', function(){
+      var adminUrl = '/admin';
+
+      it('respond with HTTP STATUS CODE 200', function(done){
+        request(app)
+          .get(adminUrl + '/reactions');
+        done();
+      })
+    });
+
+    describe('GET /admin/searches', function(){
+      var adminUrl = '/admin';
+
+      it('respond with HTTP STATUS CODE 200', function(done){
+        request(app)
+          .get(adminUrl + '/searches');
+        done();
       })
     });
 
