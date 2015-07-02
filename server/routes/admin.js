@@ -12,9 +12,7 @@ var router = express.Router();
 * Menu Links
 */
 router.get('/', function(req, res, next) {
-
   res.render('admin', config);
-
 });
 
 /**
@@ -52,7 +50,6 @@ router.get('/reactions', function(req, res, next) {
 
       });
 
-
       res.render('admin-reactions', {meta:meta, data: reactions});
 
     }
@@ -72,7 +69,6 @@ router.get('/searches', function(req, res, next) {
 
     if (!error && response.statusCode === 200) {
       res.render('admin-searches', JSON.parse(body));
-
     }
 
   });
