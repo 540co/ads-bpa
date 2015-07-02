@@ -12,6 +12,12 @@ dataManager = function (callback) {
     callback(this);
   });
 
+  this.ensureCollectionExists = function(collection, callback) {
+      this.connection.createCollection(collection, {}, function (err, collection) {
+          callback(err,collection);
+      });
+  };
+
   this.close = function(callback) {
       this.connection.close(true, function () {
           this.connection = {};
