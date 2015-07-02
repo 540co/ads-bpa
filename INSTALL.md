@@ -47,22 +47,26 @@ It is responsible for:
 
         cd client
         npm install
-        bower install
-
-6. The Backend Node.js app serves the Frontend AngularJS app.  Use grunt to build all dependencies into a single directory.
-
+        bower install 
+   
+   And use grunt to build all dependencies into a single directory.
+   
         grunt build
 
-7. Change directory to `server` and install npm modules
+   > NOTE: The Backend Node.js app serves the Frontend AngularJS app.  
+
+
+6. Change directory to `server` and install npm modules
 
         cd ../server
         npm install
 
-8. Start App
+7. Start mongo and then start the App
 
+        mongod --config /usr/local/etc/mongod.conf # You may need to modify path to mongod.conf
         npm start
 
-9. View App.  Default url is: http://localhost:3000
+8. View App.  Default url is: http://localhost:3000
 
 # Using docker containers
 

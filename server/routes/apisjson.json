@@ -1,0 +1,41 @@
+{
+  "name": "Drug Reactions Explained [DRE] APIs",
+  "description": "The following APIs support the DRE application. At this time there is no authorization (apikey, etc) is required to consume the APIs.",
+  "tags": [
+    "drugs",
+    "drug reactions",
+    "openfda",
+    "food drug administration",
+    "drug reactions explained"
+  ],
+  "created": "2015-06-30",
+  "modified": "2015-06-30",
+  "url": "xxx",
+  "specificationVersion": "0.14",
+  "apis": [
+    {
+      "name": "reactions",
+      "description": "Provides a way to access the DRE reactions definitions / dictionary resources",
+      "humanURL": "xxx",
+      "baseURL": "xxx",
+      "properties": [
+        {
+          "type": "Swagger",
+          "url": "xxx"
+        }
+      ]
+    },
+    {
+      "name": "searches",
+      "description": "Provides a way to access the DRE search terms",
+      "humanURL": "xxx",
+      "baseURL": "xxx",
+      "properties": [
+        {
+          "type": "Swagger",
+          "url": "xxx"
+        }
+      ]
+    }
+  ]
+}
