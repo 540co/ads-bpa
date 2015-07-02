@@ -39,7 +39,6 @@ async.series([
       console.log('Connecting to MongoDB ['+ config.mongo + config.db + ']');
       dataManager(function(result) {
         db = result;
-        console.log(result);
         connect_callback();
       });
     },
@@ -49,7 +48,8 @@ async.series([
       db.ensureCollectionExists(config.reactions_collection, function (err, collection) {
         if (err) {
           console.log(err);
-          throw('***Error validating / creating collection***');
+          console.log('WARNING: validating / creating collection - but continuing');
+          collection_callback();
         } else {
           collection_callback();
         }
@@ -61,7 +61,8 @@ async.series([
       db.ensureCollectionExists(config.searches_collection, function (err, collection) {
         if (err) {
           console.log(err);
-          throw('***Error validating / creating collection***');
+          console.log('WARNING: validating / creating collection - but continuing');
+          collection_callback();
         } else {
           collection_callback();
         }
