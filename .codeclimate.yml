@@ -19,3 +19,4 @@ exclude_paths:
  - "test/*"
  - "server/swagger/*"
  - "server/config-sample.js"
+ - "server/app.js"
