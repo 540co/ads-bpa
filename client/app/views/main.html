@@ -85,13 +85,13 @@
             <div class="row">
                 <div class="col-md-6">
                   <div class="panel panel-default">
-                      <div class="panel-heading">Brand Names by <span class="text-uppercase">{{searchTerm}}</span> Related Reactions</div>
+                      <div class="panel-heading">Reports by Brand Name for <span class="text-uppercase">{{searchTerm}}</span> Related Reactions</div>
                       <div class="panel-body">
                           <table class="table table-striped table-hover ">
                               <thead>
                                   <tr>
-                                      <th class="col-sm-7">Brand Names</th>
-                                      <th class="col-sm-5">Number of Reaction Reports</th>
+                                      <th class="col-sm-9">Brand Names</th>
+                                      <th class="col-sm-3">Reaction Reports</th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -106,9 +106,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Top Manufacturers by <span class="text-uppercase">{{searchTerm}}</span> Related Reactions</div>
+                        <div class="panel-heading">Reports by Manufacturer for <span class="text-uppercase">{{searchTerm}}</span> Related Reactions</div>
                         <div class="panel-body text-center">
-                            <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" legend="true" height="238"></canvas>
+                            <canvas id="doughnut" class="chart chart-doughnut" data="manufacturerCounts" labels="manufacturerNames" legend="true" height="162px"></canvas>
                         </div>
                     </div>
                 </div>
@@ -116,11 +116,11 @@
             <!-- End analytics row 1-->
             <!-- Start analytics row 2-->
             <div class="row">
-                <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-12">
                   <div class="panel panel-default">
-                      <div class="panel-heading">Frequency of Reactions related to <span class="text-uppercase">{{searchTerm}}</span></div>
+                      <div class="panel-heading">Report Frequency for <span class="text-uppercase">{{searchTerm}}</span> Related Reactions</div>
                       <div class="panel-body">
-                          <canvas id="line" class="chart chart-line" data="eventCounts" labels="eventDates">
+                          <canvas id="line" class="chart chart-line" data="eventCounts" labels="eventDates" height="90%">
                           </canvas>
                       </div>
                   </div>
