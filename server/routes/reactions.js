@@ -71,12 +71,13 @@ router.get('/', function(req, res, next) {
 */
 router.post('/:id/definitions', function(req, res, next) {
   var response = new Response();
+  var err = new Error();
 
   var id = req.params.id;
 
   if (req.headers['content-type']) {
     if(req.headers['content-type'].indexOf("application/json") < 0) {
-      var err = new Error();
+      err = new Error();
       err.status = 400;
       err.error = "Invalid content type";
       err.message = "Valid content type is 'application/json'";
@@ -84,7 +85,7 @@ router.post('/:id/definitions', function(req, res, next) {
     } else {
 
       if (!req.body.definition) {
-        var err = new Error();
+        err = new Error();
         err.status = 400;
         err.error = "Definition attribute not found in body";
         err.message = "A definition value must be passed in body (ex. {'definition':'lorem ipsum'})";
@@ -98,14 +99,14 @@ router.post('/:id/definitions', function(req, res, next) {
         reactionterm.find(db.connection, function(result) {
 
           if (!result) {
-            var err = new Error();
+            err = new Error();
             err.status = 404;
             err.error = "Reaction cannot be found";
             err.message = "Reaction cannot be found";
             next(err);
           } else {
             if (reactionterm.definitionExists(definition)) {
-              var err = new Error();
+              err = new Error();
               err.status = 422;
               err.error = "Duplicate Definition Exists";
               err.message = "Duplicate Definition Exists";
@@ -133,7 +134,7 @@ router.post('/:id/definitions', function(req, res, next) {
     }
     }
   } else {
-    var err = new Error();
+    err = new Error();
     err.status = 400;
     err.error = "Content type not set";
     err.message = "Valid content type is 'application/json'";
@@ -147,10 +148,11 @@ router.post('/:id/definitions', function(req, res, next) {
 router.post('/', function(req, res, next) {
 
   var response = new Response();
+  var err = new Error();
 
   if (req.headers['content-type']) {
     if(req.headers['content-type'].indexOf("application/json") < 0) {
-      var err = new Error();
+      err = new Error();
       err.status = 400;
       err.error = "Invalid content type";
       err.message = "Valid content type is 'application/json'";
@@ -161,7 +163,7 @@ router.post('/', function(req, res, next) {
          req.body.reaction === null ||
          req.headers['content-type'].indexOf("application/json") < 0 ||
          typeof req.body.reaction !== "string") {
-        var err = new Error();
+        err = new Error();
         err.status = 400;
         err.error = "Invalid Request Body";
         err.message = "Either the incorrect number of attributes were provided or" +
@@ -200,7 +202,7 @@ router.post('/', function(req, res, next) {
             });
 
           } else {
-            var err = new Error();
+            err = new Error();
             err.status = 422;
             err.error = "Duplicate Reaction";
             err.message = "The reaction that you are trying to create already exists" +
@@ -212,7 +214,7 @@ router.post('/', function(req, res, next) {
       }
       }
     } else {
-      var err = new Error();
+      err = new Error();
       err.status = 400;
       err.error = "Content type not set";
       err.message = "Valid content type is 'application/json'";
@@ -225,12 +227,13 @@ router.post('/', function(req, res, next) {
 */
 router.get('/:id', function(req, res, next) {
   var response = new Response();
+  var err = new Error();
 
   var reactionterm = new Reaction(decodeURIComponent(req.params.id));
 
   reactionterm.find(db.connection, function(reaction) {
     if(reaction === null) {
-      var err = new Error();
+      err = new Error();
       err.status = 404;
       err.error = "Reaction Not Found";
       err.message = "The reaction that you were looking for could not be found.";
@@ -252,10 +255,11 @@ router.get('/:id', function(req, res, next) {
 router.put('/:id/definitions/:index', function(req, res, next) {
 
   var response = new Response();
+  var err = new Error();
 
   if (req.headers['content-type']) {
    if(req.headers['content-type'].indexOf("application/json") < 0) {
-     var err = new Error();
+     err = new Error();
      err.status = 400;
      err.error = "Invalid content type";
      err.message = "Valid content type is 'application/json'";
@@ -266,7 +270,7 @@ router.put('/:id/definitions/:index', function(req, res, next) {
 
       // ensure proper content type
       if (req.headers['content-type'].indexOf("application/json") < 0) {
-        var err = new Error();
+        err = new Error();
         err.status = 400;
         err.error = "Invalid content type";
         err.message = "Valid content type is 'application/json'";
@@ -275,7 +279,7 @@ router.put('/:id/definitions/:index', function(req, res, next) {
 
         // ensure body has vote key value
         if (!req.body.vote) {
-          var err = new Error();
+          err = new Error();
           err.status = 400;
           err.error = "Vote attribute not found in body";
           err.message = "A vote attribute must be passed in body (ex. {'vote':'up'}) - valid values are 'up' or 'down'";
@@ -287,7 +291,7 @@ router.put('/:id/definitions/:index', function(req, res, next) {
 
           // ensure valid value for vote (up | down)
           if (!(vote === 'up' || vote === 'down')) {
-            var err = new Error();
+            err = new Error();
             err.status = 400;
             err.error = "Vote attribute '" + vote  + "' not valid";
             err.message = "A vote attribute must be passed in body (ex. {'vote':'up'}) - valid values are 'up' or 'down'";
@@ -296,14 +300,14 @@ router.put('/:id/definitions/:index', function(req, res, next) {
 
             reactionterm.find(db.connection, function(reaction) {
               if(reaction === null) {
-                var err = new Error();
+                err = new Error();
                 err.status = 404;
                 err.error = "Reaction Not Found";
                 err.message = "The reaction that you were looking for could not be found.";
                 next(err);
               } else {
                 if (!reactionterm.definitionIndexExists(definitionIndex)) {
-                  var err = new Error();
+                  err = new Error();
                   err.status = 404;
                   err.error = "Definition at that index does not exist";
                   err.message = "The definition at that index does not exist";
@@ -330,7 +334,7 @@ router.put('/:id/definitions/:index', function(req, res, next) {
     }
 
     } else {
-      var err = new Error();
+      err = new Error();
       err.status = 400;
       err.error = "Content type not set";
       err.message = "Valid content type is 'application/json'";
@@ -345,10 +349,11 @@ router.put('/:id/definitions/:index', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
 
   var reactionterm = new Reaction(decodeURIComponent(req.params.id));
+  var err = new Error();
 
   reactionterm.find(db.connection, function(reaction) {
     if(reaction === null) {
-      var err = new Error();
+      err = new Error();
       err.status = 404;
       err.error = "Reaction Not Found";
       err.message = "The reaction that you were looking for could not be found.";
