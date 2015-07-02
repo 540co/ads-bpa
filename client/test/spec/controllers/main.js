@@ -7,76 +7,6 @@ describe('Controller: MainCtrl', function () {
 
     var q, mockDashboardService, MainCtrl, deferred, $scope, service;
 
-    var fakeSymptomCount = {
-      config: {
-        test: 'test'
-      },
-      data: {
-        meta: {
-          results: {
-            limit: 1,
-            skip: 0,
-            total: 1234456
-          }
-        },
-        results: [
-            {
-              test: 'test'
-            }
-          ]
-      },
-      headers: {
-        test: 'test'
-      },
-      status: 200,
-      statusText: 'OK'
-    };
-
-    var mockBrands = [{
-    term: 'Advil',
-    count: 100
-  },
-  {
-    term: 'Xanax',
-    count: 1900
-  },
-  {
-    term: 'Aleve',
-    count: 4
-  }];
-
-    // beforeEach(function() {
-    //   mockDashboardService = {
-    //     getSymptomCount: function() {
-    //       deferred = q.defer();
-    //       deferred.resolve(fakeSymptomCount);
-    //       return deferred.promise;
-    //     },
-    //     putDefinitionVote: function() {
-    //       deferred = q.defer();
-    //       deferred.resolve();
-    //       return deferred.promise;
-    //     },
-    //     getBrands: function() {
-    //       deferred = q.defer();
-    //       deferred.resolve(mockBrands);
-    //       return deferred.promise;
-    //     }
-    //   };
-    //   spyOn(mockDashboardService, 'getSymptomCount').and.callThrough();
-    //   spyOn(mockDashboardService, 'getBrands').and.callThrough();
-    // });
-
-  // Initialize the controller and a mock scope
-  // beforeEach(inject(function ($rootScope, $controller, $q) {
-  //   scope = $rootScope.$new();
-  //   q = $q;
-  //   MainCtrl = $controller('MainCtrl', {
-  //     $scope: scope,
-  //     DashboardService: mockDashboardService
-  //   });
-  // }));
-
   //Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, DashboardService) {
     $scope = $rootScope.$new();
@@ -110,23 +40,6 @@ describe('Controller: MainCtrl', function () {
     it('$scope.showFilter should initially set to false', function () {
       expect($scope.showFilter).toBe(true);
     });
-
-    // describe('Calls DashboardService.getSymptomCount() successfully', function() {
-    //   beforeEach(inject(function($q) {
-    //     var mockSymptomCount = 564730, symptomDeferred = $q.defer();
-    //     symptomDeferred.resolve(mockSymptomCount);
-    //     spyOn(service, 'getSymptomCount').and.returnValue(symptomDeferred.promise);
-    //     //spyOn(service, 'postSearchTerm').and.returnValue('true');
-    //     $scope.getResults('ibuprofen');
-    //   }));
-    //
-    //   it('DashboardService.getSymptomCount should be called', function () {
-    //     console.log('Into function');
-    //     $scope.$digest();
-    //     console.log($scope.noResults);
-    //     //expect(service.getSymptomCount).toHaveBeenCalled();
-    //   });
-    // });
   });
 
   describe('Method: $scope.search', function() {
@@ -143,10 +56,6 @@ describe('Controller: MainCtrl', function () {
     beforeEach(function() {
       $scope.openConfirm();
     });
-
-    // it('$scope.showFilter should initially set to false', function () {
-    //   expect($scope.showFilter).toBe(true);
-    // });
   });
 
   describe('Method: $scope.showErrorModal', function() {
@@ -160,7 +69,7 @@ describe('Controller: MainCtrl', function () {
       expect(angular.isFunction($scope.setDashboard)).toBe(true);
     });
 
-    describe('Calls DashboardService.getSymptomCount() successfully', function() {
+    describe('Calls setDashboard() successfully', function() {
       beforeEach(inject(function($q) {
         var mockSymptoms = [{
           term: 'PAIN',
@@ -260,12 +169,50 @@ describe('Controller: MainCtrl', function () {
       expect(angular.isFunction($scope.vote)).toBe(true);
     });
 
-    // beforeEach(function() {
-    //   $scope.$apply();
-    // });
-
     it('should have function named $scope.vote(keyword, vote, definitionIndex, symptomIndex)', function () {
       expect(angular.isFunction($scope.vote)).toBe(true);
     });
+    describe('Calls vote() successfully', function() {
+        beforeEach(inject(function($q) {
+          var mockSymptoms = [{
+            term: 'PAIN',
+            count: 34693,
+            percentage: '10.5%'
+          },{
+            term: 'DEATH',
+            count: 809093,
+            percentage: '89.5'
+          }];
+          var voteDeferred = $q.defer();
+          voteDeferred.resolve(mockSymptoms);
+          spyOn(service, 'putDefinitionVote').and.returnValue(voteDeferred.promise);
+          $scope.vote('PAIN', 'up', 0, 0);
+        }));
+
+        it('DashboardService.putDefinitionVote should be called', function () {
+          console.log('in here');
+          $scope.definitions = [{
+            term: 'PAIN',
+            definitions: {
+              definition: 'TEST'
+            }
+          }];
+          $scope.$digest();
+        });
+
+      });
+  });
+
+  describe('Method: search', function() {
+
+    it('should have function named $scope.search()', function () {
+      expect(angular.isFunction($scope.search)).toBe(true);
+    });
+
+    beforeEach(inject (function($location) {
+      spyOn($location, 'path').and.returnValue('/keyword/');
+      $scope.search('ibuprofen');
+    }));
+
   });
 });

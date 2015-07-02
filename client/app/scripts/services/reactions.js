@@ -4,10 +4,6 @@ angular
     .module('dreApp')
     .factory('reactions', ['$http', '$q', 'config', function ($http, $q, config) {
 
-        if (!window.console) console = {
-            log: function () {}
-        };
-
         var requestParams = function (custom) {
             var commonParams = {
                 method: 'GET',
