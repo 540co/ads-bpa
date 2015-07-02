@@ -22,20 +22,48 @@ require('./models/data-manager.js');
 
 // Starting services / connections that must be done prior
 // to start of Node
+console.log('---');
+console.log('# Starting Drug Reactions Explained [DRE] #')
+
 async.series([
     function(callback){
-      console.log('Connecting to MongoDB...');
+      console.log('---');
+      console.log('Connecting to MongoDB ['+ config.mongo + config.db + ']');
       dataManager(function(result) {
         db = result;
         callback();
+      });
+    },
+    function(callback){
+      console.log('---');
+      console.log('Confirm MongoDB collection [' + config.reactions_collection + '] exists');
+      db.ensureCollectionExists(config.reactions_collection, function (err, collection) {
+        if (err) {
+          console.log(err);
+          throw('***Error validating / creating collection***');
+        } else {
+          callback();
+        }
+      });
+    },
+    function(callback){
+      console.log('---');
+      console.log('Confirm MongoDB collection [' + config.searches_collection + '] exists');
+      db.ensureCollectionExists(config.searches_collection, function (err, collection) {
+        if (err) {
+          console.log(err);
+          throw('***Error validating / creating collection***');
+        } else {
+          callback();
+        }
       });
     }
 ],
 
 // Start node listening for incoming requests
 function(err, results){
-
-  console.log('Starting Drug Reactions Explained [DRE] Server...')
+  console.log('---');
+  console.log('Starting app server listen');
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'jade');
@@ -57,6 +85,7 @@ function(err, results){
   app.use('/public', express.static(__dirname + '/public'));
   app.use('/apidocs', express.static(__dirname + '/swagger'));
 
+  console.log('---');
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
@@ -84,5 +113,7 @@ function(err, results){
   });
 
 });
+
+
 
 module.exports = app;
