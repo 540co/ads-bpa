@@ -11,11 +11,11 @@ Below is a table containing all of the relevant DRE links
 
 | Description | Link |
 |-------------|------|
-| Production Environment | [dre.540.co](https://dre.540.co) |
-| Development Environment | [dre-dev.540.co](https://dre-dev.540.co)
+| Production App | [dre.540.co](https://dre.540.co) |
+| Production API Docs | [dre.540.co/apidocs](https://dre.540.co/apidocs) |
+| Development Environment | [dre-dev.540.co](https://dre-dev.540.co) |
+| Development API Docs | [dre.540.co/apidocs](https://dre.540.co/apidocs) |
 | cAdvisor Monitoring | [dre-monitor.540.co](https://dre-monitor.540.co) |
-| Admin Portal | [dre.540.co/admin](https://dre.540.co/admin) |
-| Swagger Docs | [dre.540.co/apidocs](https://dre.540.co/apidocs) |
 | Architectural Docs | [./server/docs](./server/docs) |
 
 #Architecture

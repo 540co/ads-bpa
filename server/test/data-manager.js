@@ -6,17 +6,25 @@ require('../models/data-manager.js');
 
 describe('Data Manager', function() {
     var db_connection;
+    var db_collection_err;
+    var db_collection_result;
     var db_close;
 
-    describe('Connection', function() {
+    describe('Connection | Collection | Close', function() {
       before(function(done) {
         dataManager(function(db) {
           db_connection = db;
-          db_connection.connection.close(function (result) {
-              db_close = result;
-              done();
-          });
 
+          db_connection.ensureCollectionExists('test', function (err, result) {
+            db_collection_err = err;
+            db_collection_result = result;
+
+            db_connection.connection.close(function (result) {
+                db_close = result;
+                done();
+            });
+
+          });
         });
       });
 
@@ -31,6 +39,9 @@ describe('Data Manager', function() {
         db_connection.connection.s.databaseName.should.eql(config.db);
       });
 
+      it('validating that ensureCollectionExists checks that a collection exists and/or creates', function() {
+        should.equal(db_collection_err, null);
+      });
 
       it('validating that db close works properly', function() {
         should.equal(db_close, null);

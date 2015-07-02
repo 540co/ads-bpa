@@ -8,15 +8,16 @@
       <hr>
       <p>As medical terms get harder and harder to understand, Drug Reactions Explained (DRE) provides clear definitions to the medical terms used to describe the reactions patients have experienced when taking certain drugs.</p>
       <p>
-        This project was inspired and developed for <a href="https://open.fda.gov/">openFDA</a>.
+        This project leverages the drug / adverse events data provided by <a href="https://open.fda.gov/">openFDA APIs</a> and was built in support of the <a href="https://18f.gsa.gov/2015/06/15/agile-bpa-is-here/">18F Agile BPA procurement</a>.
       </p>
+      <hr />
       <h3>How to use DRE</h3>
       <p>Using the search bar, type a brand name or drug to begin. DRE provides the top 6 reaction cards associated with the searched term and an analytical dashboard.</p>
-      <h5><strong>Reaction Cards</strong></h5>
+      <br /><h5><strong>Reaction Cards</strong></h5>
       <p>
         The top 6 reactions associated with the searched term are populated into interactive cards. The reaction term is placed onto the front of the card. Clicking the card, flips it to the back where clear definitions are provided for better understanding.
       </p>
-      <h5><strong>Card Actions</strong></h5>
+      <br /><h5><strong>Card Actions</strong></h5>
       <p>
         <i class="fa fa-thumbs-o-up"></i> Upvote a term definition
       </p>
@@ -29,11 +30,16 @@
       <p>
         <i class="fa fa-repeat"></i> Flip card
       </p>
-      <h5><strong>Dashboard</strong></h5>
+      <br /><h5><strong>Dashboard</strong></h5>
       <p>
         The dashboard provides an analytic view into openFDA's drug API and can view high level information in context of reported adverse effects of a drug/substance.
       </p>
-      <hr>
+      <hr />
+      <h3>DRE APIs</h3>
+      <p>In additon to using the <a href="https://open.fda.gov/">openFDA</a> APIs, DRE also maintains a collection of RESTful APIs to capture and maintain reaction definitions, definition popularity and search metrics.</p>
+      <a href="apidocs" class="btn btn-dre" target="_blank">View API Docs</a></h3>
+      <hr />
+
   </div>
 
   </div>
@@ -49,17 +55,6 @@
       <hr>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-3 text-center">
-
-    </div>
-    <div class="col-md-9">
-      <h3>Documentation</h3>
-      <p>Swagger Docs helped create a simple resporesentation of our RESTful APIs. Checkout to our docs below!</p>
-      <h3><a href="https://dre.540.co/apidocs/" class="">https://dre.540.co/apidocs/</a></h3>
-    </div>
-  </div>
-
 
   <div class="footer">
   </div>

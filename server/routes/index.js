@@ -5,35 +5,31 @@ var jade = require('jade');
 var request = require('request');
 var router = express.Router();
 
-// TO DO: apis.json file
+/**
+* Return a machine readable json file defining the API using the
+* apis.io json format (v0.14)
+* REFERENCE: http://apisjson.org/
+*/
+
 router.get('/', function(req, res, next) {
-  res.json({todo: 'apis.json file'});
+  var apisjson = JSON.parse(fs.readFileSync('./routes/apisjson.json'));
+  apisjson.url = config.schemes[0] + '://' + config.host + '/api';
+  apisjson.apis[0].humanURL = config.schemes[0] + '://' + config.host + '/apidocs';
+  apisjson.apis[0].baseURL = apisjson.apis[0].properties[0].url = config.schemes[0] + '://' + config.host + '/api';
+  apisjson.apis[1].humanURL = config.schemes[0] + '://' + config.host + '/apidocs';
+  apisjson.apis[1].baseURL = apisjson.apis[1].properties[0].url = config.schemes[0] + '://' + config.host + '/api';
+  res.json(apisjson);
 });
 
-// TO DO: apis.json file
+/**
+* Return a swagger json definition (v2.0) of the DRE APIs
+* REFERENCE: http://swagger.io/
+*/
 router.get('/swagger', function(req, res, next) {
   var swagger = JSON.parse(fs.readFileSync('./routes/swagger.json'));
   swagger.host = config.host;
   swagger.schemes = config.schemes;
   res.json(swagger);
-});
-
-
-// Test Mongo Connection
-router.get('/mongodb', function(req, res, next) {
-
-  console.log(config);
-
-  var MongoClient = require('mongodb').MongoClient,
-      assert = require('assert');
-
-  var url = config.mongo + 'myproject';
-
-  MongoClient.connect(url, function(err, db) {
-    assert.equal(null, err);
-    res.json({message:'Connected correctly to server'});
-    db.close();
-  });
 });
 
 module.exports = router;
