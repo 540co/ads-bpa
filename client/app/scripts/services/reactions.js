@@ -12,7 +12,6 @@ angular
             var commonParams = {
                 method: 'GET',
                 responseType: 'json',
-                cache: true,
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -26,7 +25,6 @@ angular
           var commonParams = {
               method: 'POST',
               responseType: 'json',
-              cache: true,
               headers: {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json'
