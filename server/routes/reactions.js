@@ -73,8 +73,6 @@ router.post('/:id/definitions', function(req, res, next) {
   var response = new Response();
   var err = new Error();
 
-  var id = req.params.id;
-
   if (req.headers['content-type']) {
     if(req.headers['content-type'].indexOf("application/json") < 0) {
       err = new Error();
