@@ -1,5 +1,5 @@
 var helper = require('./models-helper');
-var async = require('async');
+require('async');
 var _ = require('lodash');
 
 var config = require('../config');
@@ -138,7 +138,7 @@ Reaction.getList = function(db_connection, limit, offset, callback) {
   cursor.toArray(function(err, result) {
     _.forEach(result, function (v,k) {
       delete result[k]['_id'];
-    })
+    });
     callback(result);
   });
 

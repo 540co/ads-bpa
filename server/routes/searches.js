@@ -11,10 +11,10 @@ require('../models/response.js');
 * are provided by end user
 */
 router.post('/', function(req, res, next) {
-
+  var err = new Error();
   if (req.headers['content-type']) {
     if(req.headers['content-type'].indexOf("application/json") < 0) {
-      var err = new Error();
+      err = new Error();
       err.status = 400;
       err.error = "Invalid content type";
       err.message = "Valid content type is 'application/json'";
@@ -22,7 +22,7 @@ router.post('/', function(req, res, next) {
     } else {
 
       if (req.headers['content-type'].indexOf("application/json") < 0) {
-        var err = new Error();
+        err = new Error();
         err.status = 400;
         err.error = "Invalid content type";
         err.message = "Valid content type is 'application/json'";
@@ -30,7 +30,7 @@ router.post('/', function(req, res, next) {
       } else {
 
         if (!req.body.search) {
-          var err = new Error();
+          err = new Error();
           err.status = 400;
           err.error = "A search attribute was not found in the body";
           err.message = "A search key/value must be passed in body (ex. {'search':'ibuprofen'})";
@@ -55,7 +55,7 @@ router.post('/', function(req, res, next) {
       }
       }
     } else {
-      var err = new Error();
+      err = new Error();
       err.status = 400;
       err.error = "Content type not set";
       err.message = "Valid content type is 'application/json'";
@@ -70,6 +70,7 @@ router.post('/', function(req, res, next) {
 router.get('/', function(req, res, next) {
 
   var response = new Response();
+  var err = new Error();
 
   if (!req.query.limit) {response.meta.limit = 25;} else {response.meta.limit = parseInt(req.query.limit);}
 
@@ -88,7 +89,7 @@ router.get('/', function(req, res, next) {
   }
 
   if(response.meta.offset < 0) {
-    var err = new Error();
+    err = new Error();
     err.status = 404;
     err.error = "No searches can be found";
     err.message = "Bad offset query parameter - offset must be > 0";
