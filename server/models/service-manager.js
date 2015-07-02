@@ -1,9 +1,8 @@
 var request = require('request');
 var _ = require('lodash');
 var xml2js = require('xml2js');
-var Definition = require('./definition');
 
-var serviceManager = {};
+serviceManager = {};
 
 /**
 * Fetch dictionary definitions from Wordnik API
@@ -155,6 +154,7 @@ serviceManager.getDefinitionsFromDictionaryApi = function (term, api_key, callba
 
     });
 
-}
 
-module.exports = serviceManager;
+
+
+}

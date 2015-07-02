@@ -1,8 +1,10 @@
 var express = require('express');
 var async = require('async');
+
 var router = express.Router();
-var Searches = require('../models/searches');
-var Response = require('../models/response.js');
+
+require('../models/searches.js');
+require('../models/response.js');
 
 /**
 * Record a search term to track metrics of when different search terms

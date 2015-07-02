@@ -1,9 +1,10 @@
-var checkIndices = require('./models-helper');
+var helper = require('./models-helper');
 require('async');
 var _ = require('lodash');
+
 var config = require('../config');
 
-var Reaction = function(reactionterm) {
+Reaction = function(reactionterm) {
 
   this.reaction = reactionterm.toLowerCase();
   this.definitions = [];
@@ -21,7 +22,7 @@ var Reaction = function(reactionterm) {
                       'isValid', 'find', 'remove', 'upsert', 'addDefinition',
                       'definitionExists', 'definitionIndexExists', 'vote'];
 
-    if(checkIndices(this, listOfKeys) === false) {
+    if(helper.checkIndices(this, listOfKeys) === false) {
       validFlag = false;
     }
 
@@ -152,5 +153,3 @@ Reaction.getCount = function(db_connection, callback) {
   });
 
 };
-
-module.exports = Reaction;
