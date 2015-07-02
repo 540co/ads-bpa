@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "istanbul cover --include-all-sources -x 'swagger/**' -x 'config-sample.js' _mocha -- -R spec"
+    "test": "istanbul cover --include-all-sources -x 'swagger/**' -x 'config-sample.js' -x 'app.js' _mocha -- -R spec"
   },
   "dependencies": {
     "async": "^1.2.1",
