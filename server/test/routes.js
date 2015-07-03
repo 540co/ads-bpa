@@ -4,6 +4,7 @@
 // a copy of the contents
 // ------------
 var config = require('../config');
+var dataManager = require('../models/data-manager');
 
 var express = require('express');
 var path = require('path');
@@ -38,8 +39,6 @@ var app = express();
     before(function (done) {
 
       db = {};
-
-      require('../models/data-manager.js');
 
       // Starting services / connections that must be done prior
       // to start of Node

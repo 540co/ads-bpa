@@ -1,9 +1,9 @@
-require('../models/reactions.js');
-require('../models/definition.js');
-require('../models/votes.js');
-require('../models/response.js');
-require('../models/searches.js');
-require('../models/data-manager.js');
+var Reaction = require('../models/reactions');
+var Definition = require('../models/definition');
+var Votes = require('../models/votes');
+var Response = require('../models/response');
+var Searches = require('../models/searches');
+var dataManager = require('../models/data-manager');
 
 var helper = require('./helper-representations.js');
 var should = require('should');

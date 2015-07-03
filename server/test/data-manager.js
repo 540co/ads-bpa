@@ -1,8 +1,6 @@
 var should = require('should');
-
 var config = require('../config');
-
-require('../models/data-manager.js');
+var dataManager = require('../models/data-manager');
 
 describe('Data Manager', function() {
   var db_connection;
