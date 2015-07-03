@@ -3,8 +3,8 @@
 // need to look at a cleaner way of using app.js without making
 // a copy of the contents
 // ------------
-var config = require('../config').config;
-var dataManager = require('../models/data-manager').dataManager;
+var config = require('../config');
+var dataManager = require('../models/data-manager');
 
 var express = require('express');
 var path = require('path');

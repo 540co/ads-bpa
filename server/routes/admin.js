@@ -1,4 +1,4 @@
-var config = require('../config').config;
+var config = require('../config');
 var fs = require('fs');
 var express = require('express');
 var jade = require('jade');

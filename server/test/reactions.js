@@ -1,15 +1,15 @@
-var Reaction = require('../models/reactions.js').Reaction;
-var Definition = require('../models/definition.js').Definition;
-var Votes = require('../models/votes.js').Votes;
-var Response = require('../models/response.js').Response;
-var Searches = require('../models/searches.js').Searches;
-var dataManager = require('../models/data-manager.js').dataManager;
+var Reaction = require('../models/reactions.js');
+var Definition = require('../models/definition.js');
+var Votes = require('../models/votes.js');
+var Response = require('../models/response.js');
+var Searches = require('../models/searches.js');
+var dataManager = require('../models/data-manager.js');
 
 var helper = require('./helper-representations.js');
 var should = require('should');
 var status = require('http-status');
 
-var config = require('../config').config;
+var config = require('../config');
 
 
 describe('Reactions and supporting objects', function() {

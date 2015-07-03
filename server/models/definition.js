@@ -1,5 +1,5 @@
-var checkIndices = require('./models-helper').checkIndices;
-var Votes = require('./votes').Votes;
+var checkIndices = require('./models-helper');
+var Votes = require('./votes');
 var Definition = function() {
 
   this.definition;
@@ -33,4 +33,4 @@ var Definition = function() {
 
 };
 
-module.exports.Definition = Definition;
+module.exports = Definition;

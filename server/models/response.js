@@ -1,4 +1,4 @@
-var Response = function() {
+Response = function() {
 
   var startTime = new Date().getTime();
 
@@ -12,4 +12,4 @@ var Response = function() {
 
 }
 
-module.exports.Response = Response;
+module.exports = Response;

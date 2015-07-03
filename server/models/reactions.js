@@ -1,9 +1,9 @@
-var checkIndices = require('./models-helper').checkIndices;
+var checkIndices = require('./models-helper');
 require('async');
 var _ = require('lodash');
-var config = require('../config').config;
+var config = require('../config');
 
-var Reaction = function(reactionterm) {
+Reaction = function(reactionterm) {
 
   this.reaction = reactionterm.toLowerCase();
   this.definitions = [];
@@ -153,4 +153,4 @@ Reaction.getCount = function(db_connection, callback) {
 
 };
 
-module.exports.Reaction = Reaction;
+module.exports = Reaction;

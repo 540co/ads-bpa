@@ -1,10 +1,9 @@
-var config = require('../config').config;
+var config = require('../config');
 
-var dataManager = function (callback) {
+dataManager = function (callback) {
 
   this.connection = {};
   var mongo_url = config.mongo + config.db;
-
   var MongoClient = require('mongodb').MongoClient;
 
   MongoClient.connect(mongo_url, function(err, db) {
@@ -27,4 +26,4 @@ var dataManager = function (callback) {
 
 };
 
-module.exports.dataManager = dataManager;
+module.exports = dataManager;

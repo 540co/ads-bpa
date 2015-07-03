@@ -1,5 +1,5 @@
-var checkIndices = require('./models-helper').checkIndices;
-var Votes = function() {
+var checkIndices = require('./models-helper');
+Votes = function() {
 
   this.ups = 0;
   this.downs = 0;
@@ -31,4 +31,4 @@ var Votes = function() {
 
 };
 
-module.exports.Votes = Votes;
+module.exports = Votes;

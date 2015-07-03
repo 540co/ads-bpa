@@ -1,6 +1,6 @@
 var should = require('should');
 var status = require('http-status');
-var config = require('../config').config;
+var config = require('../config');
 
 
 // This details the Configuration Test Spec

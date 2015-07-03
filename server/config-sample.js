@@ -1,4 +1,4 @@
-var config = {};
+config = {};
 
 config.schemes = ['http'];
 config.host = "localhost:3000";

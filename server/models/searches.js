@@ -1,7 +1,7 @@
 var _ = require('lodash');
-var config = require('../config').config;
+var config = require('../config');
 
-var Searches = function(searchterm) {
+Searches = function(searchterm) {
 
   this.search = searchterm.toLowerCase();
   this.count = null;
@@ -72,4 +72,4 @@ Searches.getList = function(db_connection, limit, offset, callback) {
 
 };
 
-module.exports.Searches = Searches;
+module.exports = Searches;

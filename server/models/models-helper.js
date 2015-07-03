@@ -1,4 +1,4 @@
-var checkIndices = function(obj, list) {
+checkIndices = function(obj, list) {
   var validFlag = true;
 
   var length = Object.keys(obj).length;
@@ -11,4 +11,4 @@ var checkIndices = function(obj, list) {
   return validFlag;
 }
 
-module.exports.checkIndices = checkIndices;
+module.exports = checkIndices;
