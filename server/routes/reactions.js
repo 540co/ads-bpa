@@ -1,15 +1,13 @@
-var config = require('../config');
+var config = require('../config').config;
 var express = require('express');
 var async = require('async');
-
-require('../models/service-manager.js');
-
+var serviceManager = require('../models/service-manager').serviceManager;
 var router = express.Router();
 
-require('../models/reactions.js');
-require('../models/definition.js');
-require('../models/votes.js');
-
+var Reaction = require('../models/reactions').Reaction;
+var Definition = require('../models/definition').Definition;
+var Votes = require('../models/votes').Votes;
+var Response = require('../models/response').Response;
 /**
 * Fetch list of reaction definitions currently available in DRE dictionary
 */

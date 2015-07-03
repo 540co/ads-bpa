@@ -1,4 +1,9 @@
-//FThis function creates a mocked definition instance for testing purposes
+var Definition = require('../models/definition').Definition;
+var Reaction = require('../models/reactions').Reaction;
+var Votes = require('../models/votes').Votes;
+var Response = require('../models/response').Response;
+
+//This function creates a mocked definition instance for testing purposes
 var mockDefinition = function(def, source, created_at, created_by) {
   var definition = new Definition();
 
@@ -51,7 +56,7 @@ var mockResponse = function() {
 }
 
 //Exports to make functions available in main.js
-exports.mockDefinition = mockDefinition;
-exports.mockReaction = mockReaction;
-exports.mockVotes = mockVotes;
-exports.mockResponse = mockResponse;
+module.exports.mockDefinition = mockDefinition;
+module.exports.mockReaction = mockReaction;
+module.exports.mockVotes = mockVotes;
+module.exports.mockResponse = mockResponse;

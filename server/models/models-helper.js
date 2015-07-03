@@ -11,4 +11,4 @@ var checkIndices = function(obj, list) {
   return validFlag;
 }
 
-exports.checkIndices = checkIndices;
+module.exports.checkIndices = checkIndices;

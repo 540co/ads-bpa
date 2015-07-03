@@ -1,6 +1,5 @@
-var helper = require('./models-helper');
-
-Votes = function() {
+var checkIndices = require('./models-helper').checkIndices;
+var Votes = function() {
 
   this.ups = 0;
   this.downs = 0;
@@ -15,7 +14,7 @@ Votes = function() {
 
     var listOfKeys = ['ups', 'downs', 'isValid', 'up', 'down'];
 
-    if(helper.checkIndices(this, listOfKeys) === false) {
+    if(checkIndices(this, listOfKeys) === false) {
       validFlag = false;
     }
 
@@ -31,3 +30,5 @@ Votes = function() {
   };
 
 };
+
+module.exports.Votes = Votes;
