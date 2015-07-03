@@ -1,6 +1,6 @@
-var checkIndices = require('./models-helper');
-var Votes = require('./votes');
-var Definition = function() {
+var helper = require('./models-helper');
+
+Definition = function() {
 
   this.definition;
   this.source;
@@ -19,7 +19,7 @@ var Definition = function() {
     var listOfKeys = ['definition', 'source', 'votes',
                       'created_at', 'isValid', 'matches'];
 
-    if(checkIndices(this, listOfKeys) === false) {
+    if(helper.checkIndices(this, listOfKeys) === false) {
       validFlag = false;
     }
 
@@ -32,5 +32,3 @@ var Definition = function() {
   };
 
 };
-
-module.exports = Definition;

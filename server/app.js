@@ -18,7 +18,7 @@ var app = express();
 
 db = {};
 
-var dataManager = require('./models/data-manager');
+require('./models/data-manager.js');
 
 // Starting services / connections that must be done prior
 // to start of Node
