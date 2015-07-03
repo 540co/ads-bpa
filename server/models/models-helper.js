@@ -1,4 +1,4 @@
-checkIndices = function(obj, list) {
+var checkIndices = function(obj, list) {
   var validFlag = true;
 
   var length = Object.keys(obj).length;

@@ -3,7 +3,7 @@ require('async');
 var _ = require('lodash');
 var config = require('../config');
 
-Reaction = function(reactionterm) {
+var Reaction = function(reactionterm) {
 
   this.reaction = reactionterm.toLowerCase();
   this.definitions = [];

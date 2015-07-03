@@ -1,6 +1,6 @@
 var checkIndices = require('./models-helper');
 var Votes = require('./votes');
-Definition = function() {
+var Definition = function() {
 
   this.definition;
   this.source;

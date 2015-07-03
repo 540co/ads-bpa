@@ -3,7 +3,7 @@ var _ = require('lodash');
 var xml2js = require('xml2js');
 var Definition = require('./definition');
 
-serviceManager = {};
+var serviceManager = {};
 
 /**
 * Fetch dictionary definitions from Wordnik API

@@ -1,5 +1,5 @@
 var checkIndices = require('./models-helper');
-Votes = function() {
+var Votes = function() {
 
   this.ups = 0;
   this.downs = 0;

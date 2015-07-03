@@ -1,4 +1,4 @@
-Response = function() {
+var Response = function() {
 
   var startTime = new Date().getTime();
 

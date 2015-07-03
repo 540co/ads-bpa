@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var config = require('../config');
 
-Searches = function(searchterm) {
+var Searches = function(searchterm) {
 
   this.search = searchterm.toLowerCase();
   this.count = null;

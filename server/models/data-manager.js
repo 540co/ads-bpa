@@ -1,6 +1,6 @@
 var config = require('../config');
 
-dataManager = function (callback) {
+var dataManager = function (callback) {
 
   this.connection = {};
   var mongo_url = config.mongo + config.db;
