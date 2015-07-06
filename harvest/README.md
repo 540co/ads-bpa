@@ -61,7 +61,7 @@ But, this does not result in an issue with the DRE app because:
 
 - There is a good chance the reaction is called out in another event and will be found at some point during the harvest / warming process
 
-- The DRE APP / API is capable of fetching the reaction definitions at run-time in cases where the reaction has not been previously captured in the Reaction Lookup API
+- The DRE APP / API is capable of fetching the reaction definitions at run-time in cases where the reaction has not been previously captured in the Reactions Lookup API
 
 
 
