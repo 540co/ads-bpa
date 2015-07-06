@@ -10,10 +10,13 @@ Key Links  | URLs
  Production App    | [dre.540.co](https://dre.540.co)   
  Production API Docs    | [dre.540.co/apidocs](https://dre.540.co/apidocs) 
  Development Environment    | [dre-dev.540.co](https://dre-dev.540.co) 
- Development API Docs    | [dre.540.co/apidocs](https://dre.540.co/apidocs) 
+ API Documentation    | [dre.540.co/apidocs](https://dre.540.co/apidocs) 
  cAdvisor Monitoring    | [dre-monitor.540.co](https://dre-monitor.540.co) 
  Architectural Docs    | [./server/docs](https://github.com/540co/ads-bpa/blob/master/server/docs)
 
+```
+This prototype was built for Chrome and Firefox (IE Compatibility not currently tested)
+```
 
 
 The **M-Cubed/540 Team** used an Agile, Test-Driven development process to build our OpenFDA prototype for the Agile Delivery Services BPA response.  
@@ -26,7 +29,7 @@ Many ideas were presented to the product owner, and the decision was made to bui
  
 ![<Whiteboard>](./server/docs/other/Whiteboard.jpg)
 
-Acting as ScrumMaster, the Technical Architect migrated the identified stories into the team’s GitHub issue tracker identifying which tasks would be part of the Minimum Viable Product (MVP).  
+Acting as ScrumMaster, the Technical Architect migrated the stories into the team’s GitHub issue tracker identifying which tasks would be part of the Minimum Viable Product (MVP).  
 
 Based on the short duration of the challenge, the ScrumMaster decided to have two 3-4 day sprints.
 
@@ -66,7 +69,7 @@ From a continuous integration perspective, we configured TravisCI to run on all 
 
 ![<GitHub_Screen_Grab>](./server/docs/other/GitHub_Screen_Grab.jpg)
 
-TravisCI also integrated monitoring of our current code climate and unit test code coverage (as displayed in GitHub).  TravisCI also controlled the continuous deployment (on merge) from the `develop` branch to our development environment and from the `master` branch to our production environment.  
+TravisCI also integrated monitoring of our code climate and unit test code coverage (as displayed in GitHub).  TravisCI also controlled the continuous deployment (on merge) from the `develop` branch to our development environment and from the `master` branch to our production environment.  
 
 Other monitoring tools such as New Relic (application-level and server-level monitoring), cAdvisor (Docker container monitoring), Slack (monitoring messages were pushed to our team’s chat channel) and Runscope (automated testing of our APIs) were also configured.
 
@@ -82,7 +85,7 @@ To embrace transparency we:
 
 * created the #18FAgileBPA hashtag and encouraged all bidders to join our conversation on Twitter
 
-* live-streamed video of our work on Meerkat and Periscope (and published them to YouTube)
+* live-streamed video of our work on Meerkat and Periscope (published to YouTube)
 
 ![<Whiteboarding_Session>](./server/docs/other/Whiteboarding_Session.jpg)
 
