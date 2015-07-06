@@ -38,7 +38,7 @@ node prepopulateDictionary.js [dre_reactions_uri] [openFDA_api_key] [FROM_YYYY] 
 
 **[openFDA\_api\_key]**  = your openFDA api_key
 
-**[FROM_YYYY]**  = from year `drug/events` where you would like to start (example: `2004`)
+**[FROM_YYYY]**  = from year `drug/events` where you would like to start (example: `2013`)
 
 **[TO_YYYY]**  = from year `drug/events` where you would like to end (example: `2014`)
 
