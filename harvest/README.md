@@ -1,7 +1,7 @@
 #[dre-reaction-dictionary-warmer]
 
 ## What is the for?
-After a fresh install of the **DRE APIs**, the **reaction** dictionary is empty.  
+After a fresh install of the **DRE APIs**, the **reactions** dictionary is empty.  
 
 While a client (such as the **DRE APP**) can send a POST to the `/reactions` endpoint for a given term to force the population of the dictionary, this script was built to help force the pre-loading of the reactions dictionary based upon the unique reactions we know are present in the [OpenFDA drug/events](https://open.fda.gov/drug/event/) dataset.
 
@@ -15,7 +15,7 @@ This is a stand alone node [node.js](https://nodejs.org/) CLI (command line inte
 - Makes an initial call to the endpoint to determine total event count for each day
 - Builds a list of URLs for each day with the appropriate `skip` parameter to paginate thru the results
 - Consumes each URL to parse out the unique reactions called out in the drug/events
-- Takes the list of unique reactions found for a given day and sends a POST request to the DRE `/reaction` API resource with each reaction term to force the Reaction Lookup API to populate the definition for each term  (if it isn't already in the lookup)
+- Takes the list of unique reactions found for a given day and sends a POST request to the DRE `/reactions` API resource with each reaction term to force the Reaction Lookup API to populate the definition for each term  (if it isn't already in the lookup)
 
 
 ## Setup / Usage
@@ -30,17 +30,17 @@ This is a stand alone node [node.js](https://nodejs.org/) CLI (command line inte
 
 ```
 
-node prepopulateDictionary.js [dre_reaction_uri] [openFDA_api_key] [FROM_YYYY] [TO_YYYY] 
+node prepopulateDictionary.js [dre_reactions_uri] [openFDA_api_key] [FROM_YYYY] [TO_YYYY] 
 
 ```
 
-**[dre\_reaction\_uri]**  = uri of where **DRE** reaction endpoint (example: `http://localhost:3000/reaction`)
+**[dre\_reactions\_uri]**  = uri of where **DRE** reactions endpoint (example: `http://localhost:3000/api/reactions`)
 
 **[openFDA\_api\_key]**  = your openFDA api_key
 
-**[FROM_YYYY]**  = from year `drug/events` where you would like to start 
+**[FROM_YYYY]**  = from year `drug/events` where you would like to start (example: `2013`)
 
-**[TO_YYYY]**  = from year `drug/events` where you would like to end
+**[TO_YYYY]**  = from year `drug/events` where you would like to end (example: `2014`)
 
 
 ## Caveats
@@ -61,7 +61,7 @@ But, this does not result in an issue with the DRE app because:
 
 - There is a good chance the reaction is called out in another event and will be found at some point during the harvest / warming process
 
-- The DRE APP / API is capable of fetching the reaction definitions at run-time in cases where the reaction has not been previously captured in the Reaction Lookup API
+- The DRE APP / API is capable of fetching the reaction definitions at run-time in cases where the reaction has not been previously captured in the Reactions Lookup API
 
 
 
