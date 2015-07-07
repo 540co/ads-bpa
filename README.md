@@ -8,9 +8,8 @@
 Key Links  | URLs 
  ------------- | ------------- 
  Production App    | [dre.540.co](https://dre.540.co)   
- Production API Docs    | [dre.540.co/apidocs](https://dre.540.co/apidocs) 
- Development Environment    | [dre-dev.540.co](https://dre-dev.540.co) 
  API Documentation    | [dre.540.co/apidocs](https://dre.540.co/apidocs) 
+ Development Environment    | [dre-dev.540.co](https://dre-dev.540.co) 
  cAdvisor Monitoring    | [dre-monitor.540.co](https://dre-monitor.540.co) 
  Architectural Docs    | [./server/docs](https://github.com/540co/ads-bpa/blob/master/server/docs)
 
