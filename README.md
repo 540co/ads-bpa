@@ -2,16 +2,14 @@
 [![Build Status](https://travis-ci.org/540co/ads-bpa.svg?branch=master)](https://travis-ci.org/540co/ads-bpa)
 [![Code Climate](https://codeclimate.com/github/540co/ads-bpa/badges/gpa.svg)](https://codeclimate.com/github/540co/ads-bpa)
 [![Test Coverage](https://codeclimate.com/github/540co/ads-bpa/badges/coverage.svg)](https://codeclimate.com/github/540co/ads-bpa/coverage)
-[![Slackin](https://slackin.540.co/badge.svg)](https://slackin.540.co)
 
-
-Key Links  | URLs 
- ------------- | ------------- 
- Production App    | [dre.540.co](https://dre.540.co)   
- API Documentation    | [dre.540.co/apidocs](https://dre.540.co/apidocs) 
- Development Environment    | [dre-dev.540.co](https://dre-dev.540.co) 
- cAdvisor Monitoring    | [dre-monitor.540.co](https://dre-monitor.540.co) 
- Architectural Docs    | [./server/docs](https://github.com/540co/ads-bpa/blob/master/server/docs)
+Key Links  | URLs | Comments
+ ------------- | ------------- | ---------------
+ Production App    | [dre.540.co](https://dre.540.co) | 
+ API Documentation    | [dre.540.co/apidocs](https://dre.540.co/apidocs) | 
+ Development Environment    | [dre-dev.540.co](https://dre-dev.540.co) | NO LONGER ACTIVE
+ cAdvisor Monitoring    | [dre-monitor.540.co](https://dre-monitor.540.co) | NO LONGER ACTIVE
+ Architectural Docs    | [./server/docs](https://github.com/540co/ads-bpa/blob/master/server/docs) | 
 
 ```
 This prototype was built for Chrome and Firefox (IE Compatibility not currently tested)
